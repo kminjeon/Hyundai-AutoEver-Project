@@ -1,0 +1,77 @@
+package hyundaiautoever.library.model.entity;
+
+import hyundaiautoever.library.common.type.AuthType;
+import hyundaiautoever.library.common.type.PartType;
+import hyundaiautoever.library.model.entity.base.BaseEntity;
+import lombok.*;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Table(name = "USER")
+@NoArgsConstructor
+public class User extends BaseEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 생성
+    @Column(name = "user_id")
+    private Long id;
+
+    @Column(name = "name", nullable = false, length=10)
+    private String name;
+
+    @Column(name = "personal_id", nullable = false, length=20, unique = true)
+    private String personalId;
+
+    @Column(name = "email", nullable = false, length=50, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "part", nullable = false)
+    @Enumerated(EnumType.STRING) // String으로 DB 저장
+    private PartType part;
+
+    @Column(name = "nickname", nullable = false, length=50, unique = true)
+    private String nickname;
+
+    @Enumerated(EnumType.STRING) // String으로 DB 저장
+    @Column(name = "auth_type")
+    private AuthType authType;
+
+    @Column(name = "last_login_date")
+    private LocalDateTime lastLoginDate;
+
+    @Builder
+    public User(String name, String personalId, String password, String email, PartType part, String nickname) {
+        this.name = name;
+        this.personalId = personalId;
+        this.password = password;
+        this.email = email;
+        this.part = part;
+        this.nickname = nickname;
+        this.authType = AuthType.USER;
+        this.lastLoginDate = null;
+    }
+
+    public void updateUserEmail(String email) {
+        this.email = email;
+    }
+    public void updateUserPassword(String password) {
+        this.password = password;
+    }
+    public void updateUserPart(PartType part) {
+        this.part = part;
+    }
+    public void updateUserAuthType(AuthType authType) {
+        this.authType = authType;
+    }
+    public void updateLastLoginDate(LocalDateTime lastLoginDate) {
+        this.lastLoginDate = lastLoginDate;
+    }
+
+}
+
