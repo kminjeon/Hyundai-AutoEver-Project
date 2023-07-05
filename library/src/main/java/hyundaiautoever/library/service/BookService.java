@@ -19,9 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true) // 조회에서 성능 최적화
 public class BookService {
 
-    @Autowired
     private final BookRepository bookRepository;
-
 
     /**
      * 도서 추가
@@ -39,7 +37,14 @@ public class BookService {
                 .description(request.getDescription())
                 .img(request.getImg())
                 .build();
-        bookRepository.save(book);
+
+        // Book Repository 저장
+        try {
+            bookRepository.save(book);
+        } catch (Exception e) {
+            log.error("addBook Exception : {}", e.getMessage());
+            throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
+        }
         return book.getId();
     }
 
@@ -50,7 +55,7 @@ public class BookService {
      * @return updateBookDto
      */
     @Transactional
-    public BookDto.updateBookDto updateBook(Long bookId, BookRequest.updateBookRequest request) {
+    public BookDto.UpdateBookDto updateBook(Long bookId, BookRequest.updateBookRequest request) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("updateBook Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -62,8 +67,27 @@ public class BookService {
         book.updatePublisher(request.getPublisher() != null ? request.getPublisher() : book.getPublisher());
         book.updateCategoryType(request.getCategory() != null ? request.getCategory() : book.getCategoryType());
         book.updateIsbn(request.getIsbn() != null ? request.getIsbn() : book.getIsbn());
-        return new BookDto.updateBookDto(book);
+        return BookDto.buildUpdateBookDto(book);
     }
 
+
+    /**
+     * 도서 삭제
+     * @param bookId
+     */
+    public void deleteBook(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
+            log.error("deleteBook Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 도서 삭제
+        try {
+            bookRepository.deleteById(bookId);
+        } catch (Exception e) {
+            log.error("deleteBook Exception : {}", e.getMessage());
+            throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
+        }
+    }
 
 }

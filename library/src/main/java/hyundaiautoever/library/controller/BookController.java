@@ -39,5 +39,9 @@ public class BookController {
         return Response.ok().setData(bookService.updateBook(bookId, request));
     }
 
-
+    @DeleteMapping("/admin/book")
+    public Response deleteBook(@RequestParam("bookId") Long bookId) {
+        bookService.deleteBook(bookId);
+        return Response.ok();
+    }
 }

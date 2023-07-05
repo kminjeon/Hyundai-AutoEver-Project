@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const Main = ({handleLogout}) => {
+const Main = () => {
 
     const name = sessionStorage.getItem('name');
 
+    const [isLogin, setIsLogin] = useState(false)
+ 
+  useEffect(() => {
+    const personalId = sessionStorage.getItem('personalId');
+    
+    if (personalId !== null) {
+    // sessionStorage에 personalId 값이 존재한다면
+      setIsLogin(true);
+      console.log('isLogin ?? :: ', isLogin)
+    }else{
+        window.location.replace("/");
+    }
+    }, []);
+
+    const handleLogout = () => {
+        sessionStorage.removeItem('personalId');
+        sessionStorage.removeItem('name');
+        setIsLogin(false);
+        console.log('로그아웃');
+      }
     return (
         <div style={{ 
             display: 'flex', justifyContent: 'center', alignItems: 'center', 

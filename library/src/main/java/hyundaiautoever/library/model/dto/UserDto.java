@@ -56,7 +56,7 @@ public class UserDto {
             this.personalId = user.getPersonalId();
             this.email = user.getEmail();
             this.authType = user.getAuthType();
-            this.part = user.getPart();
+            this.part = user.getPartType();
             this.password = user.getPassword();
             this.nickname = user.getNickname();
             this.createDate = user.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm"));

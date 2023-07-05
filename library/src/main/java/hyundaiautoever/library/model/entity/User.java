@@ -31,9 +31,9 @@ public class User extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "part", nullable = false)
+    @Column(name = "part_type", nullable = false)
     @Enumerated(EnumType.STRING) // String으로 DB 저장
-    private PartType part;
+    private PartType partType;
 
     @Column(name = "nickname", nullable = false, length=50, unique = true)
     private String nickname;
@@ -46,12 +46,12 @@ public class User extends BaseEntity {
     private LocalDateTime lastLoginDate;
 
     @Builder
-    public User(String name, String personalId, String password, String email, PartType part, String nickname) {
+    public User(String name, String personalId, String password, String email, PartType partType, String nickname) {
         this.name = name;
         this.personalId = personalId;
         this.password = password;
         this.email = email;
-        this.part = part;
+        this.partType = partType;
         this.nickname = nickname;
         this.authType = AuthType.USER;
         this.lastLoginDate = null;
@@ -63,8 +63,8 @@ public class User extends BaseEntity {
     public void updateUserPassword(String password) {
         this.password = password;
     }
-    public void updateUserPart(PartType part) {
-        this.part = part;
+    public void updateUserPart(PartType partType) {
+        this.partType = partType;
     }
     public void updateUserAuthType(AuthType authType) {
         this.authType = authType;

@@ -4,7 +4,6 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.model.dto.UserDto;
 import hyundaiautoever.library.model.dto.request.UserRequest;
-import hyundaiautoever.library.model.dto.response.LoginResponse;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.UserRepository;
@@ -24,7 +23,6 @@ import java.util.Optional;
 @Transactional(readOnly = true) // 조회에서 성능 최적화
 public class UserService {
 
-    @Autowired
     private final UserRepository userRepository;
 
     /**
@@ -55,7 +53,7 @@ public class UserService {
                 .personalId(request.getPersonalId())
                 .password(request.getPassword())
                 .email(request.getEmail())
-                .part(request.getPart())
+                .partType(request.getPartType())
                 .nickname(request.getNickname())
                 .build();
         userRepository.save(user);
@@ -100,6 +98,41 @@ public class UserService {
     public boolean checkNickname(String nickname) {
         log.info("UserService :: Call checkNickname Method!");
         return userRepository.existsByNickname(nickname);
+    }
+
+
+    /**
+     * 유저 이메일 변경
+     * @param personalId
+     * @param email
+     */
+    @Transactional
+    public void updateUserEmail(String personalId, String email) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("updateUserEmail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        user.updateUserEmail(email);
+    }
+
+    /**
+     * 유저 비밀번호 변경
+     * @param personalId
+     * @param password
+     */
+    @Transactional
+    public Response updateUserPassword(String personalId, String password, String newPassword) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("updateUserPassword Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        if (!password.equals(user.getPassword())){
+                log.error("updateUserPassword Exception : [현재 비밀번호 오류]", ExceptionCode.PASSWORD_ERROR);
+                return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
+        }
+        user.updateUserPassword(newPassword);
+        return Response.ok();
     }
 }
 

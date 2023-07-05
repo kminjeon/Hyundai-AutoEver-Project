@@ -83,4 +83,29 @@ public class UserController {
         return Response.ok();
     }
 
+
+    /**
+     * 유저 이메일 수정
+     * @param personalId
+     * @param email
+     * @return Response.ok
+     */
+    @PutMapping("/mypage/profile/email")
+    public Response updateUserEmail(@RequestParam("personalId") String personalId, @RequestParam("email") String email) {
+        userService.updateUserEmail(personalId, email);
+        return Response.ok();
+    }
+
+    /**
+     * 유저 비밀번호 수정
+     * @param personalId
+     * @param password
+     * @return Response.ok
+     */
+    @PutMapping("/mypage/profile/password")
+    public Response updateUserPassword(@RequestParam("personalId") String personalId,
+                                       @RequestParam("password") String password,
+                                       @RequestParam("newPassword") String newPassword) {
+        return userService.updateUserPassword(personalId, password, newPassword);
+    }
 }

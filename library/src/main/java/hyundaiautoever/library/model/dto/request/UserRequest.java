@@ -26,7 +26,7 @@ public class UserRequest {
         @NotNull
         private String email;
         @NotNull
-        private PartType part;
+        private PartType partType;
         @NotEmpty(message = "회원 닉네임은 필수입니다")
         @NotNull
         private String nickname;

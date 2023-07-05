@@ -46,6 +46,7 @@ tasks.named('test') {
 }
 
 
+/*
 def frontendDir = "$projectDir/src/main/reactfront"
 
 sourceSets {
@@ -86,3 +87,5 @@ task copyReactBuildFiles(type: Copy) {
 	from "$frontendDir/build"
 	into "$projectDir/src/main/resources/static"
 }
+
+ */
