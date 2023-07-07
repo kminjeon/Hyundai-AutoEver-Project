@@ -20,7 +20,7 @@ import static hyundaiautoever.library.model.dto.ApplyDto.buildUpdateApplyDto;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true) // 조회에서 성능 최적화
+@Transactional(readOnly = true) // 조회 성능 최적화
 public class ApplyService {
 
 
@@ -39,7 +39,7 @@ public class ApplyService {
                 .author(request.getAuthor())
                 .publisher(request.getPublisher())
                 .isbn(request.getIsbn())
-                .applyUser(user)
+                .user(user)
                 .build();
         try {
             applyRepository.save(apply);

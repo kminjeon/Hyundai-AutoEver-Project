@@ -21,7 +21,8 @@ public enum ExceptionCode {
     CAN_NOT_MOVE_EXCEPTION(302, "이동할 수 없습니다."),
     PASSWORD_ERROR(-1, "비밀번호가 틀렸습니다"),
     PERSONALID_ERROR(-2, "로그인 아이디가 틀렸습니다"),
-    LOGIN_SUCCESS(0, "로그인이 성공했습니다");
+    LOGIN_SUCCESS(0, "로그인이 성공했습니다"),
+    EXTENSION_ERROR(-1, "연장 횟수를 초과했습니다");
     private final int code;
     private final String message;
 }

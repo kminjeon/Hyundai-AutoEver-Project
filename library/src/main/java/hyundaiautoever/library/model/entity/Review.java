@@ -2,10 +2,7 @@ package hyundaiautoever.library.model.entity;
 
 import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.entity.base.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -13,7 +10,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "REVIEW")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Review extends BaseEntity {
 
     @Id
@@ -26,17 +23,17 @@ public class Review extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User reviewUser; // 리뷰 작성자
+    private User user; // 리뷰 작성자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private Book reviewBook; // 리뷰 도서
+    private Book book; // 리뷰 도서
 
     @Builder
-    public Review(String content, User reviewUser, Book reviewBook) {
+    public Review(String content, User user, Book book) {
         this.content = content;
-        this.reviewUser = reviewUser;
-        this.reviewBook = reviewBook;
+        this.user = user;
+        this.book = book;
     }
 
     public void updateReviewContent(String content) {

@@ -46,11 +46,16 @@ public class Response<T> {
         return new Response<T>(exceptionCode);
     }
 
-    public static <T> Response<T> personlIdError(ExceptionCode exceptionCode) {
+    public static <T> Response<T> personalIdError(ExceptionCode exceptionCode) {
         log.info("[personlIdError] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }
     public static <T> Response<T> passwordError(ExceptionCode exceptionCode) {
+        log.info("[passwordError] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
+    public static <T> Response<T> extensionError(ExceptionCode exceptionCode) {
         log.info("[passwordError] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }

@@ -2,6 +2,7 @@ package hyundaiautoever.library.service;
 
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
+import hyundaiautoever.library.common.type.AuthType;
 import hyundaiautoever.library.model.dto.UserDto;
 import hyundaiautoever.library.model.dto.request.UserRequest;
 import hyundaiautoever.library.model.dto.response.Response;
@@ -9,18 +10,20 @@ import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true) // 조회에서 성능 최적화
+@Transactional(readOnly = true) // 조회 성능 최적화
 public class UserService {
 
     private final UserRepository userRepository;
@@ -32,7 +35,7 @@ public class UserService {
     public Response loginUser(String personalId, String password) {
         Optional<User> optionalUser = userRepository.findByPersonalId(personalId);
         if (optionalUser.isEmpty()) {
-            return Response.personlIdError(ExceptionCode.PERSONALID_ERROR);
+            return Response.personalIdError(ExceptionCode.PERSONALID_ERROR);
         }
         User user = optionalUser.get();
         if (!user.getPassword().equals(password)) {
@@ -56,7 +59,12 @@ public class UserService {
                 .partType(request.getPartType())
                 .nickname(request.getNickname())
                 .build();
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+        } catch (Exception e) {
+            log.error("createUser Exception : {}", e.getMessage());
+            throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
+        }
     }
 
     /**
@@ -133,6 +141,59 @@ public class UserService {
         }
         user.updateUserPassword(newPassword);
         return Response.ok();
+    }
+
+    /**
+     * ADMIN 권한 관리
+     * @param personalId
+     * @param auth
+     * @return LoginDto
+     */
+    @Transactional
+    public UserDto.LoginDto updateAuth(String personalId, String auth) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("updateAuth Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        try {
+            user.updateUserAuthType(auth.equals("ON") ? AuthType.ADMIN : AuthType.USER);
+        } catch (Exception e) {
+            log.error("updateAuth Exception : {}", e.getMessage());
+            throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);
+        }
+        return UserDto.buildLoginDto(user);
+    }
+
+    /**
+     * 회원 탈퇴
+     * @param personalId
+     */
+    @Transactional
+    public void deleteUser(String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("deleteUser Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 유저 삭제
+        try {
+            userRepository.deleteById(user.getId());
+        } catch (Exception e) {
+            log.error("deleteUser Exception : {}", e.getMessage());
+            throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
+        }
+    }
+
+    /**
+     * 권한 관리 유저 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @param name
+     * @return UserAuthPage
+     */
+    public UserDto.UserAuthPage searchUserAuthPage(Pageable pageable, String personalId, String name) {
+        return UserDto.buildUserAuthPage(userRepository.searchUserAuthPage(pageable, personalId, name));
     }
 }
 

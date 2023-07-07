@@ -3,17 +3,14 @@ package hyundaiautoever.library.model.entity;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.entity.base.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "BOOK")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends BaseEntity {
 
     @Id
@@ -50,6 +47,9 @@ public class Book extends BaseEntity {
     private CategoryType categoryType; // 카테고리 타입 [개발, 소설, 인문, 과학, 경제]
 
 
+    @Column(name = "love_count", nullable = false)
+    private Integer loveCount; // 좋아요 개수
+
     @Builder
     public Book(String title, String author, String publisher, String isbn, CategoryType categoryType, String img, String description) {
         this.title = title;
@@ -61,6 +61,7 @@ public class Book extends BaseEntity {
         this.description = description;
         this.rentCount = 0;
         this.rentType = RentType.OPEN;
+        this.loveCount = 0;
     }
 
     public void updateTitle(String title) {

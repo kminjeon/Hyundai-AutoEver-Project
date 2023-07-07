@@ -1,15 +1,16 @@
 package hyundaiautoever.library.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import hyundaiautoever.library.common.exception.ExceptionCode;
+import com.querydsl.core.annotations.QueryProjection;
 import hyundaiautoever.library.common.type.AuthType;
 import hyundaiautoever.library.common.type.PartType;
+import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.User;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class UserDto {
 
@@ -28,13 +29,28 @@ public class UserDto {
     @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class LoginDto {
-        private final String name;
-
+        private final Long id;
         private final String personalId;
+        private final String name;
+        private final AuthType authType;
 
+        @QueryProjection
         public LoginDto(User user) {
-            this.name = user.getName();
+            this.id = user.getId();
             this.personalId = user.getPersonalId();
+            this.name = user.getName();
+            this.authType = user.getAuthType();
+        }
+    }
+
+    @Getter
+    public static class UserAuthPage {
+        private final Response.Pagination pagination;
+        private final List<LoginDto> userList;
+
+        public UserAuthPage(Page<LoginDto> page) {
+            this.pagination = new Response.Pagination(page);
+            this.userList = page.getContent();
         }
     }
 
@@ -75,6 +91,9 @@ public class UserDto {
         return new LoginDto(user);
     }
 
+    public static UserAuthPage buildUserAuthPage(Page<UserDto.LoginDto> page) {
+        return new UserAuthPage(page);
+    }
 
     /*
     public static List<UserDto> buildUserList(List<User> userList) {

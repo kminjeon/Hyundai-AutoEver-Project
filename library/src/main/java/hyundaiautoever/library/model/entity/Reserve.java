@@ -1,9 +1,7 @@
 package hyundaiautoever.library.model.entity;
 
 import hyundaiautoever.library.model.entity.base.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -11,7 +9,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "RESERVE")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Reserve extends BaseEntity {
 
     @Id
@@ -24,9 +22,20 @@ public class Reserve extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User reserveUser; // 예약자
+    private User user; // 예약자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private Book reserveBook; // 예약책
+    private Book book; // 예약책
+
+    @Builder
+    public Reserve(User user, Book book, Integer waitNumber) {
+        this.user = user;
+        this.book = book;
+        this.waitNumber = waitNumber;
+    }
+
+    public void updateWaitNumber(Integer waitNumber) {
+        this.waitNumber = waitNumber;
+    }
 }

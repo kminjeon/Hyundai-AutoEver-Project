@@ -16,7 +16,7 @@ import javax.validation.Valid;
 public class ReviewController {
 
     @Autowired
-    ReviewService reviewService;
+    private ReviewService reviewService;
 
     /**
      * 리뷰 생성
@@ -24,7 +24,7 @@ public class ReviewController {
      * @param request
      * @return CreateReviewDto
      */
-    @PostMapping("/detail/{bookId}")
+    @PostMapping("/review/{bookId}")
     public Response createReview(@PathVariable("bookId") Long bookId, @RequestBody @Valid ReviewRequest.CreateReviewRequest request) {
         return Response.ok().setData(reviewService.createReview(bookId, request));
     }

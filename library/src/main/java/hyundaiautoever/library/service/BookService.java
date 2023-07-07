@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true) // 조회에서 성능 최적화
+@Transactional(readOnly = true) // 조회 성능 최적화
 public class BookService {
 
     private final BookRepository bookRepository;

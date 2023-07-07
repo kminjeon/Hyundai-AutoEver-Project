@@ -12,14 +12,13 @@ import hyundaiautoever.library.repository.ReviewRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
-@Transactional(readOnly = true) // 조회에서 성능 최적화
+@Transactional(readOnly = true) // 조회 성능 최적화
 public class ReviewService {
 
     private final ReviewRepository reviewRepository;
@@ -45,8 +44,8 @@ public class ReviewService {
         });
         Review review = Review.builder()
                         .content(request.getContent())
-                        .reviewUser(user)
-                        .reviewBook(book)
+                        .user(user)
+                        .book(book)
                         .build();
         // Review 저장
         try {
@@ -70,12 +69,12 @@ public class ReviewService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        User user = userRepository.findById(review.getReviewUser().getId()).orElseThrow(() -> {
+        User user = userRepository.findById(review.getUser().getId()).orElseThrow(() -> {
             log.error("getReviewDetail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        Book book = bookRepository.findById(review.getReviewBook().getId()).orElseThrow(() -> {
+        Book book = bookRepository.findById(review.getBook().getId()).orElseThrow(() -> {
             log.error("getReviewDetail Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
@@ -97,5 +96,25 @@ public class ReviewService {
 
         review.updateReviewContent(request.getContent()); // 프론트에서 수정되면 주는지 아니면 다주는지 보고 생각
         return ReviewDto.buildUpdateReviewDto(review);
+    }
+
+    /**
+     * 리뷰 삭제
+     * @param reviewId
+     */
+    @Transactional
+    public void deleteReview(Long reviewId) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> {
+            log.error("deleteReview Exception : [존재하지 않는 Review ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 리뷰 삭제
+        try {
+            reviewRepository.deleteById(reviewId);
+        } catch (Exception e) {
+            log.error("deleteReview Exception : {}", e.getMessage());
+            throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
+        }
     }
 }

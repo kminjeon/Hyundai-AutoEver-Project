@@ -21,7 +21,7 @@ public class ReviewDto {
         public CreateReviewDto(Review review) {
             this.content = review.getContent();
             this.reviewId = review.getId();
-            this.nickname = review.getReviewUser().getNickname();
+            this.nickname = review.getUser().getNickname();
             this.createDate = review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
     }

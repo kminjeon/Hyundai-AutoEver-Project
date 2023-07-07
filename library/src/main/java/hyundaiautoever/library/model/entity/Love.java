@@ -1,16 +1,14 @@
 package hyundaiautoever.library.model.entity;
 
 import hyundaiautoever.library.model.entity.base.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
 @Table(name = "LOVE")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Love extends BaseEntity {
 
     @Id
@@ -20,12 +18,15 @@ public class Love extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User LoveUser; // 예약자
+    private User user; // 좋아요 누른 예약자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private Book LoveBook; // 예약책
+    private Book book; // 좋아요 누른 책
 
-    @JoinColumn(name = "count", nullable = false)
-    private Integer count; // 좋아요 개수
+    @Builder
+    public Love(User user, Book book) {
+        this.user = user;
+        this.book = book;
+    }
 }
