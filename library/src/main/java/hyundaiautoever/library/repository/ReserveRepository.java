@@ -24,5 +24,5 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long> {
     List<Reserve> findReserveListByWaitNumber(@Param("waitNumber") Integer waitNumber);
 
     @Query("SELECT new hyundaiautoever.library.model.dto.ReserveDto$GetReserveDto(r)  FROM Reserve r WHERE r.user = :user")
-    Page<GetReserveDto> findByPersonalId(Pageable pageable, @Param("user") User user);
+    Page<GetReserveDto> findByUser(Pageable pageable, @Param("user") User user);
 }

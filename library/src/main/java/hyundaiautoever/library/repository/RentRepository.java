@@ -17,8 +17,8 @@ import static hyundaiautoever.library.model.dto.RentDto.*;
 
 public interface RentRepository extends JpaRepository<Rent, Long>, RentRepositorySupport{
     @Query("SELECT new hyundaiautoever.library.model.dto.RentDto$GetRentDto(r) FROM Rent r WHERE r.user = :user AND r.returnDate IS NULL")
-    Page<GetRentDto> findGetRentDtoByPersonalId(Pageable pageable, @Param("user") User user);
+    Page<GetRentDto> findGetRentDtoByUser(Pageable pageable, @Param("user") User user);
 
     @Query("SELECT new hyundaiautoever.library.model.dto.RentDto$GetRentHistoryDto(r) FROM Rent r WHERE r.user = :user AND r.returnDate IS NOT NULL")
-    Page<GetRentHistoryDto> findGetRentHistoryDtoByPersonalId(Pageable pageable, @Param("user") User user);
+    Page<GetRentHistoryDto> findGetRentHistoryDtoByUser(Pageable pageable, @Param("user") User user);
 }

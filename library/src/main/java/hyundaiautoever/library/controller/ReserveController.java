@@ -27,6 +27,12 @@ public class ReserveController {
         return Response.ok().setData(reserveService.createReserve(personalId, bookId));
     }
 
+    /**
+     * 예약 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @return GetReservePage
+     */
     @GetMapping("/mypage/reserve")
     public Response getReservePage(@PageableDefault(size = 10) Pageable pageable,
                                    @RequestParam("personalId") String personalId) {

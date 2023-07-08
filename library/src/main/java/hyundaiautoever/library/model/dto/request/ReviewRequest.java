@@ -21,11 +21,6 @@ public class ReviewRequest {
     }
 
     @Getter
-    public static class GetReviewDetailRequest {
-
-    }
-
-    @Getter
     public static class UpdateReviewRequest {
         @NotEmpty(message = "리뷰 ID는 필수입니다")
         @NotNull

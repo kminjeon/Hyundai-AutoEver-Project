@@ -1,12 +1,16 @@
 package hyundaiautoever.library.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Review;
 import hyundaiautoever.library.model.entity.User;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class ReviewDto {
 
@@ -62,6 +66,34 @@ public class ReviewDto {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    public static class GetReviewDto {
+        private final Long reviewId;
+        private final String title;
+        private final String author;
+        private final String publisher;
+        private final String reviewDate;
+
+        public GetReviewDto(Review review) {
+            this.reviewId = review.getId();
+            this.title = review.getBook().getTitle();
+            this.author = review.getBook().getAuthor();
+            this.publisher = review.getBook().getPublisher();
+            this.reviewDate = review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        }
+    }
+
+    @Getter
+    public static class GetReviewPage {
+        private final Response.Pagination pagination;
+        private final List<GetReviewDto> getReviewDtoList;
+        public GetReviewPage(Page<GetReviewDto> page) {
+            this.pagination = new Response.Pagination(page);
+            this.getReviewDtoList = page.getContent();
+        }
+    }
 
     public static CreateReviewDto buildCreateReviewDto(Review review) {
         return new CreateReviewDto(review);
@@ -73,5 +105,9 @@ public class ReviewDto {
 
     public static UpdateReviewDto buildUpdateReviewDto(Review review) {
         return new UpdateReviewDto(review);
+    }
+
+    public static GetReviewPage buildGetReviewPage(Page<GetReviewDto> page) {
+        return new GetReviewPage(page);
     }
 }
