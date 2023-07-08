@@ -2,6 +2,7 @@ package hyundaiautoever.library.service;
 
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
+import hyundaiautoever.library.model.dto.ReserveDto;
 import hyundaiautoever.library.model.dto.request.ReserveRequest;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Reserve;
@@ -11,6 +12,7 @@ import hyundaiautoever.library.repository.ReserveRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +38,7 @@ public class ReserveService {
     @Transactional
     public Long createReserve(String personalId, Long bookId) {
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
-            log.error("createReserve Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            log.error("createReserve Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
@@ -61,6 +63,14 @@ public class ReserveService {
         }
 
         return reserve.getId();
+    }
+
+    public ReserveDto.GetReservePage getReservePage(Pageable pageable, String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getReservePage Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return ReserveDto.buildReservePage(reserveRepository.findByPersonalId(pageable, user));
     }
 
     /**

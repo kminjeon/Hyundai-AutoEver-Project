@@ -99,7 +99,7 @@ public class RentDto {
             this.bookId = rent.getBook().getId();
             this.title = rent.getBook().getTitle();
             this.rentDate = rent.getRentDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-            this.expectedReturnDate = rent.getExpectedReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));;
+            this.expectedReturnDate = rent.getExpectedReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
             this.lateDays = ChronoUnit.DAYS.between(rent.getExpectedReturnDate(), LocalDate.now());
         }
     }
