@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +29,9 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final PasswordEncoder passwordEncoder;
+
 
     /**
      * 로그인 login
@@ -55,7 +59,7 @@ public class UserService {
         User user = User.builder()
                 .name(request.getName())
                 .personalId(request.getPersonalId())
-                .password(request.getPassword())
+                .password(passwordEncoder.encode(request.getPassword()))
                 .email(request.getEmail())
                 .partType(request.getPartType())
                 .nickname(request.getNickname())
@@ -136,11 +140,11 @@ public class UserService {
             log.error("updateUserPassword Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        if (!password.equals(user.getPassword())){
+        if (!passwordEncoder.matches(password, user.getPassword())){
                 log.error("updateUserPassword Exception : [현재 비밀번호 오류]", ExceptionCode.PASSWORD_ERROR);
                 return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
         }
-        user.updateUserPassword(newPassword);
+        user.updateUserPassword(passwordEncoder.encode(newPassword));
         return Response.ok();
     }
 

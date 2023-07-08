@@ -4,6 +4,8 @@ import hyundaiautoever.library.common.type.PartType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.apache.groovy.parser.antlr4.util.StringUtils;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -30,17 +32,5 @@ public class UserRequest {
         @NotEmpty(message = "회원 닉네임은 필수입니다")
         @NotNull
         private String nickname;
-
-        /**
-         * 비밀번호 암호화
-         * @param passwordEncoder
-
-        public void encodingPassword(PasswordEncoder passwordEncoder) {
-            if (StringUtils.isEmpty(password)) {
-                return ;
-            }
-            password = passwordEncoder.encode(password);
-        }
-         */
     }
 }
