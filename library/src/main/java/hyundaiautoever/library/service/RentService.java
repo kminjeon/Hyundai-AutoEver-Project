@@ -3,6 +3,11 @@ package hyundaiautoever.library.service;
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.RentType;
+import hyundaiautoever.library.model.dto.RentDto;
+import hyundaiautoever.library.model.dto.RentDto.GetAdminRentPage;
+import hyundaiautoever.library.model.dto.RentDto.GetRentDto;
+import hyundaiautoever.library.model.dto.RentDto.GetRentHistoryPage;
+import hyundaiautoever.library.model.dto.RentDto.GetRentPage;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Rent;
@@ -15,6 +20,8 @@ import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -72,6 +79,47 @@ public class RentService {
         return rent.getId();
     }
 
+    /**
+     * 사용자 대여 페이지
+     * @param pageable
+     * @param personalId
+     * @return GetRentPage
+     */
+    public GetRentPage getRentPage(Pageable pageable, String personalId) {
+        // 대여일 순으로 정렬하기 !
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getRentPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return RentDto.buildGetRentPage(rentRepository.findGetRentDtoByPersonalId(pageable, user));
+    }
+
+    /**
+     * 대여 기록 페이지
+     * @param pageable
+     * @param personalId
+     * @return GetRentHistoryPage
+     */
+    public GetRentHistoryPage getRentHistoryPage(Pageable pageable, String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getRentHistoryPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return RentDto.buildGetRentHistoryPage(rentRepository.findGetRentHistoryDtoByPersonalId(pageable, user));
+    }
+
+    /**
+     * 관리자 대여 페이지 (검색 가능)
+     * @param pageable
+     * @param personalId
+     * @param name
+     * @param bookId
+     * @param title
+     * @return GetAdminRentPage
+     */
+    public GetAdminRentPage getAdminRentPage(Pageable pageable, String personalId, String name, Long bookId, String title) {
+        return RentDto.buildGetAdminRentPage(rentRepository.getAdminRentPage(pageable, personalId, name, bookId, title));
+    }
 
     /**
      * 대출 연장
