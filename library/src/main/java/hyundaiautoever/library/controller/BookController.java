@@ -79,7 +79,7 @@ public class BookController {
      * 카테고리 도서 페이지 조회
      * @param pageable
      * @param categoryType
-     * @return CategoryBookPage
+     * @return SimpleBookPage
      */
     @GetMapping("/book/category/{categoryType}")
     public Response getCategoryBookPage(@PageableDefault(size = 10) Pageable pageable,
@@ -100,7 +100,12 @@ public class BookController {
         return Response.ok().setData(bookService.getBookDetail(bookId));
     }
 
-    // 도서 검색
+    /**
+     * 도서 검색 (제목, 저자, 출판사)
+     * @param pageable
+     * @param searchWord
+     * @return SimpleBookPage
+     */
     @GetMapping("/book/search")
     public Response getSearchBookPage(@PageableDefault(size = 10) Pageable pageable,
                                       @RequestParam String searchWord) {

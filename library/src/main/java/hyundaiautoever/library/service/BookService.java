@@ -4,18 +4,13 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.model.dto.BookDto;
-import hyundaiautoever.library.model.dto.BookDto.SearchAdminBookPage;
-import hyundaiautoever.library.model.dto.ReviewDto;
+import hyundaiautoever.library.model.dto.BookDto.*;
 import hyundaiautoever.library.model.dto.request.BookRequest;
-import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
-import hyundaiautoever.library.model.entity.Review;
 import hyundaiautoever.library.repository.BookRepository;
 import hyundaiautoever.library.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static hyundaiautoever.library.model.dto.BookDto.*;
-import static hyundaiautoever.library.model.dto.ReviewDto.*;
+import static hyundaiautoever.library.model.dto.ReviewDto.CreateReviewDto;
 
 @Service
 @RequiredArgsConstructor
@@ -80,7 +75,7 @@ public class BookService {
      * 카테고리 도서 페이지 조회
      * @param pageable
      * @param categoryType
-     * @return CategoryBookPage
+     * @return SimpleBookPage
      */
     public SimpleBookPage getCategoryBookPage(Pageable pageable, CategoryType categoryType) {
         log.info("BookService : [getCategoryBookPage]");
@@ -104,6 +99,12 @@ public class BookService {
         return BookDto.buildGetBookDetailDto(book, reviewList);
     }
 
+    /**
+     * 도서 검색
+     * @param pageable
+     * @param searchWord
+     * @return SimpleBookPage
+     */
     public SimpleBookPage getSearchBookPage(Pageable pageable, String searchWord) {
         log.info("BookService : [getSearchBookPage]");
         return BookDto.buildCategoryBookPage(bookRepository.getSearchBookPage(pageable, searchWord));

@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -71,6 +73,15 @@ public class ReserveService {
             log.error("deleteReserve Exception : [존재하지 않는 Reserve ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
+        // 대기 순번 뒷 번호 사용자 대기 순번 올리기
+        List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumber(reserve.getWaitNumber());
+
+        if (!reserveList.isEmpty()) {
+            reserveList.forEach(next -> {
+                next.updateWaitNumber(next.getWaitNumber() - 1);
+            });
+        }
 
         // 예약 삭제
         try {
