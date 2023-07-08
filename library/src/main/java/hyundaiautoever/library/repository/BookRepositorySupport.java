@@ -12,4 +12,6 @@ public interface BookRepositorySupport {
                                                  Long bookId,
                                                  CategoryType categorytype,
                                                  String title);
+
+    Page<BookDto.SimpleBookDto> getSearchBookPage(Pageable pageable, String SearchWord);
 }

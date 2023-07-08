@@ -63,15 +63,15 @@ public class ReviewDto {
     }
 
 
-    public static ReviewDto.CreateReviewDto buildCreateReviewDto(Review review) {
+    public static CreateReviewDto buildCreateReviewDto(Review review) {
         return new CreateReviewDto(review);
     }
 
-    public static  ReviewDto.GetReviewDetailDto buildGetReviewDetailDto(Review review, User user, Book book) {
+    public static  GetReviewDetailDto buildGetReviewDetailDto(Review review, User user, Book book) {
         return new GetReviewDetailDto(review, user, book);
     }
 
-    public static ReviewDto.UpdateReviewDto buildUpdateReviewDto(Review review) {
+    public static UpdateReviewDto buildUpdateReviewDto(Review review) {
         return new UpdateReviewDto(review);
     }
 }

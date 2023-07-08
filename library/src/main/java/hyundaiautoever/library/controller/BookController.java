@@ -75,24 +75,37 @@ public class BookController {
         return Response.ok();
     }
 
-    // 카테고리별 도서 페이지 조회
+    /**
+     * 카테고리 도서 페이지 조회
+     * @param pageable
+     * @param categoryType
+     * @return CategoryBookPage
+     */
     @GetMapping("/book/category/{categoryType}")
     public Response getCategoryBookPage(@PageableDefault(size = 10) Pageable pageable,
                                         @PathVariable("categoryType") CategoryType categoryType) {
+        log.info("BookController : [getCategoryBookPage]");
         return Response.ok().setData(bookService.getCategoryBookPage(pageable, categoryType));
     }
 
 
-    // 도서 상세 조회
+    /**
+     * 도서 상세 조회
+     * @param bookId
+     * @return GetBookDetailDto
+     */
     @GetMapping("/book/detail/{bookId}")
-    public Response getBookDetail() {
-        return Response.ok();
+    public Response getBookDetail(@PathVariable("bookId") Long bookId) {
+        log.info("BookController : [getBookDetail]");
+        return Response.ok().setData(bookService.getBookDetail(bookId));
     }
 
     // 도서 검색
     @GetMapping("/book/search")
-    public Response getSerchBookPage() {
-        return Response.ok();
+    public Response getSearchBookPage(@PageableDefault(size = 10) Pageable pageable,
+                                      @RequestParam String searchWord) {
+        log.info("BookController : [getSearchBookPage]");
+        return Response.ok().setData(bookService.getSearchBookPage(pageable, searchWord));
     }
 
 }

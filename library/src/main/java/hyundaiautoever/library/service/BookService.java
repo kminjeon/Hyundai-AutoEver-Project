@@ -5,10 +5,13 @@ import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.model.dto.BookDto;
 import hyundaiautoever.library.model.dto.BookDto.SearchAdminBookPage;
+import hyundaiautoever.library.model.dto.ReviewDto;
 import hyundaiautoever.library.model.dto.request.BookRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
+import hyundaiautoever.library.model.entity.Review;
 import hyundaiautoever.library.repository.BookRepository;
+import hyundaiautoever.library.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +20,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static hyundaiautoever.library.model.dto.BookDto.*;
+import static hyundaiautoever.library.model.dto.ReviewDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +33,7 @@ import static hyundaiautoever.library.model.dto.BookDto.*;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final ReviewRepository reviewRepository;
 
     /**
      * 도서 추가
@@ -64,13 +72,41 @@ public class BookService {
      * @return SearchAdminBookPage
      */
     public SearchAdminBookPage searchAdminBookPage(Pageable pageable, Long bookId, CategoryType categorytype, String title) {
-        log.info("ApplyService : [searchApplyPage]");
+        log.info("BookService : [searchApplyPage]");
         return buildSearchAdminBookPage(bookRepository.searchAdminBookPage(pageable, bookId, categorytype, title));
     }
 
-    public CategoryBookPage getCategoryBookPage(Pageable pageable, CategoryType categoryType) {
-        log.info("ApplyService : [getCategoryBookPage]");
+    /**
+     * 카테고리 도서 페이지 조회
+     * @param pageable
+     * @param categoryType
+     * @return CategoryBookPage
+     */
+    public SimpleBookPage getCategoryBookPage(Pageable pageable, CategoryType categoryType) {
+        log.info("BookService : [getCategoryBookPage]");
         return BookDto.buildCategoryBookPage(bookRepository.findByCategoryType(pageable, categoryType));
+    }
+
+    /**
+     * 도서 상세 조회
+     * @param bookId
+     * @return GetBookDetailDto
+     */
+    public GetBookDetailDto getBookDetail(Long bookId) {
+        log.info("BookService : [getBookDetail]");
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
+            log.error("getBookDetail Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 해당 도서 리뷰 리스트
+        List<CreateReviewDto> reviewList = reviewRepository.findByBook(book).stream().map(CreateReviewDto::new).collect(Collectors.toList());
+        return BookDto.buildGetBookDetailDto(book, reviewList);
+    }
+
+    public SimpleBookPage getSearchBookPage(Pageable pageable, String searchWord) {
+        log.info("BookService : [getSearchBookPage]");
+        return BookDto.buildCategoryBookPage(bookRepository.getSearchBookPage(pageable, searchWord));
     }
 
     /**

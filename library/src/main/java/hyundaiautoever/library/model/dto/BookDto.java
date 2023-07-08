@@ -8,11 +8,15 @@ import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.dto.response.Response.Pagination;
 import hyundaiautoever.library.model.entity.Book;
+import hyundaiautoever.library.model.entity.Review;
 import hyundaiautoever.library.model.entity.User;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import static hyundaiautoever.library.model.dto.ReviewDto.*;
 
 public class BookDto {
 
@@ -64,7 +68,7 @@ public class BookDto {
     @JsonIgnoreProperties(ignoreUnknown = true)
     @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
-    public static class CategoryBookDto {
+    public static class SimpleBookDto {
         private final Long bookId;
         private final String title;
         private final String author;
@@ -73,7 +77,7 @@ public class BookDto {
         private final Integer loveCount;
 
         @QueryProjection
-        public CategoryBookDto(Book book) {
+        public SimpleBookDto(Book book) {
             this.bookId = book.getId();
             this.author = book.getAuthor();
             this.img = book.getImg();
@@ -84,12 +88,41 @@ public class BookDto {
     }
 
     @Getter
-    public static class CategoryBookPage {
+    public static class SimpleBookPage {
         private final Pagination pagination;
-        private final List<CategoryBookDto> categoryBookDtoList;
-        public CategoryBookPage(Page<CategoryBookDto> page) {
+        private final List<SimpleBookDto> simpleBookDtoList;
+        public SimpleBookPage(Page<SimpleBookDto> page) {
             this.pagination = new Pagination(page);
-            this.categoryBookDtoList = page.getContent();
+            this.simpleBookDtoList = page.getContent();
+        }
+    }
+
+    @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    public static class GetBookDetailDto {
+        private final Long bookId;
+        private final String title;
+        private final String author;
+        private final String publisher;
+        private final CategoryType categoryType;
+        private final String isbn;
+        private final RentType rentType;
+        private final String description;
+        private final String img;
+        private final Integer loveCount;
+        private final List<CreateReviewDto> reviewList;
+        public GetBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
+            this.bookId = book.getId();
+            this.title = book.getTitle();
+            this.author = book.getAuthor();
+            this.publisher = book.getPublisher();
+            this.categoryType = book.getCategoryType();
+            this.isbn = book.getIsbn();
+            this.rentType = book.getRentType();
+            this.description = book.getDescription();
+            this.img = book.getImg();
+            this.loveCount = book.getLoveCount();
+            this.reviewList = reviewList;
         }
     }
 
@@ -102,8 +135,12 @@ public class BookDto {
         return new SearchAdminBookPage(page);
     }
 
-    public static CategoryBookPage buildCategoryBookPage(Page<CategoryBookDto> page) {
-        return new CategoryBookPage(page);
+    public static SimpleBookPage buildCategoryBookPage(Page<SimpleBookDto> page) {
+        return new SimpleBookPage(page);
+    }
+
+    public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
+        return new GetBookDetailDto(book, reviewList);
     }
 
 }
