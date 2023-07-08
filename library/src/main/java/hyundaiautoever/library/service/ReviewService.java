@@ -12,8 +12,11 @@ import hyundaiautoever.library.repository.ReviewRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static hyundaiautoever.library.model.dto.ReviewDto.*;
 
 @Service
 @RequiredArgsConstructor
@@ -32,7 +35,7 @@ public class ReviewService {
      * @return CreateReviewDto
      */
     @Transactional
-    public ReviewDto.CreateReviewDto createReview(Long bookId, ReviewRequest.CreateReviewRequest request) {
+    public CreateReviewDto createReview(Long bookId, ReviewRequest.CreateReviewRequest request) {
         Book book  = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("createReview Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -54,7 +57,7 @@ public class ReviewService {
             log.error("createReview Exception : {}", e.getMessage());
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
-        return ReviewDto.buildCreateReviewDto(review);
+        return buildCreateReviewDto(review);
     }
 
 
@@ -63,7 +66,7 @@ public class ReviewService {
      * @param reviewId
      * @return GetReviewDetailDto
      */
-    public ReviewDto.GetReviewDetailDto getReviewDetail(Long reviewId) {
+    public GetReviewDetailDto getReviewDetail(Long reviewId) {
         Review review = reviewRepository.findById(reviewId).orElseThrow(() -> {
             log.error("getReviewDetail Exception : [존재하지 않는 Review ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -79,23 +82,36 @@ public class ReviewService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        return ReviewDto.buildGetReviewDetailDto(review, user, book);
+        return buildGetReviewDetailDto(review, user, book);
     }
 
+    /**
+     * 리뷰 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @return GetReviewPage
+     */
+    public GetReviewPage getReviewPage(Pageable pageable, String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getReviewPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return ReviewDto.buildGetReviewPage(reviewRepository.findByUser(pageable, user));
+    }
 
     /**
      * 리뷰 수정
      * @param request
      * @return
      */
-    public ReviewDto.UpdateReviewDto updateReview(ReviewRequest.UpdateReviewRequest request) {
+    public UpdateReviewDto updateReview(ReviewRequest.UpdateReviewRequest request) {
         Review review = reviewRepository.findById(request.getReviewId()).orElseThrow(() -> {
             log.error("updateReview Exception : [존재하지 않는 Review ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
         review.updateReviewContent(request.getContent()); // 프론트에서 수정되면 주는지 아니면 다주는지 보고 생각
-        return ReviewDto.buildUpdateReviewDto(review);
+        return buildUpdateReviewDto(review);
     }
 
     /**

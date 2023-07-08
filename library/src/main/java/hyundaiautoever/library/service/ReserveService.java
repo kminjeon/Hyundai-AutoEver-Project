@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static hyundaiautoever.library.model.dto.ReserveDto.*;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -65,12 +67,18 @@ public class ReserveService {
         return reserve.getId();
     }
 
-    public ReserveDto.GetReservePage getReservePage(Pageable pageable, String personalId) {
+    /**
+     * 예약 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @return GetReservePage
+     */
+    public GetReservePage getReservePage(Pageable pageable, String personalId) {
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
             log.error("getReservePage Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        return ReserveDto.buildReservePage(reserveRepository.findByPersonalId(pageable, user));
+        return buildReservePage(reserveRepository.findByUser(pageable, user));
     }
 
     /**

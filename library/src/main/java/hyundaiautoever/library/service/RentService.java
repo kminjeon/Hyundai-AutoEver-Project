@@ -91,7 +91,7 @@ public class RentService {
             log.error("getRentPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        return RentDto.buildGetRentPage(rentRepository.findGetRentDtoByPersonalId(pageable, user));
+        return RentDto.buildGetRentPage(rentRepository.findGetRentDtoByUser(pageable, user));
     }
 
     /**
@@ -105,7 +105,7 @@ public class RentService {
             log.error("getRentHistoryPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        return RentDto.buildGetRentHistoryPage(rentRepository.findGetRentHistoryDtoByPersonalId(pageable, user));
+        return RentDto.buildGetRentHistoryPage(rentRepository.findGetRentHistoryDtoByUser(pageable, user));
     }
 
     /**
