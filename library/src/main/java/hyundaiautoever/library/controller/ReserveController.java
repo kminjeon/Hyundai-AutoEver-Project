@@ -4,6 +4,8 @@ import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.ReserveService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,13 +27,18 @@ public class ReserveController {
         return Response.ok().setData(reserveService.createReserve(personalId, bookId));
     }
 
+    @GetMapping("/mypage/reserve")
+    public Response getReservePage(@PageableDefault(size = 10) Pageable pageable,
+                                   @RequestParam("personalId") String personalId) {
+        return Response.ok().setData(reserveService.getReservePage(pageable, personalId));
+    }
 
     /**
      * 도서 예약 삭제
      * @param reserveId
      * @return ok
      */
-    @DeleteMapping("/reserve/delete")
+    @DeleteMapping("/mypage/reserve/delete")
     public Response deleteReserve(@RequestParam("reserveId") Long reserveId) {
         reserveService.deleteReserve(reserveId);
         return Response.ok();
