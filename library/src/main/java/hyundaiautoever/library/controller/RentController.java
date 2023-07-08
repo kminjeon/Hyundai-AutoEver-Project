@@ -4,6 +4,8 @@ import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.RentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,7 +26,47 @@ public class RentController {
         return Response.ok().setData(rentService.createRent(personalId, bookId));
     }
 
+    /**
+     * 사용자 대여 페이지
+     * @param pageable
+     * @param personalId
+     * @return
+     */
+    @GetMapping("/mypage/rent/getPage")
+    public Response getRentPage(@PageableDefault(size = 10) Pageable pageable,
+                                @RequestParam("personalId") String personalId) {
+        return Response.ok().setData(rentService.getRentPage(pageable, personalId));
+    }
 
+    /**
+     * 대여 기록 페이지
+     * @param pageable
+     * @param personalId
+     * @return GetRentHistoryPage
+     */
+    @GetMapping("/mypage/rent/history")
+    public Response getRentHistoryPage(@PageableDefault(size = 10) Pageable pageable,
+                                       @RequestParam("personalId") String personalId) {
+        return Response.ok().setData(rentService.getRentHistoryPage(pageable, personalId));
+    }
+
+    /**
+     * 관리자 대여 페이지
+     * @param pageable
+     * @param personalId
+     * @param name
+     * @param bookId
+     * @param title
+     * @return GetAdminRentPage
+     */
+    @GetMapping("/admin/rent/getPage")
+    public Response getAdminRentPage(@PageableDefault(size = 10) Pageable pageable,
+                                     @RequestParam(required = false) String personalId,
+                                     @RequestParam(required = false) String name,
+                                     @RequestParam(required = false) Long bookId,
+                                     @RequestParam(required = false) String title) {
+        return Response.ok().setData(rentService.getAdminRentPage(pageable, personalId, name, bookId, title));
+    }
     /**
      * 도서 대여 연장 (14일)
      * @param rentId

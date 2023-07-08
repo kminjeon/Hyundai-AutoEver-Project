@@ -2,6 +2,8 @@ package hyundaiautoever.library.service;
 
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
+import hyundaiautoever.library.model.dto.LoveDto;
+import hyundaiautoever.library.model.dto.LoveDto.GetLoveDto;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Love;
 import hyundaiautoever.library.model.entity.User;
@@ -12,6 +14,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,6 +62,20 @@ public class LoveService {
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
         return love.getId();
+    }
+
+
+    /**
+     * 좋아요 리스트 조회
+     * @param personalId
+     * @return List<GetLoveDto>
+     */
+    public List<GetLoveDto> getLoveList(String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getLoveList Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return loveRepository.findByUser(user).stream().map(love -> new GetLoveDto(love.getBook())).collect(Collectors.toList());
     }
 
     /**

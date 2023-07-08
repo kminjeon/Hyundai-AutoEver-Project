@@ -27,6 +27,16 @@ public class LoveController {
     }
 
     /**
+     * 좋아요 리스트 조회
+     * @param personalId
+     * @return List<GetLoveDto>
+     */
+    @GetMapping("/love/get")
+    public Response getLoveList(@RequestParam("personalId") String personalId) {
+        return Response.ok().setData(loveService.getLoveList(personalId));
+    }
+
+    /**
      * 좋아요 삭제
      * @param loveId
      * @return ok
