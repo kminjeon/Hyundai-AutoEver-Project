@@ -149,7 +149,7 @@ public class UserController {
      * @return UserAuthPage
      */
     @GetMapping("/admin/auth/getPage")
-    public Response searchUserAuthPage(@PageableDefault(size = 2) Pageable pageable,
+    public Response searchUserAuthPage(@PageableDefault(size = 10) Pageable pageable,
                                    @RequestParam(required = false) String personalId,
                                    @RequestParam(required = false) String name) {
         log.info("UserController : [searchUserList]");

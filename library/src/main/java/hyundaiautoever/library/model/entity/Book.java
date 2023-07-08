@@ -87,4 +87,7 @@ public class Book extends BaseEntity {
     public void updateCategoryType(CategoryType categoryType) {
         this.categoryType = categoryType;
     }
+    public void updateLoveCount(Integer loveCount) {
+        this.loveCount = loveCount;
+    }
 }

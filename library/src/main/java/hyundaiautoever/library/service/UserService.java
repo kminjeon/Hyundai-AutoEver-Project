@@ -4,6 +4,7 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.AuthType;
 import hyundaiautoever.library.model.dto.UserDto;
+import hyundaiautoever.library.model.dto.UserDto.UserAuthPage;
 import hyundaiautoever.library.model.dto.request.UserRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.User;
@@ -192,7 +193,8 @@ public class UserService {
      * @param name
      * @return UserAuthPage
      */
-    public UserDto.UserAuthPage searchUserAuthPage(Pageable pageable, String personalId, String name) {
+    public UserAuthPage searchUserAuthPage(Pageable pageable, String personalId, String name) {
+        log.info("UserService : [searchUserAuthPage]");
         return UserDto.buildUserAuthPage(userRepository.searchUserAuthPage(pageable, personalId, name));
     }
 }

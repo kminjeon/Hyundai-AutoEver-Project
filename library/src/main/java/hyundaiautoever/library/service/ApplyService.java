@@ -3,6 +3,8 @@ package hyundaiautoever.library.service;
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.model.dto.ApplyDto;
+import hyundaiautoever.library.model.dto.ApplyDto.ApplyListPage;
+import hyundaiautoever.library.model.dto.ApplyDto.UpdateApplyDto;
 import hyundaiautoever.library.model.dto.request.ApplyRequest;
 import hyundaiautoever.library.model.entity.Apply;
 import hyundaiautoever.library.model.entity.User;
@@ -11,6 +13,7 @@ import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,10 +27,14 @@ import static hyundaiautoever.library.model.dto.ApplyDto.buildUpdateApplyDto;
 public class ApplyService {
 
 
-
     private final UserRepository userRepository;
     private final ApplyRepository applyRepository;
 
+    /**
+     * 도서 신청 생성
+     * @param request
+     * @return applyId
+     */
     @Transactional
     public Long createApply(ApplyRequest.CreateApplyRequest request) {
         User user = userRepository.findByPersonalId(request.getApplyUser()).orElseThrow(() -> {
@@ -50,9 +57,29 @@ public class ApplyService {
         return apply.getId();
     }
 
+    /**
+     * 도서 신청 리스트 검색 페이지
+     * @param pageable
+     * @param personalId
+     * @param title
+     * @param author
+     * @param isbn
+     * @param publisher
+     * @return ApplyListPage
+     */
+    public ApplyListPage searchApplyPage(Pageable pageable, String personalId, String title, String author, String isbn, String publisher) {
+        log.info("ApplyService : [searchApplyPage]");
+        return ApplyDto.buildApplyListPage(applyRepository.searchApplyPage(pageable, personalId, title, author, isbn, publisher));
+    }
 
+    /**
+     * 도서 신청 수정
+     * @param applyId
+     * @param request
+     * @return UpdateApplyDto
+     */
     @Transactional
-    public ApplyDto.UpdateApplyDto updateApply(Long applyId, ApplyRequest.updateApplyRequest request) {
+    public UpdateApplyDto updateApply(Long applyId, ApplyRequest.updateApplyRequest request) {
         Apply apply = applyRepository.findById(applyId).orElseThrow(() -> {
             log.error("updateApply Exception : [존재하지 않는 applyID]");
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);

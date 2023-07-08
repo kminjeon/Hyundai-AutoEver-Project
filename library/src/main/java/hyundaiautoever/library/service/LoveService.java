@@ -46,6 +46,9 @@ public class LoveService {
                     .user(user)
                     .build();
 
+        // 좋아요가 생성될 때 해당 도서 loveCount +1
+        book.updateLoveCount(book.getLoveCount() + 1);
+
         // Love 저장
         try {
             loveRepository.save(love);
@@ -66,6 +69,9 @@ public class LoveService {
             log.error("deleteLove Exception : [존재하지 않는 Love ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
+        // 좋아요가 삭제될 때 해당 도서 loveCount -1
+        love.getBook().updateLoveCount(love.getBook().getLoveCount() - 1);
 
         // 좋아요 삭제
         try {

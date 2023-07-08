@@ -5,6 +5,7 @@ import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import hyundaiautoever.library.model.dto.QUserDto_LoginDto;
 import hyundaiautoever.library.model.dto.UserDto;
+import hyundaiautoever.library.model.dto.UserDto.LoginDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -21,16 +22,16 @@ public class UserRepositorySupportImpl implements UserRepositorySupport{
     }
 
     @Override
-    public Page<UserDto.LoginDto> searchUserAuthPage(Pageable pageable, String personalId, String name) {
+    public Page<LoginDto> searchUserAuthPage(Pageable pageable, String personalId, String name) {
 
-        List<UserDto.LoginDto> content = queryFactory
-                                        .select(new QUserDto_LoginDto(user))
-                                        .from(user)
-                                        .where(personalIdEq(personalId),
-                                                nameEq(name))
-                                        .offset(pageable.getOffset())
-                                        .limit(pageable.getPageSize())
-                                        .fetch();
+        List<LoginDto> content = queryFactory
+                                    .select(new QUserDto_LoginDto(user))
+                                    .from(user)
+                                    .where(personalIdEq(personalId),
+                                            nameEq(name))
+                                    .offset(pageable.getOffset())
+                                    .limit(pageable.getPageSize())
+                                    .fetch();
         JPAQuery<Long> countQuery = queryFactory
                                     .select(user.count())
                                     .from(user)
@@ -40,11 +41,11 @@ public class UserRepositorySupportImpl implements UserRepositorySupport{
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
-    private BooleanExpression nameEq(String name) {
-        return name == null ? null : user.name.contains(name);
-    }
-
     private BooleanExpression personalIdEq(String personalId) {
         return personalId == null ? null : user.personalId.contains(personalId);
+    }
+
+    private BooleanExpression nameEq(String name) {
+        return name == null ? null : user.name.contains(name);
     }
 }
