@@ -41,7 +41,7 @@ public class ReviewService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        User user = userRepository.findByPersonalId(request.getUserPersonalId()).orElseThrow(() -> {
+        User user = userRepository.findByPersonalId(request.getPersonalId()).orElseThrow(() -> {
             log.error("createReview Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });

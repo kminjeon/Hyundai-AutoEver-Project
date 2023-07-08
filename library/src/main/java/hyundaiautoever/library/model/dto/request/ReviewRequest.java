@@ -17,7 +17,7 @@ public class ReviewRequest {
         private String content;
         @NotEmpty(message = "사용자 아이디는 필수입니다")
         @NotNull
-        private String userPersonalId;
+        private String personalId;
     }
 
     @Getter
