@@ -88,6 +88,29 @@ public class BookDto {
     }
 
     @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    public static class BestBookDto {
+        private final Long bookId;
+        private final String title;
+        private final String author;
+        private final String img;
+        private final RentType rentType;
+        private final Integer loveCount;
+
+        private final Integer rentCount;
+
+        public BestBookDto(Book book) {
+            this.bookId = book.getId();
+            this.author = book.getAuthor();
+            this.img = book.getImg();
+            this.title = book.getTitle();
+            this.rentType = book.getRentType();
+            this.loveCount = book.getLoveCount();
+            this.rentCount = book.getRentCount();
+        }
+    }
+
+    @Getter
     public static class SimpleBookPage {
         private final Pagination pagination;
         private final List<SimpleBookDto> simpleBookDtoList;

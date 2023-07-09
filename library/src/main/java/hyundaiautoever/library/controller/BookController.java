@@ -88,6 +88,15 @@ public class BookController {
         return Response.ok().setData(bookService.getCategoryBookPage(pageable, categoryType));
     }
 
+    /**
+     * 베스트 10 도서
+     * @return List<BestBookDto>
+     */
+    @GetMapping("/book/best")
+    public Response getBestBookList() {
+        log.info("BookController : [getBestBookList]");
+        return Response.ok().setData(bookService.getBestBookList());
+    }
 
     /**
      * 도서 상세 조회

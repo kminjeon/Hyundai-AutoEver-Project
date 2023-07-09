@@ -75,6 +75,7 @@ public class RentService {
 
         // book 대출 불가 상태로 update
         book.updateRentType(RentType.CLOSE);
+        book.updateRentCount(book.getRentCount() + 1);
 
         return rent.getId();
     }

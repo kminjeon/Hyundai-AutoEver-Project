@@ -83,6 +83,14 @@ public class BookService {
     }
 
     /**
+     * 베스트 10 도서
+     * @return List<BestBookDto>
+     */
+    public List<BestBookDto> getBestBookList() {
+        return bookRepository.findTop10ByOrderByRentCountDesc().stream().map(BestBookDto::new).collect(Collectors.toList());
+    }
+
+    /**
      * 도서 상세 조회
      * @param bookId
      * @return GetBookDetailDto

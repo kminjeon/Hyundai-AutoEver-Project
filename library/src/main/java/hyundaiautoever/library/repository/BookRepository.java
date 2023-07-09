@@ -9,8 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface BookRepository extends JpaRepository<Book, Long>, BookRepositorySupport {
 
     @Query("SELECT new hyundaiautoever.library.model.dto.BookDto$SimpleBookDto(b) FROM Book b WHERE b.categoryType = :categoryType")
     Page<SimpleBookDto> findByCategoryType(Pageable pageable, @Param("categoryType") CategoryType categoryType);
+
+    List<Book> findTop10ByOrderByRentCountDesc();
 }
