@@ -1,4 +1,36 @@
-.main {
-    min-height: calc(100vh - 180px);
-    font-size: 20px;
+.book-list-container {
+    margin-top: 150px; /* Header의 높이와 적절히 조정 */
+    margin-left: 300px;
+  }
+
+
+.best-seller {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-left: 550px;
+    margin-bottom: 50px;
+}
+
+.autoever{
+    color: #00448D;
+}
+
+
+.numbered-list {
+    counter-reset: list-counter;
+  }
+
+.numbered-list li {
+  counter-increment: list-counter;
+  list-style-type: none;
+  margin-bottom: 40px;
+
+}
+
+.numbered-list li:before {
+  content: counter(list-counter);
+  font-size: 45px; /* 숫자 텍스트 크기 조정 */
+  margin-right: 30px;
 }

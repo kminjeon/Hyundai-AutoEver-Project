@@ -7,15 +7,21 @@ import hyundaiautoever.library.model.dto.BookDto;
 import hyundaiautoever.library.model.dto.BookDto.*;
 import hyundaiautoever.library.model.dto.request.BookRequest;
 import hyundaiautoever.library.model.entity.Book;
+import hyundaiautoever.library.model.entity.Love;
+import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.BookRepository;
+import hyundaiautoever.library.repository.LoveRepository;
 import hyundaiautoever.library.repository.ReviewRepository;
+import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static hyundaiautoever.library.model.dto.BookDto.*;
@@ -29,6 +35,9 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
+    private final UserRepository userRepository;
+
+    private final LoveRepository loveRepository;
 
     /**
      * 도서 추가
@@ -86,8 +95,27 @@ public class BookService {
      * 베스트 10 도서
      * @return List<BestBookDto>
      */
-    public List<BestBookDto> getBestBookList() {
-        return bookRepository.findTop10ByOrderByRentCountDesc().stream().map(BestBookDto::new).collect(Collectors.toList());
+    public List<BestBookDto> getBestBookList(String personalId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getBestBookList Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        // 도서 베스트 10 List
+        List<Book> bookList = bookRepository.findTop10ByOrderByRentCountDesc();
+
+        // Book 좋아요 정보 조회
+        List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
+        // key : BookId, value : 좋아요 Map 생성
+        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+
+        // bookDtoList 생성
+        List<BestBookDto> bookDtoList = new ArrayList<>();
+        for (Book book : bookList) {
+            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
+            bookDtoList.add(new BestBookDto(book, isLiked));
+        }
+
+        return bookDtoList;
     }
 
     /**

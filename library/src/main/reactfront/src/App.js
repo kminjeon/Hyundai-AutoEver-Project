@@ -7,14 +7,16 @@ import Main from './Layout/MainPage/Main';
 import Layout from './Layout/Layout';
 import Signup from './LoginPage/Signup';
 import FinishSignup from './LoginPage/FinishSignup';
+import Mypage from './Layout/Mypage/Mypage';
  
 function App () {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
-      <Route path="/main" element={<Layout />} />
+      <Route path="/main" element={<Main />} />
       <Route path='/signup' element={<Signup />} />
       <Route path='/signup/finish' element={<FinishSignup />} />
+      <Route path='/mypage' element={<Mypage />} />
     </Routes>
   );
 }

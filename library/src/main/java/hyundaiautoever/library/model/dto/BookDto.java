@@ -93,20 +93,23 @@ public class BookDto {
         private final Long bookId;
         private final String title;
         private final String author;
-        private final String img;
-        private final RentType rentType;
+        private final String isbn;
+        private final Boolean rentType;
         private final Integer loveCount;
 
         private final Integer rentCount;
 
-        public BestBookDto(Book book) {
+        private final Boolean heart;
+
+        public BestBookDto(Book book, Boolean heart) {
             this.bookId = book.getId();
             this.author = book.getAuthor();
-            this.img = book.getImg();
+            this.isbn = book.getIsbn();
             this.title = book.getTitle();
-            this.rentType = book.getRentType();
+            this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
             this.loveCount = book.getLoveCount();
             this.rentCount = book.getRentCount();
+            this.heart = heart;
         }
     }
 
