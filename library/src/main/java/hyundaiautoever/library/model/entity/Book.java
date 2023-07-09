@@ -90,4 +90,8 @@ public class Book extends BaseEntity {
     public void updateLoveCount(Integer loveCount) {
         this.loveCount = loveCount;
     }
+
+    public void updateRentCount(Integer rentCount) {
+        this.rentCount = rentCount;
+    }
 }
