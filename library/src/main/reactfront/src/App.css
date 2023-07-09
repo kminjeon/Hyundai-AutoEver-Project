@@ -4,3 +4,13 @@
   text-align: center;
   width: 400px;
 }
+
+
+@font-face {
+  font-family: 'YouandiModernTR';
+  src: url('C:\\Users\\user\\AppData\\Local\\Microsoft\\Windows\\Fonts\\fontYouandiModernTR.ttf');
+}
+
+body {
+  font-family: 'YouandiModernTR', sans-serif;
+}
