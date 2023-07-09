@@ -1,35 +1,43 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Main.css'
+import Category from '../Category/Category';
+import Header from '../header/Header';
+import BookItem from '../Book/BookItem';
 
 const Main = () => {
+
+    const personalId = sessionStorage.getItem('personalId');
 
     const [books, setBooks] = useState([]);
 
     useEffect(() => {
       // 도서 데이터를 가져오는 API 호출
-      axios.get('/api/book/best')
+      axios.get(`/api/book/best?personalId=${personalId}`)
         .then(response => {
+          console.log(response.data.data); 
           setBooks(response.data.data);
-          console.log(books);
         })
         .catch(error => {
           console.log(error);
         });
-    }, []);
-
-    useEffect(() => {
-        console.log(books);
-      }, [books]); 
+    }, [personalId]);
   
     return (
       <div>
-        <h2>도서 목록</h2>
-        <ul>
-          {books.map(book => (
-            <li key={book.bookId}>{book.title}</li>
-          ))}
-        </ul>
+        <Header />
+        <Category />
+        <div className='book-list-container'>
+        <div className='best-seller'>
+          <label>Best Seller</label>
+          <label className='autoever'> 10</label>
+        </div>
+        <ol className='numbered-list'>
+          {books.map(book => {
+            return <BookItem key={book.bookId} book ={book} /> 
+          })}
+        </ol>
+        </div>
       </div>
     );
 };

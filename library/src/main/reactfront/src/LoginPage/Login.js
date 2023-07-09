@@ -103,10 +103,10 @@ function Login() {
           <form onSubmit={onSubmitHandler} className='centered-form'>
               <img className='logo' src='/img/logo.svg' alt='로고'></img>
               <h2>HYUNDAI LIBRARY</h2>
-              <input type='personalId' id ='personalId' value={personalId} onChange={onPersonalIdHandler} className='input' placeholder='Login'/>
+              <input className='input-login' type='personalId' id ='personalId' value={personalId} onChange={onPersonalIdHandler} placeholder='Login'/>
               <div className='error-msg'>{error.personalId}</div>
               <br />
-              <input type='password' id = 'password' value={password} onChange={onPasswordHandler} className='input' placeholder='Password'/>
+              <input className='input-login' type='password' id = 'password' value={password} onChange={onPasswordHandler} placeholder='Password'/>
               <div className='error-msg'>{error.password}</div>
               <br />
               <div className='find'>

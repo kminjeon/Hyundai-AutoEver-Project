@@ -93,9 +93,9 @@ public class BookController {
      * @return List<BestBookDto>
      */
     @GetMapping("/book/best")
-    public Response getBestBookList() {
+    public Response getBestBookList(String personalId) {
         log.info("BookController : [getBestBookList]");
-        return Response.ok().setData(bookService.getBestBookList());
+        return Response.ok().setData(bookService.getBestBookList(personalId));
     }
 
     /**

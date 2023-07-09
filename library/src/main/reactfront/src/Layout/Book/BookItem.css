@@ -1,0 +1,71 @@
+.book-img {
+    width: 129px;
+    height: 172px;
+    margin-right: 50px;
+}
+
+.heart {
+    width: 31px;
+    height: 31px;
+}
+
+.align {
+    display: flex;
+    align-items: center;
+}
+
+.separator {
+    border-top: 2px solid #EBEBEB;
+    margin-top: 10px;
+    padding-top: 10px;
+    width : calc(100% - 180px);
+  }
+
+.align-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.rent-button {
+    background-color: #E7E7E7;
+    width: 120px;
+    height: 45px;
+    border-radius: 15;
+
+}
+
+.reserve-button {
+    background-color:transparent;
+    width: 120px;
+    height: 45px;
+    border-radius: 15;
+    border: 1px solid #000000;
+
+}
+
+.title {
+    font-size: 25px;
+}
+
+
+.author {
+    color: #7D7D7D;
+    font-size: 15px;
+}
+
+.loveCount {
+    color: #A8A8A8;
+    padding: 10px;
+}
+
+.blue {
+    color: #00448D;
+    padding: 10px;
+}
+
+.red {
+    color: #C43927;
+    padding: 10px;
+}

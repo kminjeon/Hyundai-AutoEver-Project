@@ -80,21 +80,32 @@ public class LoveService {
 
     /**
      * 좋아요 삭제
-     * @param loveId
+     * @param personalId
+     * @param bookId
      */
     @Transactional
-    public void deleteLove(Long loveId) {
-        Love love = loveRepository.findById(loveId).orElseThrow(() -> {
+    public void deleteLove(String personalId, Long bookId) {
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("deleteLove Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
+            log.error("deleteLove Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        Love love = loveRepository.findByUserAndBook(user, book).orElseThrow(() -> {
             log.error("deleteLove Exception : [존재하지 않는 Love ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
         // 좋아요가 삭제될 때 해당 도서 loveCount -1
-        love.getBook().updateLoveCount(love.getBook().getLoveCount() - 1);
+        book.updateLoveCount(book.getLoveCount() - 1);
 
         // 좋아요 삭제
         try {
-            loveRepository.deleteById(loveId);
+            loveRepository.deleteById(love.getId());
         } catch (Exception e) {
             log.error("deleteLove Exception : {}", e.getMessage());
             throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
