@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import './login.css'
+import Signup from './Signup';
 
 function Login() {
   const [personalId, setPersonalId] = useState(""); // personalId
@@ -72,14 +74,14 @@ function Login() {
             // 아이디 없음
   
             console.log("=============================", response.data.msg);
-            alert("입력하신 id 가 일치하지 않습니다.");
+            alert("입력하신 id가 일치하지 않습니다.");
           } else if (response.data.code === -1) {
             // id 있지만 pw 다른 경우
             console.log(
               "======================",
-              "입력하신 비밀번호 가 일치하지 않습니다."
+              "입력하신 비밀번호가 일치하지 않습니다."
             );
-            alert("입력하신 비밀번호 가 일치하지 않습니다.");
+            alert("입력하신 비밀번호가 일치하지 않습니다.");
           } else if (response.data.code === 200) {
             // id, pw 모두 일치
             console.log("======================", "로그인 성공");
@@ -88,7 +90,7 @@ function Login() {
   
             // 작업 완료 되면 페이지 이동(새로고침)
           }
-            document.location.href = "/";
+            document.location.href = "/main";
         })
         .catch(error => {
           console.log(error);
@@ -97,21 +99,29 @@ function Login() {
   };
 
   return (
-      <div style={{ 
-          display: 'flex', justifyContent: 'center', alignItems: 'center', 
-          width: '100%', height: '100vh'
-          }}>
-          <form onSubmit={onSubmitHandler} style={{ display: 'flex', flexDirection: 'column'}}>
-              <label>아이디</label>
-              <input type='personalId' value={personalId} onChange={onPersonalIdHandler}/>
-              <label>{error.personalId}</label>
-              <label>비밀번호</label>
-              <input type='password' value={password} onChange={onPasswordHandler}/>
+      <div>
+          <form onSubmit={onSubmitHandler} className='centered-form'>
+              <img className='logo' src='/img/logo.svg' alt='로고'></img>
+              <h2>HYUNDAI LIBRARY</h2>
+              <input type='personalId' id ='personalId' value={personalId} onChange={onPersonalIdHandler} className='input' placeholder='Login'/>
+              <div className='error-msg'>{error.personalId}</div>
               <br />
-              <label>{error.password}</label>
-              <button type="submit">
-                  Login
+              <input type='password' id = 'password' value={password} onChange={onPasswordHandler} className='input' placeholder='Password'/>
+              <div className='error-msg'>{error.password}</div>
+              <br />
+              <div className='find'>
+                <label>아이디 찾기</label>
+                <span> | </span>
+                <label>비밀번호 찾기</label>
+              </div>
+              <button type="submit" className='signin'>
+                  SIGN IN
               </button>
+              <div>
+                  <label>계정이 없으신가요? </label>
+                  <label className='signup'>회원가입</label>
+              </div>
+
           </form>
       </div>
   )

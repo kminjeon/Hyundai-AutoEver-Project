@@ -1,38 +1,21 @@
 import React, {useEffect, useState} from 'react';
+import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import Login from './LoginPage/Login';
-import Main from './MainPage/Main';
+import Main from './Layout/MainPage/Main';
+import Layout from './Layout/Layout';
+import Signup from './LoginPage/Signup';
+import FinishSignup from './LoginPage/FinishSignup';
  
 function App () {
- // 로그인 상태 관리
-  const [isLogin, setIsLogin] = useState(false)
- 
-  useEffect(() => {
-    const personalId = sessionStorage.getItem('personalId');
-    
-    if (personalId !== null) {
-    // sessionStorage에 personalId 값이 존재한다면
-      setIsLogin(true);
-      console.log('isLogin ?? :: ', isLogin)
-    }
-    }, []);
-
-    const handleLogout = () => {
-      sessionStorage.removeItem('personalId');
-      sessionStorage.removeItem('name');
-      setIsLogin(false);
-      console.log('로그아웃');
-    }
- 
   return (
-    <div>
-      {isLogin ? (
-        <Main handleLogout={handleLogout} /> 
-      ): (
-      <Login setIsLogin={setIsLogin}/>
-        )}
-    </div>
+    <Routes>
+      <Route path="/" element={<Login />} />
+      <Route path="/main" element={<Layout />} />
+      <Route path='/signup' element={<Signup />} />
+      <Route path='/signup/finish' element={<FinishSignup />} />
+    </Routes>
   );
 }
  
