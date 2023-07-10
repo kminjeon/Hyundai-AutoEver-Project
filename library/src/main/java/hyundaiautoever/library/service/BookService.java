@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static hyundaiautoever.library.model.dto.BookDto.*;
@@ -120,19 +121,29 @@ public class BookService {
 
     /**
      * 도서 상세 조회
+     * @param personalId
      * @param bookId
      * @return GetBookDetailDto
      */
-    public GetBookDetailDto getBookDetail(Long bookId) {
+    public GetBookDetailDto getBookDetail(String personalId, Long bookId) {
         log.info("BookService : [getBookDetail]");
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("getBookDetail Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
+        // 현재 로그인 유저
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getBookDetail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 해당 도서가 유저가 좋아요 누른 도서인지 확인
+        Optional<Love> love = loveRepository.findByUserAndBook(user, book);
+
         // 해당 도서 리뷰 리스트
         List<CreateReviewDto> reviewList = reviewRepository.findByBook(book).stream().map(CreateReviewDto::new).collect(Collectors.toList());
-        return BookDto.buildGetBookDetailDto(book, reviewList);
+        return BookDto.buildGetBookDetailDto(book, reviewList, love.isPresent() ? true : false);
     }
 
     /**

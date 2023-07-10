@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
-import './header.css'
+import './Header.css'
 
 const Header = () => {
     const name = sessionStorage.getItem('name');
@@ -30,15 +30,15 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <img className='logo' src='/img/logo.svg' alt='로고'></img>
+                <img className='logo' src='/img/logo.svg' alt='로고' onClick={()=> {window.location.replace("/main");}}></img>
                 <div className='search'>
                   <input />
-                  <img className='searchimg' src='img/search.png' />
+                  <img className='searchimg' src='/img/search.png' />
                 </div>
                 <div className='right-items'>
                   <label className='logout' onClick={handleLogout}>로그아웃</label>
                   <span className='logout'> | </span>
-                  <img className='mypage' src='/img/mypage.png' alt='마이페이지'></img>
+                  <img className='mypage' src='/img/mypage.png' alt='마이페이지' onClick={() => {window.location.replace("/mypage");}}></img>
                 </div>
             </div>
         </header>

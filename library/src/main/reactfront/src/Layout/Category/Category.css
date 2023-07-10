@@ -34,16 +34,13 @@
   
   .category-list li {
     margin-bottom: 30px;
-  }
-  
-  .category-list li a {
-    color: #4E4E4E;
     font-size: 25px;
-    text-decoration: none;
-    transition: color 0.3s ease;
+    color: #4E4E4E;
+    cursor : pointer;
+    transition: color 0.3s ease; /*부드럽게*/
   }
   
-  .category-list li a:hover {
+  .category-list li:hover {
     color: #00448D;
   }
   

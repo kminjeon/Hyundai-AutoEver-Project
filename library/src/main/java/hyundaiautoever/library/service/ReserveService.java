@@ -4,6 +4,7 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.model.dto.ReserveDto;
 import hyundaiautoever.library.model.dto.request.ReserveRequest;
+import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Reserve;
 import hyundaiautoever.library.model.entity.User;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 import static hyundaiautoever.library.model.dto.ReserveDto.*;
 
@@ -35,10 +37,10 @@ public class ReserveService {
      * 도서 예약 생성
      * @param personalId
      * @param bookId
-     * @return reserveId
+     * @return ok
      */
     @Transactional
-    public Long createReserve(String personalId, Long bookId) {
+    public Response createReserve(String personalId, Long bookId) {
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
             log.error("createReserve Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -49,6 +51,9 @@ public class ReserveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
+        if (reserveRepository.findByUserAndBook(user, book).isPresent()) { // 이미 예약 내역 존재
+            return Response.ok().setData(false);
+        }
 
         Reserve reserve = Reserve.builder()
                         .book(book)
@@ -64,7 +69,7 @@ public class ReserveService {
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
 
-        return reserve.getId();
+        return Response.ok();
     }
 
     /**

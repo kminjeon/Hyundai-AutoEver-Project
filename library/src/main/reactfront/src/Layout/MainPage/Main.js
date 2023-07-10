@@ -25,16 +25,16 @@ const Main = () => {
   
     return (
       <div>
-        <Header />
         <Category />
-        <div className='book-list-container'>
+        <Header />
+        <div className='headercategoryline'>
         <div className='best-seller'>
           <label>Best Seller</label>
           <label className='autoever'> 10</label>
         </div>
         <ol className='numbered-list'>
-          {books.map(book => {
-            return <BookItem key={book.bookId} book ={book} /> 
+          {books.map((book, index) => {
+            return <BookItem key={book.bookId} book ={book} index={index + 1} /> 
           })}
         </ol>
         </div>

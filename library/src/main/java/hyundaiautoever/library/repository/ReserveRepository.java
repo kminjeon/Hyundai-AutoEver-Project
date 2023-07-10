@@ -13,10 +13,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ReserveRepository extends JpaRepository<Reserve, Long> {
 
     List<Reserve> findAllByBook(Book book);
+
+    Optional<Reserve> findByUserAndBook(User user, Book book);
 
     Reserve findByWaitNumber(Integer waitNumber);
 

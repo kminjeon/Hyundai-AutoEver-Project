@@ -121,7 +121,6 @@ function Login() {
                   <label>계정이 없으신가요? </label>
                   <label className='signup'>회원가입</label>
               </div>
-
           </form>
       </div>
   )

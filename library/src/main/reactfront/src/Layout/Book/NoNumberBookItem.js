@@ -3,7 +3,7 @@ import './BookItem.css'
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-const BookItem = ({book, index}) => {
+const NoNumberBookItem = ({book}) => {
 
   const navigate = useNavigate();
 
@@ -102,9 +102,7 @@ const BookItem = ({book, index}) => {
     <li key={book.bookId} className="align separator">
       <div>
         <div className="indexandimg">
-        <p className="index">{index}</p>
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
-      
         <div>
         <p className="title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
@@ -138,4 +136,4 @@ const BookItem = ({book, index}) => {
   );
 };
 
-export default BookItem;
+export default NoNumberBookItem;

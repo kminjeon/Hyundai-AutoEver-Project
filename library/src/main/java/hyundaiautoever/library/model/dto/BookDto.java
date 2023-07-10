@@ -44,14 +44,14 @@ public class BookDto {
         private final Long bookId;
         private final CategoryType categoryType;
         private final String title;
-        private final RentType rentType;
+        private final Boolean rentType;
 
         @QueryProjection
         public SearchAdminBookDto(Book book) {
             this.bookId = book.getId();
             this.categoryType = book.getCategoryType();
             this.title = book.getTitle();
-            this.rentType = book.getRentType();
+            this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
         }
     }
 
@@ -72,17 +72,17 @@ public class BookDto {
         private final Long bookId;
         private final String title;
         private final String author;
-        private final String img;
-        private final RentType rentType;
+        private final String isbn;
+        private final Boolean rentType;
         private final Integer loveCount;
 
         @QueryProjection
         public SimpleBookDto(Book book) {
             this.bookId = book.getId();
             this.author = book.getAuthor();
-            this.img = book.getImg();
+            this.isbn = book.getIsbn();
             this.title = book.getTitle();
-            this.rentType = book.getRentType();
+            this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
             this.loveCount = book.getLoveCount();
         }
     }
@@ -132,22 +132,22 @@ public class BookDto {
         private final String publisher;
         private final CategoryType categoryType;
         private final String isbn;
-        private final RentType rentType;
+        private final Boolean rentType;
         private final String description;
-        private final String img;
         private final Integer loveCount;
+        private final Boolean heart;
         private final List<CreateReviewDto> reviewList;
-        public GetBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
+        public GetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Boolean heart) {
             this.bookId = book.getId();
             this.title = book.getTitle();
             this.author = book.getAuthor();
             this.publisher = book.getPublisher();
             this.categoryType = book.getCategoryType();
             this.isbn = book.getIsbn();
-            this.rentType = book.getRentType();
+            this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
             this.description = book.getDescription();
-            this.img = book.getImg();
             this.loveCount = book.getLoveCount();
+            this.heart = heart;
             this.reviewList = reviewList;
         }
     }
@@ -165,8 +165,8 @@ public class BookDto {
         return new SimpleBookPage(page);
     }
 
-    public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
-        return new GetBookDetailDto(book, reviewList);
+    public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Boolean heart) {
+        return new GetBookDetailDto(book, reviewList, heart);
     }
 
 }
