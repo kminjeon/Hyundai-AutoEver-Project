@@ -1,5 +1,6 @@
 package hyundaiautoever.library.controller;
 
+import hyundaiautoever.library.model.dto.request.ReserveRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.ReserveService;
 import lombok.extern.slf4j.Slf4j;
@@ -16,15 +17,16 @@ public class ReserveController {
     @Autowired
     private ReserveService reserveService;
 
+
     /**
      * 도서 예약 생성
      * @param personalId
      * @param bookId
-     * @return reserveId
+     * @return ok
      */
     @PostMapping("/reserve/create")
-    public Response createReserve(@RequestParam("personalId") String personalId, @RequestParam("bookId") Long bookId) {
-        return Response.ok().setData(reserveService.createReserve(personalId, bookId));
+    public Response createReserve(@RequestParam String personalId, @RequestParam Long bookId) {
+        return reserveService.createReserve(personalId, bookId);
     }
 
     /**

@@ -1,7 +1,7 @@
-.book-list-container {
-    margin-top: 150px; /* Header의 높이와 적절히 조정 */
-    margin-left: 300px;
-  }
+.headercategoryline{
+  margin-top: 150px; /* Header의 높이와 적절히 조정 */
+  margin-left: 280px;
+}
 
 
 .best-seller {
@@ -9,7 +9,7 @@
     align-items: center;
     justify-content: center;
     font-size: 40px;
-    margin-left: 550px;
+    margin-left: 35%;
     margin-bottom: 50px;
 }
 
@@ -26,11 +26,4 @@
   counter-increment: list-counter;
   list-style-type: none;
   margin-bottom: 40px;
-
-}
-
-.numbered-list li:before {
-  content: counter(list-counter);
-  font-size: 45px; /* 숫자 텍스트 크기 조정 */
-  margin-right: 30px;
 }

@@ -82,7 +82,7 @@ public class BookController {
      * @return SimpleBookPage
      */
     @GetMapping("/book/category/{categoryType}")
-    public Response getCategoryBookPage(@PageableDefault(size = 10) Pageable pageable,
+    public Response getCategoryBookPage(@PageableDefault(size = 1) Pageable pageable,
                                         @PathVariable("categoryType") CategoryType categoryType) {
         log.info("BookController : [getCategoryBookPage]");
         return Response.ok().setData(bookService.getCategoryBookPage(pageable, categoryType));
@@ -93,20 +93,22 @@ public class BookController {
      * @return List<BestBookDto>
      */
     @GetMapping("/book/best")
-    public Response getBestBookList(String personalId) {
+    public Response getBestBookList(@RequestParam("personalId") String personalId) {
         log.info("BookController : [getBestBookList]");
         return Response.ok().setData(bookService.getBestBookList(personalId));
     }
 
     /**
      * 도서 상세 조회
+     * @param personalId
      * @param bookId
      * @return GetBookDetailDto
      */
     @GetMapping("/book/detail/{bookId}")
-    public Response getBookDetail(@PathVariable("bookId") Long bookId) {
+    public Response getBookDetail(@RequestParam("personalId") String personalId,
+                                  @PathVariable("bookId") Long bookId) {
         log.info("BookController : [getBookDetail]");
-        return Response.ok().setData(bookService.getBookDetail(bookId));
+        return Response.ok().setData(bookService.getBookDetail(personalId, bookId));
     }
 
     /**

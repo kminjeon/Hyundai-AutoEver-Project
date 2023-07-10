@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 @AllArgsConstructor
 public enum ExceptionCode {
     SUCCESS(HttpStatus.OK.value(), "성공"),
-    DATA_DUPLICATE_EXCEPTION(HttpStatus.CONFLICT.value(), "중복된 데이터가 있습니다."),
+    DATA_DUPLICATE_EXCEPTION(HttpStatus.CONFLICT.value(), "중복된 데이터가 있습니다."), // code : 409
     DATA_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND.value(), "요정하신 데이터가 없습니다."),
     DATA_UPDATE_EXCEPTION(HttpStatus.CONFLICT.value(), "데이터 수정에 실패하였습니다."),
     DATA_DELETE_EXCEPTION(HttpStatus.CONFLICT.value(), "데이터 삭제에 실패하였습니다."),
