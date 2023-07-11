@@ -1,0 +1,43 @@
+.mypagecategoryalign {
+  position: fixed;
+  left: 0;
+  top: 130x;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  width: 200px;
+}
+
+.mypagecategoryalign::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    height: calc(100% - 300px);
+    width: 3px;
+    background-color: #A8A8A8;
+  }
+
+  .mycategory-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mycategory-list li {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 23px;
+    color: black;
+    cursor : pointer;
+    transition: color 0.3s ease; /*부드럽게*/
+  }
+  
+  .mycategory-list li:hover {
+    color: #00448D;
+  }
+  
+
+  .active {
+    color: #00448D;
+  }

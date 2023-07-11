@@ -1,0 +1,27 @@
+.reviewInfoMargin {
+    margin-top: 150px; /* Header의 높이와 적절히 조정 */
+    margin-left: 280px;
+    margin-right: 100px;
+}
+
+
+.reviewInfo-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right : 170px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+
+.page {
+    margin-left : -150px;
+}
+
+.reviewInfo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right : 170px;
+
+}

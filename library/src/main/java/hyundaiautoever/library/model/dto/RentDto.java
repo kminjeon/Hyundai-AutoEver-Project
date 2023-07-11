@@ -41,11 +41,11 @@ public class RentDto {
     @Getter
     public static class GetRentPage {
         private final Response.Pagination pagination;
-        private final List<GetRentDto> userList;
+        private final List<GetRentDto> rentList;
 
         public GetRentPage(Page<GetRentDto> page) {
             this.pagination = new Response.Pagination(page);
-            this.userList = page.getContent();
+            this.rentList = page.getContent();
         }
     }
 
@@ -73,11 +73,11 @@ public class RentDto {
     @Getter
     public static class GetRentHistoryPage {
         private final Response.Pagination pagination;
-        private final List<GetRentHistoryDto> userList;
+        private final List<GetRentHistoryDto> historyList;
 
         public GetRentHistoryPage(Page<GetRentHistoryDto> page) {
             this.pagination = new Response.Pagination(page);
-            this.userList = page.getContent();
+            this.historyList = page.getContent();
         }
     }
 

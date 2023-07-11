@@ -14,7 +14,7 @@ const Category = () => {
   ];
 
   const handleCategoryClick = (link) => {
-    window.location.replace(`/book/category/${link}`);
+    window.location.assign(`/book/category/${link}`);
   };
 
   return (
