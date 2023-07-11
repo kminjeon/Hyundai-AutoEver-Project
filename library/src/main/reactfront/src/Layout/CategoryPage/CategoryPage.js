@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Pagination from 'react-js-pagination'
 import { useParams } from 'react-router';
 import axios from 'axios';
-import Header from "../header/Header";
+import Header from "../Header/Header";
 import Category from "../Category/Category";
 import BookItem from "../Book/BookItem";
 import './CategoryPage.css'

@@ -3,10 +3,11 @@ import axios from 'axios';
 import { useParams } from 'react-router';
 import "./BookDetail.css"
 import Category from '../Category/Category';
-import Header from '../header/Header';
 import Modal from '../Modal/Modal';
 import ReserveButton from "../Button/ReserveButton";
 import RentButton from "../Button/RentButton";
+import Header from '../Header/Header';
+
 
 const BookDetail = () => {
 

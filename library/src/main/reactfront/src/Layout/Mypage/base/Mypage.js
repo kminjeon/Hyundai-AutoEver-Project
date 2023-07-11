@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Footer from '../../Footer/Footer';
 import './Mypage.css'
-import Header from '../../header/Header';
+import Header from '../../Header/Header';
 import Category from '../../Category/Category';
 
 const Mypage = () => {
@@ -13,9 +13,9 @@ const Mypage = () => {
         <div className="margin-header">
             <Header />
             <div>
-                <div>
+                <div className='mypage-firstline'>
                     <p className='welcome'>{name}님, 환영합니다!</p>
-                    <h2>마이페이지</h2>
+                    <h2 className='mypage-h2'>마이페이지</h2>
                 </div>
                     <hr className='mypageline'/>
                     <div className='box'>

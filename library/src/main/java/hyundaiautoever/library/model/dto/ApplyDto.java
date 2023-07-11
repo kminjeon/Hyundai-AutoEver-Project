@@ -31,12 +31,14 @@ public class ApplyDto {
     @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class GetApplyDto {
+        private final Long applyId;
         private final String title;
         private final String author;
         private final String publisher;
         private final String applyDate;
 
         public GetApplyDto(Apply apply) {
+            this.applyId = apply.getId();
             this.title = apply.getTitle();
             this.author = apply.getAuthor();
             this.publisher = apply.getPublisher();

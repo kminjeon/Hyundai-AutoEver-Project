@@ -70,6 +70,7 @@ public class UserService {
             log.error("createUser Exception : {}", e.getMessage());
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
+        user.updateLastLoginDate(LocalDateTime.now());
     }
 
     /**

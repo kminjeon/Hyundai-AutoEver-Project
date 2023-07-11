@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Main.css'
 import Category from '../Category/Category';
-import Header from '../header/Header';
+import Header from '../Header/Header';
 import BookItem from '../Book/BookItem';
 
 const Main = () => {
 
     const personalId = sessionStorage.getItem('personalId');
+    console.log(personalId);
 
     const [books, setBooks] = useState([]);
 

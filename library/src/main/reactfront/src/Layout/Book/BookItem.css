@@ -47,14 +47,6 @@
     width: 100%;
 }
 
-.rent-button {
-    background-color: #E7E7E7;
-    width: 120px;
-    height: 45px;
-    border-radius: 15;
-    cursor : pointer;
-}
-
 .title {
     font-size: 25px;
     cursor : pointer;
