@@ -4,6 +4,7 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.model.dto.ApplyDto;
 import hyundaiautoever.library.model.dto.ApplyDto.ApplyListPage;
+import hyundaiautoever.library.model.dto.ApplyDto.GetApplyPage;
 import hyundaiautoever.library.model.dto.ApplyDto.UpdateApplyDto;
 import hyundaiautoever.library.model.dto.request.ApplyRequest;
 import hyundaiautoever.library.model.entity.Apply;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import static hyundaiautoever.library.model.dto.ApplyDto.buildGetApplyPage;
 import static hyundaiautoever.library.model.dto.ApplyDto.buildUpdateApplyDto;
 
 @Service
@@ -37,7 +39,7 @@ public class ApplyService {
      */
     @Transactional
     public Long createApply(ApplyRequest.CreateApplyRequest request) {
-        User user = userRepository.findByPersonalId(request.getApplyUser()).orElseThrow(() -> {
+        User user = userRepository.findByPersonalId(request.getPersonalId()).orElseThrow(() -> {
             log.error("createApply Exception : [존재하지 않는 userID", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
@@ -55,6 +57,23 @@ public class ApplyService {
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
         return apply.getId();
+    }
+
+    /**
+     * 사용자 도서 신청 리스트 페이지
+     * @param pageable
+     * @param personalId
+     * @return GetApplyPage
+     */
+    public GetApplyPage getApplyPage(Pageable pageable, String personalId) {
+        log.info("ApplyService : [getApplyPage]");
+
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("GetApplyPage Exception : [존재하지 않는 userID", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        return buildGetApplyPage(applyRepository.findByUser(pageable, user));
     }
 
     /**

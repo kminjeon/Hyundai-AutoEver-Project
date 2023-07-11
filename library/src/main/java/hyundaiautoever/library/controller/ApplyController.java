@@ -30,6 +30,20 @@ public class ApplyController {
         return Response.ok().setData(applyService.createApply(request));
     }
 
+
+    /**
+     * 사용자 도서 신청 리스트 페이지
+     * @param pageable
+     * @param personalId
+     * @return GetApplyPage
+     */
+    @GetMapping("/mypage/apply/list")
+    public Response getApplyPage(@PageableDefault Pageable pageable,
+                                 @RequestParam("personalId") String personalId) {
+        log.info("ApplyController : [getApplyPage]");
+        return Response.ok().setData(applyService.getApplyPage(pageable, personalId));
+    }
+
     /**
      * 도서 신청 리스트 검색 페이지
      * @param pageable
