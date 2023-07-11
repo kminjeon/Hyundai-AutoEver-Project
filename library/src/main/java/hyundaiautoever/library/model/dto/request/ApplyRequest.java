@@ -13,7 +13,7 @@ public class ApplyRequest {
         private String author;
         private String publisher;
         private String isbn;
-        private String applyUser;
+        private String personalId;
     }
 
     @Getter
