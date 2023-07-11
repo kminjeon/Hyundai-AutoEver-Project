@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import MypageCategory from "../../Category/MypageCategory";
-import Header from "../../header/Header";
+import Header from "../../Header/Header";
 import './RentInfo.css'
 import Pagination from 'react-js-pagination'
 import styled from 'styled-components'

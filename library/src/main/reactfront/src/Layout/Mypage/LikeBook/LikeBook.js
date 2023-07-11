@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Header from '../../header/Header';
+import Header from '../../Header/Header';
 import MypageCategory from '../../Category/MypageCategory';
 import './LikeBook.css'
 import LikeBookItem from './LikeBookItem';
@@ -29,7 +29,7 @@ const LikeBook = () => {
         <Header />
         <div className='likeheadermargin'>
 
-            <h2>좋아요 한 도서</h2>
+            <h2 className='likebook-h2'>좋아요 한 도서</h2>
             <hr />
             <div className='box-margin'>
                 {likeBookList.map((book) => {

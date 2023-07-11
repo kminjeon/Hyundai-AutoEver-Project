@@ -19,7 +19,7 @@
     padding: 0 20px;
 }
 
-input {
+.header-input {
     width: 450px;
     height : 45px;
     border-radius: 42px;
@@ -43,7 +43,7 @@ input {
     margin-right: 20px;
 }
 
-.logo {
+.header-logo {
     width: 146px;
     height: 42px;
     cursor : pointer;

@@ -30,9 +30,9 @@ const Header = () => {
     return (
         <header className="header">
             <div className="header-container">
-                <img className='logo' src='/img/logo.svg' alt='로고' onClick={()=> {window.location.assign("/main");}}></img>
+                <img className='header-logo' src='/img/logo.svg' alt='로고' onClick={()=> {window.location.assign("/main");}}></img>
                 <div className='search'>
-                  <input />
+                  <input className='header-input'/>
                   <img className='searchimg' src='/img/search.png' />
                 </div>
                 <div className='right-items'>
