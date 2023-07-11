@@ -34,11 +34,11 @@ public class ReserveDto {
     @Getter
     public static class GetReservePage {
         private final Response.Pagination pagination;
-        private final List<GetReserveDto> getReserveDtoList;
+        private final List<GetReserveDto> reserveList;
 
         public GetReservePage(Page<GetReserveDto> page) {
             this.pagination = new Response.Pagination(page);
-            this.getReserveDtoList = page.getContent();
+            this.reserveList = page.getContent();
         }
     }
 

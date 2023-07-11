@@ -11,13 +11,13 @@ public class LoveDto {
         private final Long bookId;
         private final String title;
         private final String author;
-        private final String img;
+        private final String isbn;
 
         public GetLoveDto(Book book) {
             this.bookId = book.getId();
             this.title = book.getTitle();
             this.author = book.getAuthor();
-            this.img = book.getImg();
+            this.isbn = book.getIsbn();
         }
 
     }

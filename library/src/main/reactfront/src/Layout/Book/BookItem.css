@@ -55,15 +55,6 @@
     cursor : pointer;
 }
 
-.reserve-button {
-    background-color:transparent;
-    width: 120px;
-    height: 45px;
-    border-radius: 15;
-    border: 1px solid #000000;
-    cursor : pointer;
-}
-
 .title {
     font-size: 25px;
     cursor : pointer;

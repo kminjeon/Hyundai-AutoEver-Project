@@ -52,7 +52,7 @@ public class ReserveService {
         });
 
         if (reserveRepository.findByUserAndBook(user, book).isPresent()) { // 이미 예약 내역 존재
-            return Response.ok().setData(false);
+            return Response.dataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
         }
 
         Reserve reserve = Reserve.builder()

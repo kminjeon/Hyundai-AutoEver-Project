@@ -30,18 +30,6 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
-    public static class CanNotMoveException extends RuntimeException {
-        private ExceptionCode exceptionCode;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class ReferentialException extends RuntimeException {
-        private ExceptionCode exceptionCode;
-    }
-
-    @Getter
-    @AllArgsConstructor
     public static class DataSaveException extends RuntimeException {
         private ExceptionCode exceptionCode;
     }

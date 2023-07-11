@@ -5,6 +5,8 @@ import "./BookDetail.css"
 import Category from '../Category/Category';
 import Header from '../header/Header';
 import Modal from '../Modal/Modal';
+import ReserveButton from "../Button/ReserveButton";
+import RentButton from "../Button/RentButton";
 
 const BookDetail = () => {
 
@@ -92,39 +94,6 @@ const BookDetail = () => {
         });
     }
   };
-
-
-
-
-const handleRent = () => {
-  // 대여 처리 로직
-  axios.post('/api/rent/create', null, {
-      params: {
-          personalId : personalId,
-        bookId: book.bookId
-      }})
-    .then((response) => {
-      // 성공적으로 대여됐을 때 처리할 로직
-      console.log('대여 성공');
-    })
-    .catch(error => {
-      // 대여 처리 중 에러가 발생했을 때 처리할 로직
-      console.error('대여 에러', error);
-    });
-};
-
-const handleReserve = () => {
-  // 예약 처리 로직
-  axios.post(`/api/reserve/create?personalId=${personalId}&bookId=${book.bookId}`)
-    .then((response) => {
-      // 성공적으로 예약됐을 때 처리할 로직
-      console.log('예약 성공');
-    })
-    .catch(error => {
-      // 예약 처리 중 에러가 발생했을 때 처리할 로직
-      console.error('예약 에러', error);
-    });
-};
   
   return (
     <div>
@@ -163,10 +132,11 @@ const handleReserve = () => {
             <div className="rent">
             <p className={book.rentType ? "blue" : "red"}>{rentType}</p>
             {book.rentType ? (
-                <button className = 'rent-button' onClick={handleRent}>대여하기</button>
-                ) : (
-                <button className = 'reserve-button' onClick={handleReserve}>예약하기</button>
-            )}
+                  <RentButton personalId={personalId} bookId={book.bookId} />
+                ) : 
+                  (
+                    <ReserveButton personalId={personalId} bookId={book.bookId} />
+                  )}
             </div>
                 </div>
             </div>

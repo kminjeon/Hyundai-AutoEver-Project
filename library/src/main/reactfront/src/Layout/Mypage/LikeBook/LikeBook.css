@@ -1,0 +1,9 @@
+.likeheadermargin{
+    margin-top: 200px; /* Header의 높이와 적절히 조정 */
+    margin-left: 280px;
+    margin-right: 100px;
+  }
+  
+.box-margin {
+    margin : 30px;
+}
