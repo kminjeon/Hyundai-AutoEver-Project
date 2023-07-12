@@ -14,6 +14,28 @@ import javax.validation.constraints.NotNull;
 public class UserRequest {
 
     @Getter
+    public static class LoginRequest {
+        @NotEmpty(message = "회원 아이디은 필수입니다")
+        @NotNull
+        private String personalId;
+        @NotEmpty(message = "회원 비밀번호는 필수입니다")
+        @NotNull
+        private String password;
+    }
+
+    @Getter
+    public static class UpdateProfileRequest {
+        @NotEmpty(message = "회원 아이디은 필수입니다")
+        @NotNull
+        private String personalId;
+        @NotEmpty(message = "회원 비밀번호는 필수입니다")
+        @NotNull
+        private String password;
+        private String newPassword;
+        private String email;
+        private String nickname;
+    }
+    @Getter
     public static class CreateUserRequest {
         @NotEmpty(message = "회원 이름은 필수입니다")
         @NotNull

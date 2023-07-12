@@ -37,7 +37,9 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
         JPAQuery<Long> countQuery = queryFactory
                 .select(book.count())
                 .from(book)
-                .where();
+                .where(titleContains(searchWord)
+                        .or(authorContains(searchWord))
+                        .or(publisherContains(searchWord)));
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 

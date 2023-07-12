@@ -13,6 +13,7 @@ const ReserveButton = ({ personalId, bookId }) => {
           console.log("동일한 예약이 존재합니다");
         } else {
           console.log("예약 성공");
+          window.location.reload();
         }
       })
       .catch((error) => {

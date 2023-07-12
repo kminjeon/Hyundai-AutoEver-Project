@@ -13,6 +13,7 @@ const RentButton = ({ personalId, bookId }) => {
           .then((response) => {
             // 성공적으로 대여됐을 때 처리할 로직
             console.log('대여 성공');
+            window.location.reload();
           })
           .catch(error => {
             // 대여 처리 중 에러가 발생했을 때 처리할 로직

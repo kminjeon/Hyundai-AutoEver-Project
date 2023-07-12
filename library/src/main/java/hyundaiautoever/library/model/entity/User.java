@@ -73,5 +73,8 @@ public class User extends BaseEntity {
         this.lastLoginDate = lastLoginDate;
     }
 
+    public void updateUserNickname(String nickname) {
+        this.nickname = nickname;
+    }
 }
 

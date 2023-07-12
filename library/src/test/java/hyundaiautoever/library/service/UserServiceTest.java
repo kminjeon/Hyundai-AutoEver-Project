@@ -15,13 +15,16 @@ import static org.junit.jupiter.api.Assertions.*;
 //@Transactional
 @SpringBootTest
 public class UserServiceTest {
-
+/*
     @Autowired UserService userService;
     @Autowired UserRepository userRepository;
+
 
     @Test
     public void 회원가입() throws Exception {
 
     }
+
+     */
 
 }

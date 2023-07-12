@@ -4,16 +4,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import ReserveButton from "../Button/ReserveButton";
 import RentButton from "../Button/RentButton";
+import LikeSet from "../Heart/LikeSet";
 
 const BookItem = ({book, index}) => {
 
   const navigate = useNavigate();
 
-
-    const [showHeart, setShowHeart] = useState();
-    const [heart, setHeart] = useState();
     const [rentType, setRentType] = useState();
-    const [loveCount, setLoveCount] = useState(book.loveCount);
 
     const personalId = sessionStorage.getItem('personalId');
 
@@ -21,48 +18,9 @@ const BookItem = ({book, index}) => {
       navigate(`/book/detail/${book.bookId}`);
     };
     
-    const handleLike = () => {
-        if (showHeart) {
-          // 좋아요 취소
-          axios
-            .delete('api/love/delete', {
-                params: {
-                    personalId : personalId,
-                  bookId: book.bookId
-                },})
-            .then((response) => {
-              setShowHeart(false);
-              setHeart("/img/blank_heart.png");
-              setLoveCount(loveCount-1)
-              console.log("좋아요 취소 성공");
-            })
-            .catch((error) => {
-              console.error("좋아요 취소 에러", error);
-            });
-        } else {
-          // 좋아요
-          axios
-            .post('api/love/create', null, {
-                params: {
-                    personalId : personalId,
-                  bookId: book.bookId
-            },})
-            .then((response) => {
-              setShowHeart(true);
-              setHeart("/img/full_heart.png");
-              setLoveCount(loveCount+1)
-              console.log("좋아요 성공");
-            })
-            .catch((error) => {
-              console.error("좋아요 에러", error);
-            });
-        }
-      };
 
       useEffect(() => {
         if (book) {
-          setShowHeart(book.heart);
-          setHeart(book.heart ? '/img/full_heart.png' : '/img/blank_heart.png');
           setRentType(book.rentType ? '대여가능' : '대여불가');
         }
       }, [book]);
@@ -94,15 +52,7 @@ const BookItem = ({book, index}) => {
                     <ReserveButton personalId={personalId} bookId={book.bookId} />
                   )}
             </div>
-            <div className="heart-div">
-            <img
-            src={heart} 
-            alt={showHeart ? "Yes" : "No"}
-            className="heart"
-            onClick={handleLike}
-            />
-            <p className="loveCount">{loveCount}</p>
-            </div>
+            <LikeSet book={book} />
         </div>
       </div>
     </li>

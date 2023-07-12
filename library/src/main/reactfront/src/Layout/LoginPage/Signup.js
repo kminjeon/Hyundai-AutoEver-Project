@@ -121,7 +121,9 @@ const Signup = () => {
               console.log("회원가입 성공");
             sessionStorage.setItem("personalId", formData.personalId); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("name", formData.name); // sessionStorage에 이름을 name key 값으로 저장
-              window.location.assign('/signup/finish');
+            sessionStorage.setItem("email", formData.email);
+            sessionStorage.setItem("authType", 'USER');  
+            window.location.assign('/signup/finish');
             })
             .catch((error) => {
               console.error("회원가입 에러", error);

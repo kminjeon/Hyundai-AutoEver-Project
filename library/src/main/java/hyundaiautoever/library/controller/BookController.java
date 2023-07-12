@@ -118,7 +118,7 @@ public class BookController {
      * @return SimpleBookPage
      */
     @GetMapping("/book/search")
-    public Response getSearchBookPage(@PageableDefault(size = 10) Pageable pageable,
+    public Response getSearchBookPage(@PageableDefault(size = 1) Pageable pageable,
                                       @RequestParam String searchWord) {
         log.info("BookController : [getSearchBookPage]");
         return Response.ok().setData(bookService.getSearchBookPage(pageable, searchWord));

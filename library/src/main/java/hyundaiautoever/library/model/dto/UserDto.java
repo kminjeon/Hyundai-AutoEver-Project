@@ -9,6 +9,7 @@ import hyundaiautoever.library.model.entity.User;
 import lombok.Getter;
 import org.springframework.data.domain.Page;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class UserDto {
         private final Long id;
         private final String personalId;
         private final String name;
+        private final String email;
         private final AuthType authType;
 
         @QueryProjection
@@ -39,6 +41,7 @@ public class UserDto {
             this.id = user.getId();
             this.personalId = user.getPersonalId();
             this.name = user.getName();
+            this.email = user.getEmail();
             this.authType = user.getAuthType();
         }
     }
@@ -55,17 +58,14 @@ public class UserDto {
     }
 
     @Getter
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class UserProfile { // 사용자 프로필 조회
         private final String name;
         private final String personalId;
         private final String email;
         private final AuthType authType;
         private final PartType part;
-        private final String password;
         private final String nickname;
-
-        private final String createDate;
+        private final LocalDateTime lastLogin;
 
         public UserProfile(User user) {
             this.name = user.getName();
@@ -73,9 +73,8 @@ public class UserDto {
             this.email = user.getEmail();
             this.authType = user.getAuthType();
             this.part = user.getPartType();
-            this.password = user.getPassword();
             this.nickname = user.getNickname();
-            this.createDate = user.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm"));
+            this.lastLogin = user.getLastLoginDate();
         }
     }
 

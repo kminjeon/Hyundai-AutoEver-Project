@@ -17,6 +17,7 @@ import RentInfo from './Layout/Mypage/RentInfo/RentInfo';
 import ReserveInfo from './Layout/Mypage/ReserveInfo/ReserveInfo';
 import ReviewInfo from './Layout/Mypage/ReviewInfo/ReviewInfo';
 import Withdraw from './Layout/Mypage/Withdraw/Withdraw'; 
+import Search from './Layout/Search/Search';
 
 function App () {
   return (
@@ -36,6 +37,7 @@ function App () {
       <Route path='/mypage/reviewInfo' element={<ReviewInfo />} />
       <Route path='/mypage/likeBook' element={<LikeBook />} />
       <Route path='/mypage/withdraw' element={<Withdraw />} />
+      <Route path='/search' element={<Search />} />
     </Routes>
   );
 }

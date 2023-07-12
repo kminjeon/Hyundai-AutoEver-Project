@@ -1,5 +1,36 @@
 .profile-bigalign {
     margin-top: 150px; /* Header의 높이와 적절히 조정 */
-    margin-left: 280px;
+    margin-left: 43%;
     margin-right: 100px;
 }
+
+.updateprofile-button {
+    width: 330px;
+    height: 45px;
+    border-radius: 5px;
+    border: none;
+    font-size: 20px;
+    background-color: #D1E0F3;
+    color: #9DA7B2;
+    cursor : pointer;
+    margin-left: 10px;
+    font-family: 'YouandiModernTR', sans-serif;
+  }
+
+
+.updateprofile-button:disabled {
+    background-color: #E7E7E7;
+    cursor: not-allowed;
+}
+
+  .profile-title {
+    font-size: 40px;
+    align-items: center;
+    margin-left: 15%;
+  }
+
+  .profile-line {
+    margin-right: 420px;
+    margin-bottom: 10px;
+  }
+

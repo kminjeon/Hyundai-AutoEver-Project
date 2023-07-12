@@ -28,7 +28,7 @@ const Mypage = () => {
                         <hr className='hr-margin'/>
                         <div className='line'>
                         <p className='click'onClick={()=> {window.location.assign("/mypage/applyInfo")}}>도서 신청 정보</p>
-                            <p className='click'onClick={()=> {window.location.assign("/mypage/likeBook")}}>좋아요 한 도서</p>
+                            <p className='click'onClick={()=> {window.location.assign("/mypage/likeBook")}}>관심 도서</p>
                             <p className='click'onClick={()=> {window.location.assign("/mypage/profile")}}>개인정보 변경</p>
                             <p className='click'onClick={()=> {window.location.assign("/mypage/withdraw")}}>회원 탈퇴</p>
                         </div>

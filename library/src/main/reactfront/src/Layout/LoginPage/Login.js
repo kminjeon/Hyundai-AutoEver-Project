@@ -61,35 +61,36 @@ function Login() {
       console.log("personalId : ", personalId);
       console.log("password : ", password);
   
-      axios({
-        method: 'get',
-        url:'api/login',
-        params: {
-          personalId : personalId,
-          password : password
-        }})
+      axios.post('api/login', {
+        personalId : personalId,
+        password : password
+      })
         .then((response) => {
           console.log(response);
           if (response.data.code === -2) {
             // 아이디 없음
-  
-            console.log("=============================", response.data.msg);
+            console.log(response.data.message);
             alert("입력하신 id가 일치하지 않습니다.");
           } else if (response.data.code === -1) {
             // id 있지만 pw 다른 경우
             console.log(
-              "======================",
               "입력하신 비밀번호가 일치하지 않습니다."
             );
             alert("입력하신 비밀번호가 일치하지 않습니다.");
           } else if (response.data.code === 200) {
             // id, pw 모두 일치
-            console.log("======================", "로그인 성공");
+            console.log("로그인 성공");
             sessionStorage.setItem("personalId", personalId); // sessionStorage에 id를 personalId라는 key 값으로 저장
             sessionStorage.setItem("name", response.data.data.name); // sessionStorage에 이름을 name key 값으로 저장
-
+            sessionStorage.setItem("email", response.data.data.email);
+            sessionStorage.setItem("authType", response.data.data.authType);
             // 작업 완료 되면 페이지 이동(새로고침)
-            document.location.href = "/main";
+            if (response.data.data.authType === 'ADMIN')
+            {
+              document.location.href = "/admin/main";
+            } else {
+              document.location.href = "/main";
+            }
           }
         })
         .catch(error => {
