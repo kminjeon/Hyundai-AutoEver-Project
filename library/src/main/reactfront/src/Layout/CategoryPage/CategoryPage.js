@@ -7,6 +7,7 @@ import Category from "../Category/Category";
 import BookItem from "../Book/BookItem";
 import './CategoryPage.css'
 import PaginationBox from "../Page/PaginationBox";
+import NoNumberBookItem from "../Book/NoNumberBookItem";
 
 const CategoryPage = () => {
     const { categoryType } = useParams();
@@ -22,7 +23,7 @@ const CategoryPage = () => {
                 page: page
               }
             });
-            setBookList(response.data.data.simpleBookDtoList);
+            setBookList(response.data.data.bookList);
             setPageInfo(response.data.data.pagination);
             console.log(response.data.data);
           } catch (error) {
@@ -42,8 +43,8 @@ const CategoryPage = () => {
           <Header />
           <div>
           <ol className='numbered-list'>
-            {bookList.map((book) => {
-              return <BookItem key={book.bookId} book ={book} /> 
+            {bookList&&bookList.map((book) => {
+              return <NoNumberBookItem key={book.bookId} book ={book} /> 
             })}
           </ol>
 

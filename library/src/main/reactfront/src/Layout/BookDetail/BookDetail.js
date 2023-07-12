@@ -7,6 +7,7 @@ import Modal from '../Modal/Modal';
 import ReserveButton from "../Button/ReserveButton";
 import RentButton from "../Button/RentButton";
 import Header from '../Header/Header';
+import LikeSet from '../Heart/LikeSet';
 
 
 const BookDetail = () => {
@@ -14,10 +15,7 @@ const BookDetail = () => {
     const { bookId } = useParams();
   const [reviewList, setReviewList] = useState([]);
   const [rentType, setRentType] = useState();
-  const [heart, setHeart] = useState();
   const [book, setBook] = useState(null);
-  const [loveCount, setLoveCount] = useState();
-  const [showHeart, setShowHeart] = useState();
 
   const [showPopup, setShowPopup] = useState(false); // 팝업 창 표시 여부
 
@@ -35,7 +33,6 @@ const BookDetail = () => {
         });
         setBook(response.data.data);
         setReviewList(response.data.data.reviewList);
-        setLoveCount(response.data.data.loveCount);
         console.log(response.data.data)
       } catch (error) {
         console.log(error);
@@ -47,8 +44,6 @@ const BookDetail = () => {
 
   useEffect(() => {
     if (book) {
-      setShowHeart(book.heart);
-      setHeart(book.heart ? '/img/full_heart.png' : '/img/blank_heart.png');
       setRentType(book.rentType ? '대여가능' : '대여불가');
     }
   }, [book]);
@@ -57,44 +52,6 @@ const BookDetail = () => {
     return null; 
 }
 
-
-  const handleLike = () => {
-    if (showHeart) {
-      // 좋아요 취소
-      axios
-        .delete('/api/love/delete', {
-            params: {
-                personalId : personalId,
-              bookId: book.bookId
-            },})
-        .then((response) => {
-          setShowHeart(false);
-          setHeart("/img/blank_heart.png");
-          setLoveCount(loveCount-1)
-          console.log("좋아요 취소 성공");
-        })
-        .catch((error) => {
-          console.error("좋아요 취소 에러", error);
-        });
-    } else {
-      // 좋아요
-      axios
-        .post('/api/love/create', null, {
-            params: {
-                personalId : personalId,
-              bookId: book.bookId
-        },})
-        .then((response) => {
-          setShowHeart(true);
-          setHeart("/img/full_heart.png");
-          setLoveCount(loveCount+1)
-          console.log("좋아요 성공");
-        })
-        .catch((error) => {
-          console.error("좋아요 에러", error);
-        });
-    }
-  };
   
   return (
     <div>
@@ -107,14 +64,7 @@ const BookDetail = () => {
                 <div className = 'align-detail'>
                   <div className='titleandheart'>
                     <p className = 'title'>{book.title}</p>
-                    <div className='heart-div'>
-                      <img
-                          src={heart} 
-                          alt={showHeart ? "Yes" : "No"}
-                          className="heart-img"
-                          onClick={handleLike}/>
-                      <p className="loveCount">{loveCount}</p>
-                    </div>
+                    <LikeSet book={book} />
                     </div>
                   <div className="flex-container">
                 <div className='margin-rignt-40'>
@@ -130,7 +80,9 @@ const BookDetail = () => {
                     <p>{book.isbn}</p>
                 </div>
             </div>
-            <div className="rent">
+            <div className='BookDetail-marginbox'/>
+            </div>
+                <div className="BookDeatil-rent">
             <p className={book.rentType ? "blue" : "red"}>{rentType}</p>
             {book.rentType ? (
                   <RentButton personalId={personalId} bookId={book.bookId} />
@@ -139,19 +91,18 @@ const BookDetail = () => {
                     <ReserveButton personalId={personalId} bookId={book.bookId} />
                   )}
             </div>
-                </div>
             </div>
       </div>
       <hr className="divider" />
       <div className='description'>
         <p className = 'intro'>책 소개</p>
         <p className='text'>
-        {book.description.split(".").map((sentence, index) => (
-          <React.Fragment key={index}>
-            {sentence.trim()}
-            {index !== book.description.length - 1 && <br />}
-          </React.Fragment>
-        ))}
+        {book.description.split(".").map((sentence, index, array) => (
+        <React.Fragment key={index}>
+          {sentence.trim()}
+          {index !== array.length - 1 && <span>.<br /></span>}
+        </React.Fragment>
+      ))}
       </p>
         </div>
         <hr className="divider" />
@@ -165,6 +116,7 @@ const BookDetail = () => {
           <p>{review.createDate}</p>
           </div>
           <p>{review.content}</p>
+          <hr className="divider-review" />
         </div>
       ))}
         </div>

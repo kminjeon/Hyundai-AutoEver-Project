@@ -116,10 +116,10 @@ public class BookDto {
     @Getter
     public static class SimpleBookPage {
         private final Pagination pagination;
-        private final List<SimpleBookDto> simpleBookDtoList;
+        private final List<SimpleBookDto> bookList;
         public SimpleBookPage(Page<SimpleBookDto> page) {
             this.pagination = new Pagination(page);
-            this.simpleBookDtoList = page.getContent();
+            this.bookList = page.getContent();
         }
     }
 

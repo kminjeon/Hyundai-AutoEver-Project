@@ -9,7 +9,7 @@ const MypageCategory = () => {
     { id: 3, name: '예약 정보', link: 'reserveInfo' },
     { id: 4, name: '작성한 리뷰', link: 'reviewInfo' },
     { id: 5, name: '도서 신청 내역', link: 'applyInfo' },
-    { id: 6, name: '좋아요 한 도서', link: 'likeBook' },
+    { id: 6, name: '관심 도서', link: 'likeBook' },
     { id: 7, name: '개인 정보 변경', link: 'profile' },
     { id: 8, name: '회원 탈퇴', link: 'withdraw' },
   ];

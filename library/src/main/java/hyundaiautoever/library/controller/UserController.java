@@ -1,7 +1,9 @@
 package hyundaiautoever.library.controller;
 
 import hyundaiautoever.library.common.exception.ExceptionCode;
+import hyundaiautoever.library.model.dto.UserDto;
 import hyundaiautoever.library.model.dto.request.UserRequest;
+import hyundaiautoever.library.model.dto.request.UserRequest.UpdateProfileRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.UserService;
 import lombok.Getter;
@@ -24,10 +26,10 @@ public class UserController {
     /**
      * 로그인
      */
-    @GetMapping("/login")
-    public Response loginUser(@RequestParam("personalId") String personalId, @RequestParam("password") String password) {
+    @PostMapping("/login")
+    public Response loginUser(@RequestBody @Valid UserRequest.LoginRequest request) {
         log.info("UserController : [loginUser]");
-        return userService.loginUser(personalId, password);
+        return userService.loginUser(request);
     }
 
 
@@ -88,30 +90,14 @@ public class UserController {
 
 
     /**
-     * 유저 이메일 수정
-     * @param personalId
-     * @param email
-     * @return Response.ok
+     * 유저 프로필 변경
+     * @param request
+     * @return ok
      */
-    @PutMapping("/mypage/profile/email")
-    public Response updateUserEmail(@RequestParam("personalId") String personalId, @RequestParam("email") String email) {
-        log.info("UserController : [updateUserEmail]");
-        userService.updateUserEmail(personalId, email);
-        return Response.ok();
-    }
-
-    /**
-     * 유저 비밀번호 수정
-     * @param personalId
-     * @param password
-     * @return Response.ok
-     */
-    @PutMapping("/mypage/profile/password")
-    public Response updateUserPassword(@RequestParam("personalId") String personalId,
-                                       @RequestParam("password") String password,
-                                       @RequestParam("newPassword") String newPassword) {
-        log.info("UserController : [updateUserPassword]");
-        return userService.updateUserPassword(personalId, password, newPassword);
+    @PutMapping("/mypage/profile/update")
+    public Response updateProfile(@RequestBody @Valid UpdateProfileRequest request) {
+        log.info("UserController : [updateProfile]");
+        return userService.updateProfile(request);
     }
 
     /**

@@ -5,12 +5,14 @@ import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.AuthType;
 import hyundaiautoever.library.model.dto.UserDto;
 import hyundaiautoever.library.model.dto.UserDto.UserAuthPage;
+import hyundaiautoever.library.model.dto.UserDto.UserProfile;
 import hyundaiautoever.library.model.dto.request.UserRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
 
+    @Autowired
     private final PasswordEncoder passwordEncoder;
 
 
@@ -37,13 +40,13 @@ public class UserService {
      * 로그인 login
      */
     @Transactional
-    public Response loginUser(String personalId, String password) {
-        Optional<User> optionalUser = userRepository.findByPersonalId(personalId);
+    public Response loginUser(UserRequest.LoginRequest request) {
+        Optional<User> optionalUser = userRepository.findByPersonalId(request.getPersonalId());
         if (optionalUser.isEmpty()) {
             return Response.personalIdError(ExceptionCode.PERSONALID_ERROR);
         }
         User user = optionalUser.get();
-        if (!user.getPassword().equals(password)) {
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
         }
         user.updateLastLoginDate(LocalDateTime.now());
@@ -84,8 +87,8 @@ public class UserService {
     /**
      * 사용자 프로필 조회
      */
-    public UserDto.UserSimpleDto searchUserProfile(String personalId) {
-        return UserDto.buildUserSimpleDto(userRepository.findByPersonalId(personalId).orElseThrow(() ->
+    public UserProfile searchUserProfile(String personalId) {
+        return UserDto.buildUserProfile(userRepository.findByPersonalId(personalId).orElseThrow(() ->
                 new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION)));
     }
 
@@ -116,38 +119,33 @@ public class UserService {
 
 
     /**
-     * 유저 이메일 변경
-     * @param personalId
-     * @param email
+     * 유저 프로필 변경
+     * @param request
+     * @return ok
      */
     @Transactional
-    public void updateUserEmail(String personalId, String email) {
-        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
-            log.error("updateUserEmail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-        });
-
-        user.updateUserEmail(email);
-    }
-
-    /**
-     * 유저 비밀번호 변경
-     * @param personalId
-     * @param password
-     */
-    @Transactional
-    public Response updateUserPassword(String personalId, String password, String newPassword) {
-        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+    public Response updateProfile(UserRequest.UpdateProfileRequest request) {
+        User user = userRepository.findByPersonalId(request.getPersonalId()).orElseThrow(() -> {
             log.error("updateUserPassword Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        if (!passwordEncoder.matches(password, user.getPassword())){
-                log.error("updateUserPassword Exception : [현재 비밀번호 오류]", ExceptionCode.PASSWORD_ERROR);
-                return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
+
+        // 비밀번호 확인
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            log.error("updateUserPassword Exception : [현재 비밀번호 오류]", ExceptionCode.PASSWORD_ERROR);
+            return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
         }
-        user.updateUserPassword(passwordEncoder.encode(newPassword));
+        // 비밀번호 변경
+        user.updateUserPassword(passwordEncoder.encode(request.getNewPassword()));
+
+        // 이메일 변경
+        user.updateUserEmail(request.getEmail() != null ? request.getEmail() : user.getEmail());
+        // 닉네임 변경
+        user.updateUserNickname(request.getNickname() != null ? request.getNickname() : user.getNickname());
+
         return Response.ok();
     }
+
 
     /**
      * ADMIN 권한 관리

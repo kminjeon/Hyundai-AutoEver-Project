@@ -13,7 +13,7 @@
     content: "";
     position: absolute;
     right: 0;
-    height: calc(100% - 300px);
+    height: calc(100% - 200px);
     width: 3px;
     background-color: #A8A8A8;
   }

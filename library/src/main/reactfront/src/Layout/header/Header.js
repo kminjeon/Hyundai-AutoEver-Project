@@ -6,7 +6,8 @@ const Header = () => {
     const name = sessionStorage.getItem('name');
 
     const [isLogin, setIsLogin] = useState(false)
- 
+    const [searchWord, setSearchWord] = useState('');
+
   useEffect(() => {
     const personalId = sessionStorage.getItem('personalId');
     
@@ -26,13 +27,33 @@ const Header = () => {
         console.log('로그아웃');
         window.location.assign("/");
       }
+
+
+    const handleSearch = () => {
+        window.location.assign(`/search?searchWord=${searchWord}&page=0`);
+      };
+
+      const handleInputChange = (e) => {
+        setSearchWord(e.target.value);
+      };
+
+      const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+          handleSearch();
+        }
+      };
       
     return (
         <header className="header">
             <div className="header-container">
                 <img className='header-logo' src='/img/logo.svg' alt='로고' onClick={()=> {window.location.assign("/main");}}></img>
                 <div className='search'>
-                  <input className='header-input'/>
+                <input
+                  className="header-input"
+                  value={searchWord}
+                  onChange={handleInputChange}
+                  onKeyDown={handleKeyDown}
+                />
                   <img className='searchimg' src='/img/search.png' />
                 </div>
                 <div className='right-items'>

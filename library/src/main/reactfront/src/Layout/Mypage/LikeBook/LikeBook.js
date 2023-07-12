@@ -29,7 +29,7 @@ const LikeBook = () => {
         <Header />
         <div className='likeheadermargin'>
 
-            <h2 className='likebook-h2'>좋아요 한 도서</h2>
+            <h2 className='likebook-h2'>관심 도서</h2>
             <hr />
             <div className='box-margin'>
                 {likeBookList.map((book) => {

@@ -23,7 +23,6 @@ public class RentDto {
         private final Long rentId;
         private final String title;
         private final String author;
-        private final String publisher;
         private final String rentDate;
         private final String expectedReturnDate;
         private final Long lateDays;
@@ -31,7 +30,6 @@ public class RentDto {
             this.rentId = rent.getId();
             this.title = rent.getBook().getTitle();
             this.author = rent.getBook().getAuthor();
-            this.publisher = rent.getBook().getPublisher();
             this.rentDate = rent.getRentDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
             this.expectedReturnDate = rent.getExpectedReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
             this.lateDays = ChronoUnit.DAYS.between(rent.getExpectedReturnDate(), LocalDate.now());
