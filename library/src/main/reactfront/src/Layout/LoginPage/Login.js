@@ -80,6 +80,7 @@ function Login() {
           } else if (response.data.code === 200) {
             // id, pw 모두 일치
             console.log("로그인 성공");
+            console.log(response.data);
             sessionStorage.setItem("personalId", personalId); // sessionStorage에 id를 personalId라는 key 값으로 저장
             sessionStorage.setItem("name", response.data.data.name); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("email", response.data.data.email);
