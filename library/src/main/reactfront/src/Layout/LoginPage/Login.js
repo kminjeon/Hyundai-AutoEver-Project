@@ -111,9 +111,9 @@ function Login() {
               <div className='error-msg'>{error.password}</div>
               <br />
               <div className='find'>
-                <label>아이디 찾기</label>
+                <label className = 'login-find' onClick={() => {window.location.assign('/FindId');}}>아이디 찾기</label>
                 <span> | </span>
-                <label>비밀번호 찾기</label>
+                <label className = 'login-find' onClick={() => {window.location.assign('/FindPassword');}}>비밀번호 찾기</label>
               </div>
               <button type="submit" className='signin'>
                   SIGN IN

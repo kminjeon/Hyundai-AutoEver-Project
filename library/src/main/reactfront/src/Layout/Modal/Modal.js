@@ -1,24 +1,32 @@
 import React from 'react';
 import './Modal.css';
 
-const Modal = ({ onClose, onConfirm }) => {
-  const handleConfirm = () => {
-    onConfirm(); // 예약 처리를 수행하는 함수 호출
-    onClose(); // 모달 닫기
-  };
+const Modal = (props) => {
+  // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
+  const { open, close, header } = props;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        <h3>예약</h3>
-        <p>예약하시겠습니까?</p>
-        <div className="modal-buttons">
-          <button className="modal-confirm-btn" onClick={handleConfirm}>확인</button>
-          <button className="modal-cancel-btn" onClick={onClose}>취소</button>
-        </div>
-      </div>
+    // 모달이 열릴때 openModal 클래스가 생성된다.
+    <div className={open ? 'openModal modal' : 'modal'}>
+      {open ? (
+        <section>
+          <header>
+            {header}
+            <button className="close" onClick={close}>
+              &times;
+            </button>
+          </header>
+          <main>{props.children}</main>
+          <footer>
+            <button className="close" onClick={close}>
+              close
+            </button>
+          </footer>
+        </section>
+      ) : null}
     </div>
   );
 };
+
 
 export default Modal;

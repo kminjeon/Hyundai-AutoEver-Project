@@ -57,9 +57,69 @@
   color: #9DA7B2;
   font-family: 'YouandiModernTR', sans-serif;
   margin: 20px;
+  cursor: pointer;
 }
+
 
 .signup {
   color: #2A5C96;
   cursor: pointer;
+}
+
+.login-find {
+  cursor: pointer;
+}
+
+.find-message {
+  color: #2A5C96;
+}
+
+
+.login-find-under {
+  cursor: pointer;
+  text-decoration : underline;
+}
+
+.passwordReset-centered-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+
+.code-button {
+  width: 90px;
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  font-size: 18px;
+  background-color: #f5f5f5;
+  color: #9DA7B2;
+  font-family: 'YouandiModernTR', sans-serif;
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left : 150px;
+}
+
+.reset-pass {
+  width: 390px;
+  height: 45px;
+  border-radius: 5px;
+  border: none;
+  font-size: 20px;
+  background-color: #e9e9e9;
+  color: #9DA7B2;
+  font-family: 'YouandiModernTR', sans-serif;
+  cursor: pointer;
+  margin-top: 20px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.little-move {
+  margin: 10px;
 }

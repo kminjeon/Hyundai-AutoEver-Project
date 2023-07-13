@@ -98,6 +98,7 @@ const Profile = () => {
 
     const handleSubmit = () => {
         if (formData.newPassword !== formData.confirmPassword) {
+            alert("비밀번호가 틀렸습니다.")
             console.log("비밀번호 틀림")
             setPasswordMismatch(true);
             return;

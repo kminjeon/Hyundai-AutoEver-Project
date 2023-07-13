@@ -16,7 +16,7 @@ const Search = () => {
 
     const location = useLocation(); 
     console.log(location)
-    const searchWord = new URLSearchParams(location.search);
+    const searchWord = new URLSearchParams(location.search).get('searchWord');
     const navigate = useNavigate();
 
     const personalId = sessionStorage.getItem('personalId');
@@ -38,7 +38,7 @@ const Search = () => {
           }
         };
         getBookPage();
-    }, [page, location.search]);
+    }, [page]);
 
     if (!pageInfo) {
         return null; // pageInfo가 없을 때 null을 반환하여 Pagination 컴포넌트를 렌더링하지 않음
@@ -48,7 +48,7 @@ const Search = () => {
         <div className="headercategoryline">
           <Category />
           <Header />
-          <p>'{searchWord.get('searchWord')}'에 대한 {pageInfo.totalElements}개의 검색 결과</p>
+          <p>'{searchWord}'에 대한 {pageInfo.totalElements}개의 검색 결과</p>
           <div>
             <ol className='numbered-list'>
                 {bookList&&bookList.map((book) => {
@@ -68,7 +68,6 @@ const Search = () => {
             </PaginationBox>
         </div>
     )
-
 }
 
 export default Search;

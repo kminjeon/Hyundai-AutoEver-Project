@@ -18,6 +18,8 @@ import ReserveInfo from './Layout/Mypage/ReserveInfo/ReserveInfo';
 import ReviewInfo from './Layout/Mypage/ReviewInfo/ReviewInfo';
 import Withdraw from './Layout/Mypage/Withdraw/Withdraw'; 
 import Search from './Layout/Search/Search';
+import FindId from './Layout/LoginPage/FindId';
+import FindPassword from './Layout/LoginPage/FindPassword';
 
 function App () {
   return (
@@ -38,6 +40,8 @@ function App () {
       <Route path='/mypage/likeBook' element={<LikeBook />} />
       <Route path='/mypage/withdraw' element={<Withdraw />} />
       <Route path='/search' element={<Search />} />
+      <Route path='/FindId' element={<FindId />} />
+      <Route path='/FindPassword' element={<FindPassword />} />
     </Routes>
   );
 }
