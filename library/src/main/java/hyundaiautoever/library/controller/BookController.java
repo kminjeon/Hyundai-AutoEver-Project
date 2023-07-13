@@ -83,9 +83,10 @@ public class BookController {
      */
     @GetMapping("/book/category/{categoryType}")
     public Response getCategoryBookPage(@PageableDefault(size = 1) Pageable pageable,
-                                        @PathVariable("categoryType") CategoryType categoryType) {
+                                        @PathVariable("categoryType") CategoryType categoryType,
+                                        @RequestParam("personalId") String personalId) {
         log.info("BookController : [getCategoryBookPage]");
-        return Response.ok().setData(bookService.getCategoryBookPage(pageable, categoryType));
+        return Response.ok().setData(bookService.getCategoryBookPage(pageable, categoryType, personalId));
     }
 
     /**
@@ -119,9 +120,10 @@ public class BookController {
      */
     @GetMapping("/book/search")
     public Response getSearchBookPage(@PageableDefault(size = 1) Pageable pageable,
-                                      @RequestParam String searchWord) {
+                                      @RequestParam String searchWord,
+                                      @RequestParam String personalId) {
         log.info("BookController : [getSearchBookPage]");
-        return Response.ok().setData(bookService.getSearchBookPage(pageable, searchWord));
+        return Response.ok().setData(bookService.getSearchBookPage(pageable, searchWord, personalId));
     }
 
 }

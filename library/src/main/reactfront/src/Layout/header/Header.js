@@ -30,7 +30,7 @@ const Header = () => {
 
 
     const handleSearch = () => {
-        window.location.assign(`/search?searchWord=${searchWord}&page=0`);
+        window.location.assign(`/search?searchWord=${searchWord}`);
       };
 
       const handleInputChange = (e) => {
