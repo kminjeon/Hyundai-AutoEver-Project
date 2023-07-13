@@ -15,6 +15,8 @@ import hyundaiautoever.library.repository.ReviewRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,9 +89,28 @@ public class BookService {
      * @param categoryType
      * @return SimpleBookPage
      */
-    public SimpleBookPage getCategoryBookPage(Pageable pageable, CategoryType categoryType) {
+    public HeartAddBookPage getCategoryBookPage(Pageable pageable, CategoryType categoryType, String personalId) {
         log.info("BookService : [getCategoryBookPage]");
-        return BookDto.buildCategoryBookPage(bookRepository.findByCategoryType(pageable, categoryType));
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getBestBookList Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        // 해당 카테고리 도서 리스트
+        Page<Book> bookPage = bookRepository.findByCategoryType(pageable, categoryType);
+        List<Book> bookList = bookPage.getContent();
+
+        // Book 좋아요 정보 조회
+        List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
+        // key : BookId, value : 좋아요 Map 생성
+        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+
+        // bookDtoList 생성
+        List<BestBookDto> bookDtoList = new ArrayList<>();
+        for (Book book : bookList) {
+            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
+            bookDtoList.add(new BestBookDto(book, isLiked));
+        }
+        return buildHeartAddBookPage(bookPage, bookDtoList);
     }
 
     /**
@@ -152,9 +173,29 @@ public class BookService {
      * @param searchWord
      * @return SimpleBookPage
      */
-    public SimpleBookPage getSearchBookPage(Pageable pageable, String searchWord) {
+    public HeartAddBookPage getSearchBookPage(Pageable pageable, String searchWord, String personalId) {
         log.info("BookService : [getSearchBookPage]");
-        return BookDto.buildCategoryBookPage(bookRepository.getSearchBookPage(pageable, searchWord));
+
+        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+            log.error("getBestBookList Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        Page<Book> bookPage = bookRepository.getSearchBookPage(pageable, searchWord);
+        List<Book> bookList = bookPage.getContent();
+
+        // Book 좋아요 정보 조회
+        List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
+        // key : BookId, value : 좋아요 Map 생성
+        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+
+        // bookDtoList 생성
+        List<BestBookDto> bookDtoList = new ArrayList<>();
+        for (Book book : bookList) {
+            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
+            bookDtoList.add(new BestBookDto(book, isLiked));
+        }
+        return buildHeartAddBookPage(bookPage, bookDtoList);
     }
 
     /**

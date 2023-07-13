@@ -49,6 +49,7 @@ const NoNumberBookItem = ({book}) => {
                     <ReserveButton personalId={personalId} bookId={book.bookId} />
                   )}
             </div>
+            <LikeSet book={book} />
         </div>
       </div>
     </li>

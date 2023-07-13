@@ -19,10 +19,17 @@ const Search = () => {
     const searchWord = new URLSearchParams(location.search);
     const navigate = useNavigate();
 
+    const personalId = sessionStorage.getItem('personalId');
+
     useEffect(() => {
         const getBookPage = async () => {
           try {
-            const response = await axios.get(`/api/book/search${location.search}`);
+            const response = await axios.get(`/api/book/search${location.search}`, {
+              params: {
+                page: page,
+                personalId : personalId
+              }
+            });
             setBookList(response.data.data.bookList);
             setPageInfo(response.data.data.pagination);
             console.log(response.data);

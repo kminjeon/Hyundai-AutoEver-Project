@@ -124,6 +124,16 @@ public class BookDto {
     }
 
     @Getter
+    public static class HeartAddBookPage {
+        private final Pagination pagination;
+        private final List<BestBookDto> bookList;
+        public HeartAddBookPage(Page<Book> page, List<BestBookDto> bookList) {
+            this.pagination = new Pagination(page);
+            this.bookList = bookList;
+        }
+    }
+
+    @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class GetBookDetailDto {
         private final Long bookId;
@@ -167,6 +177,10 @@ public class BookDto {
 
     public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Boolean heart) {
         return new GetBookDetailDto(book, reviewList, heart);
+    }
+
+    public static HeartAddBookPage buildHeartAddBookPage(Page<Book> page, List<BestBookDto> bookList) {
+        return new HeartAddBookPage(page, bookList);
     }
 
 }

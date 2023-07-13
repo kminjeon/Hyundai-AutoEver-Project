@@ -14,13 +14,16 @@ const CategoryPage = () => {
     const [bookList, setBookList] = useState([]);
     const [page, setPage] = useState(0);
     const [pageInfo, setPageInfo] = useState();
+    const personalId = sessionStorage.getItem('personalId');
+
 
     useEffect(() => {
         const getBookPage = async () => {
           try {
             const response = await axios.get(`/api/book/category/${categoryType}`, {
               params: {
-                page: page
+                page: page,
+                personalId : personalId
               }
             });
             setBookList(response.data.data.bookList);

@@ -7,6 +7,7 @@ import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.model.dto.BookDto.SearchAdminBookDto;
 import hyundaiautoever.library.model.dto.QBookDto_SearchAdminBookDto;
 import hyundaiautoever.library.model.dto.QBookDto_SimpleBookDto;
+import hyundaiautoever.library.model.entity.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.support.PageableExecutionUtils;
@@ -24,9 +25,9 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
     }
 
     @Override
-    public Page<SimpleBookDto> getSearchBookPage(Pageable pageable, String searchWord) {
-        List<SimpleBookDto> content = queryFactory
-                .select(new QBookDto_SimpleBookDto(book))
+    public Page<Book> getSearchBookPage(Pageable pageable, String searchWord) {
+        List<Book> content = queryFactory
+                .select(book)
                 .from(book)
                 .where(titleContains(searchWord)
                         .or(authorContains(searchWord))
