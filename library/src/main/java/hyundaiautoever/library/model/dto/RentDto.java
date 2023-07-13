@@ -32,7 +32,7 @@ public class RentDto {
             this.author = rent.getBook().getAuthor();
             this.rentDate = rent.getRentDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
             this.expectedReturnDate = rent.getExpectedReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-            this.lateDays = ChronoUnit.DAYS.between(rent.getExpectedReturnDate(), LocalDate.now());
+            this.lateDays = ChronoUnit.DAYS.between(LocalDate.now(), rent.getExpectedReturnDate());
         }
     }
 
@@ -79,12 +79,18 @@ public class RentDto {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class GetAdminRentDto {
         private final Long rentId;
         private final String personalId;
         private final String name;
         private final Long bookId;
         private final String title;
+
+        private final String author;
+        private final String isbn;
         private final String rentDate;
         private final String expectedReturnDate;
         private final Long lateDays;
@@ -93,22 +99,25 @@ public class RentDto {
         public GetAdminRentDto(Rent rent) {
             this.rentId = rent.getId();
             this.personalId = rent.getUser().getPersonalId();
+            this.isbn = rent.getBook().getIsbn();
             this.name = rent.getUser().getName();
+            this.author = rent.getBook().getAuthor();
             this.bookId = rent.getBook().getId();
             this.title = rent.getBook().getTitle();
             this.rentDate = rent.getRentDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
             this.expectedReturnDate = rent.getExpectedReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-            this.lateDays = ChronoUnit.DAYS.between(rent.getExpectedReturnDate(), LocalDate.now());
+            this.lateDays = ChronoUnit.DAYS.between(LocalDate.now(), rent.getExpectedReturnDate());
         }
     }
 
+    @Getter
     public static class GetAdminRentPage {
         private final Response.Pagination pagination;
-        private final List<GetAdminRentDto> userList;
+        private final List<GetAdminRentDto> rentList;
 
         public GetAdminRentPage(Page<GetAdminRentDto> page) {
             this.pagination = new Response.Pagination(page);
-            this.userList = page.getContent();
+            this.rentList = page.getContent();
         }
     }
 

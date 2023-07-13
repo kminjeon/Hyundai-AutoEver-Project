@@ -23,6 +23,8 @@ const Header = () => {
     const handleLogout = () => {
         sessionStorage.removeItem('personalId');
         sessionStorage.removeItem('name');
+        sessionStorage.removeItem("email");
+        sessionStorage.removeItem("authType");
         setIsLogin(false);
         console.log('로그아웃');
         window.location.assign("/");

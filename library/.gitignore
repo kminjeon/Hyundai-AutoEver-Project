@@ -37,5 +37,5 @@ out/
 .vscode/
 
 
-#mail
+# mail
 /src/main/resources/application.properties

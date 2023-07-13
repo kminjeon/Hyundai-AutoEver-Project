@@ -20,6 +20,8 @@ import Withdraw from './Layout/Mypage/Withdraw/Withdraw';
 import Search from './Layout/Search/Search';
 import FindId from './Layout/LoginPage/FindId';
 import FindPassword from './Layout/LoginPage/FindPassword';
+import AdminMain from './Layout/Admin/AdminMain/AdminMain';
+import AdminRentInfo from './Layout/Admin/AdminRentInfo/AdminRentInfo';
 
 function App () {
   return (
@@ -42,6 +44,9 @@ function App () {
       <Route path='/search' element={<Search />} />
       <Route path='/FindId' element={<FindId />} />
       <Route path='/FindPassword' element={<FindPassword />} />
+
+      <Route path='/admin/main' element={<AdminMain />} />
+      <Route path='/admin/rentInfo' element={<AdminRentInfo />} />
     </Routes>
   );
 }

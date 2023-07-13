@@ -20,8 +20,8 @@ const Mypage = () => {
                     <hr className='mypageline'/>
                     <div className='box'>
                         <div className='line'>
-                            <p className='click' onClick={()=> {window.location.assign("/mypage/rentInfo")}}>대출 정보 확인</p>
-                            <p className='click'onClick={()=> {window.location.assign("/mypage/rentHistory")}}>대출 기록 확인</p>
+                            <p className='click' onClick={()=> {window.location.assign("/mypage/rentInfo")}}>대여 정보 확인</p>
+                            <p className='click'onClick={()=> {window.location.assign("/mypage/rentHistory")}}>대여 기록 확인</p>
                             <p className='click'onClick={()=> {window.location.assign("/mypage/reserveInfo")}}>예약 정보 확인</p>
                             <p className='click'onClick={()=> {window.location.assign("/mypage/reviewInfo")}}>작성한 리뷰</p>
                         </div>
