@@ -142,5 +142,26 @@ public class UserController {
         return Response.ok().setData(userService.searchUserAuthPage(pageable, personalId, name));
     }
 
+    /**
+     * 아이디 찾기
+     * @param email
+     * @return personalId
+     */
+    @GetMapping("/findId")
+    public Response getFindId(@RequestParam String email) {
+        log.info("UserController : [getFindId]");
+        return userService.getFindId(email);
+    }
 
+    /**
+     * 비밀번호 재설정
+     * @param request
+     * @return ok
+     */
+    @PutMapping("/passwordReset")
+    public Response resetPassword(@RequestBody UserRequest.ResetPassword request) {
+        log.info("UserController : [resetPassword]");
+        userService.resetPassword(request);
+        return Response.ok();
+    }
 }

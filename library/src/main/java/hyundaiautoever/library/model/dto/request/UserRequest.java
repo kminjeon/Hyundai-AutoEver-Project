@@ -35,6 +35,17 @@ public class UserRequest {
         private String email;
         private String nickname;
     }
+
+    @Getter
+    public static class ResetPassword {
+        @NotEmpty(message = "회원 아이디은 필수입니다")
+        @NotNull
+        private String personalId;
+        @NotEmpty(message = "회원 비밀번호는 필수입니다")
+        @NotNull
+        private String newPassword;
+    }
+
     @Getter
     public static class CreateUserRequest {
         @NotEmpty(message = "회원 이름은 필수입니다")

@@ -200,6 +200,43 @@ public class UserService {
         log.info("UserService : [searchUserAuthPage]");
         return UserDto.buildUserAuthPage(userRepository.searchUserAuthPage(pageable, personalId, name));
     }
+
+
+    /**
+     * 아이디 찾기
+     * @param email
+     * @return personalId
+     */
+    public Response getFindId(String email) {
+        log.info("UserService : [searchUserAuthPage]");
+        User user = userRepository.findByEmail(email);
+
+        // 이메일에 해당하는 User 없음
+        if (user == null) {
+            return Response.dataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        }
+        return Response.ok().setData(user.getPersonalId());
+    }
+
+    /**
+     * 비밀번호 재설정
+     * @param request
+     */
+    @Transactional
+    public void resetPassword(UserRequest.ResetPassword request) {
+        User user = userRepository.findByPersonalId(request.getPersonalId()).orElseThrow(() -> {
+            log.error("updateUserPassword Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 비밀번호 변경
+        try {
+            user.updateUserPassword(passwordEncoder.encode(request.getNewPassword()));
+        } catch (Exception e) {
+            log.error("resetPassword Exception : {}", e.getMessage());
+            throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);
+        }
+    }
 }
 
 
