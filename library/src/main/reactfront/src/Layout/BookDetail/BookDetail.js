@@ -8,7 +8,7 @@ import ReserveButton from "../Button/ReserveButton";
 import RentButton from "../Button/RentButton";
 import Header from '../Header/Header';
 import LikeSet from '../Heart/LikeSet';
-
+import CleanModal from '../Modal/CleanModal';
 
 const BookDetail = () => {
 
@@ -19,6 +19,9 @@ const BookDetail = () => {
 
   const [showPopup, setShowPopup] = useState(false); // 팝업 창 표시 여부
 
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const [content, setContent] = useState('');
 
   // 현재 로그인한 사용자
   const personalId = sessionStorage.getItem('personalId');
@@ -51,8 +54,35 @@ const BookDetail = () => {
   if (!book) {
     return null; 
 }
+const openModal = () => {
+  setModalOpen(true);
+};
 
-  
+const closeModal = () => {
+  setModalOpen(false);
+};
+
+const handleWrite = () => {
+  axios.post(`/api/review/${bookId}`, {
+    content : content,
+    personalId : personalId
+  })
+  .then(response => {
+      console.log(response);
+      console.log('리뷰 등록 성공')
+      closeModal();
+      window.location.reload();
+  })
+  .catch (error => {
+  console.log(error);
+  console.log('리뷰 등록 실패')
+  });
+}
+
+const handleInputChange = (e) => {
+  setContent(e.target.value);
+};
+
   return (
     <div>
         <Category />
@@ -107,7 +137,13 @@ const BookDetail = () => {
         </div>
         <hr className="divider" />
         <div className='review-div'>
+          <div className='detail-reivew-align'>
         <p className = 'intro'>리뷰</p>
+        <div className='write-dup'>
+        <button className='write-reivew-button' onClick={openModal}>리뷰 작성</button>
+        <img className='write-img' src={'/img/write.png'} alt={'작성'} />
+        </div>
+        </div>
       {reviewList.map((review) => (
         <div key={review.reviewId}>
           <div className='firstline'>
@@ -121,6 +157,31 @@ const BookDetail = () => {
       ))}
         </div>
       </div>
+      <React.Fragment>
+                <CleanModal open={modalOpen} close={closeModal}>
+                  <div className="modal-book-detail">
+                <img className='review-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} />
+                <div className='modal-line'>
+                <p className='review-title'>{book.title}</p>
+                <div className='modal-flex'>
+                <div className='margin-rignt-40'>
+                    <p>저자</p>
+                    <p>출판사</p>
+                </div>
+                <div className='gray'>
+                    <p>{book.author}</p>
+                    <p>{book.publisher}</p>
+                </div>
+                </div>
+                </div>
+                </div>
+                <p>*리뷰 작성</p>
+                <input className= 'review-input' onChange={handleInputChange}></input>
+                <div className='withdraw-align'>
+                    <button className='withdraw-button' onClick={handleWrite}>등록</button>
+                </div>
+                </CleanModal>
+        </React.Fragment>
     </div>
   );
 };

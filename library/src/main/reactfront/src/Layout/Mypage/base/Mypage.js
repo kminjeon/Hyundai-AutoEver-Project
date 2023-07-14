@@ -74,18 +74,20 @@ const Mypage = () => {
             </div>
             <React.Fragment>
                 <CleanModal open={modalOpen} close={closeModal}>
-                회원 탈퇴하시겠습니까?
-                <button className='code-button' onClick={handleSubmit}>확인</button>
-                <button className='code-button' onClick={closeModal}>취소</button>
+                <p className='withdraw-msg'>회원 탈퇴하시겠습니까?</p>
+                <div className='withdraw-align'>
+                    <button className='withdraw-button' onClick={handleSubmit}>확인</button>
+                    <button className='withdraw-button' onClick={closeModal}>취소</button>
+                </div>
                 </CleanModal>
         </React.Fragment>
         <React.Fragment>
                 <CleanModal open={cmodalOpen} close={ccloseModal}>
-                대여중인 도서가 있습니다. 반납 후 탈퇴 부탁드립니다.
+                <p className='withdraw-msg'>대여중인 도서가 있습니다. 반납 후 탈퇴 부탁드립니다.</p>
                 {bookList && bookList.map((book) => {
                     return <p key={book.bookId}>{book.title}</p>
                 })}
-                <button className='code-button' onClick={ccloseModal}>확인</button>
+                <button className='withdraw-button' onClick={ccloseModal}>확인</button>
                 </CleanModal>
         </React.Fragment>
         </div>
