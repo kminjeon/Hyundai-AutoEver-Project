@@ -42,6 +42,22 @@ public class ReserveController {
     }
 
     /**
+     * 관리자 예약 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @return GetReservePage
+     */
+    @GetMapping("/admin/reserve")
+    public Response getAdminReservePage(@PageableDefault(size = 10) Pageable pageable,
+                                        @RequestParam(required = false) String personalId,
+                                        @RequestParam(required = false) String name,
+                                        @RequestParam(required = false) Long bookId,
+                                        @RequestParam(required = false) String title) {
+        return Response.ok().setData(reserveService.getAdminReservePage(pageable, personalId, name, bookId, title));
+    }
+
+
+    /**
      * 도서 예약 삭제
      * @param reserveId
      * @return ok

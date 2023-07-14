@@ -78,9 +78,9 @@ public class BookService {
      * @param title
      * @return SearchAdminBookPage
      */
-    public SearchAdminBookPage searchAdminBookPage(Pageable pageable, Long bookId, CategoryType categorytype, String title) {
+    public SearchAdminBookPage searchAdminBookPage(Pageable pageable, Long bookId, CategoryType categorytype, String title, String author) {
         log.info("BookService : [searchApplyPage]");
-        return buildSearchAdminBookPage(bookRepository.searchAdminBookPage(pageable, bookId, categorytype, title));
+        return buildSearchAdminBookPage(bookRepository.searchAdminBookPage(pageable, bookId, categorytype, title, author));
     }
 
     /**

@@ -45,13 +45,14 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
     }
 
     @Override
-    public Page<SearchAdminBookDto> searchAdminBookPage(Pageable pageable, Long bookId, CategoryType categorytype, String title) {
+    public Page<SearchAdminBookDto> searchAdminBookPage(Pageable pageable, Long bookId, CategoryType categorytype, String title, String author) {
         List<SearchAdminBookDto> content =  queryFactory
                 .select(new QBookDto_SearchAdminBookDto(book))
                 .from(book)
                 .where(bookIdEq(bookId),
                         categoryTypeEq(categorytype),
-                        titleContains(title))
+                        titleContains(title),
+                        authorContains(author))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -60,7 +61,8 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
                 .from(book)
                 .where(bookIdEq(bookId),
                         categoryTypeEq(categorytype),
-                        titleContains(title));
+                        titleContains(title),
+                        authorContains(author));
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
@@ -83,5 +85,4 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
     private BooleanExpression publisherContains(String publisher) {
         return publisher == null ? null : book.publisher.contains(publisher);
     }
-
 }

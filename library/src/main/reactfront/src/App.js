@@ -22,6 +22,11 @@ import FindId from './Layout/LoginPage/FindId';
 import FindPassword from './Layout/LoginPage/FindPassword';
 import AdminMain from './Layout/Admin/AdminMain/AdminMain';
 import AdminRentInfo from './Layout/Admin/AdminRentInfo/AdminRentInfo';
+import AdminRentHistory from './Layout/Admin/AdminRentHistory/AdminRentHistory';
+import AdminReserveInfo from './Layout/Admin/AdminReserveInfo/AdminReserveInfo';
+import AdminApplyInfo from './Layout/Admin/AdminApplyInfo/AdminApplyInfo';
+import AdminBookInfo from './Layout/Admin/AdminBookInfo/AdminBookInfo';
+import AdminAuthInfo from './Layout/Admin/AdminAuth/AdminAuthInfo';
 
 function App () {
   return (
@@ -47,6 +52,11 @@ function App () {
 
       <Route path='/admin/main' element={<AdminMain />} />
       <Route path='/admin/rentInfo' element={<AdminRentInfo />} />
+      <Route path='/admin/rentHistory' element={<AdminRentHistory />} />
+      <Route path='/admin/reserveInfo' element={<AdminReserveInfo />} />
+      <Route path='/admin/applyInfo' element={<AdminApplyInfo />} />
+      <Route path='/admin/bookInfo' element={<AdminBookInfo />} />
+      <Route path='/admin/authInfo' element={<AdminAuthInfo />} />
     </Routes>
   );
 }

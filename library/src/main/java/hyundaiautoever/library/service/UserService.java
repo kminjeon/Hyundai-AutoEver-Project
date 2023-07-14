@@ -161,7 +161,7 @@ public class UserService {
         });
 
         try {
-            user.updateUserAuthType(auth.equals("ON") ? AuthType.ADMIN : AuthType.USER);
+            user.updateUserAuthType(auth.equals("ADMIN") ? AuthType.ADMIN : AuthType.USER);
         } catch (Exception e) {
             log.error("updateAuth Exception : {}", e.getMessage());
             throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);

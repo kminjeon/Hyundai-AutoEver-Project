@@ -21,7 +21,7 @@ public class ApplyRepositorySupportImpl implements ApplyRepositorySupport{
     }
 
     @Override
-    public Page<SearchApplyDto> searchApplyPage(Pageable pageable, String personalId, String title, String author, String isbn, String publisher) {
+    public Page<SearchApplyDto> searchApplyPage(Pageable pageable, String personalId, String name, String title, String author, String isbn, String publisher) {
 
         List<SearchApplyDto> content = queryFactory
                 .select(new QApplyDto_SearchApplyDto(apply))
@@ -30,7 +30,8 @@ public class ApplyRepositorySupportImpl implements ApplyRepositorySupport{
                         titleEq(title),
                         authorEq(author),
                         isbnEq(isbn),
-                        publisherEq(publisher))
+                        publisherEq(publisher),
+                        nameEq(name))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -41,7 +42,8 @@ public class ApplyRepositorySupportImpl implements ApplyRepositorySupport{
                         titleEq(title),
                         authorEq(author),
                         isbnEq(isbn),
-                        publisherEq(publisher));
+                        publisherEq(publisher),
+                        nameEq(name));
         return PageableExecutionUtils.getPage(content, pageable, countQuery::fetchOne);
     }
 
@@ -63,6 +65,10 @@ public class ApplyRepositorySupportImpl implements ApplyRepositorySupport{
 
     private BooleanExpression publisherEq(String publisher) {
         return publisher == null ? null : apply.publisher.contains(publisher);
+    }
+
+    private BooleanExpression nameEq(String name) {
+        return name == null ? null : apply.user.name.contains(name);
     }
 
 }

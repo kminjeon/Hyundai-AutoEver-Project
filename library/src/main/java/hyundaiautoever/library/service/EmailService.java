@@ -30,7 +30,7 @@ public class EmailService {
     public String sendMail(String personalId) {
 
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
-            log.error("getRentPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            log.error("sendMail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 

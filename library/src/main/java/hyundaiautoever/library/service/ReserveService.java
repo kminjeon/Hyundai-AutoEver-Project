@@ -2,6 +2,8 @@ package hyundaiautoever.library.service;
 
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
+import hyundaiautoever.library.common.type.AuthType;
+import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.dto.ReserveDto;
 import hyundaiautoever.library.model.dto.request.ReserveRequest;
 import hyundaiautoever.library.model.dto.response.Response;
@@ -84,6 +86,24 @@ public class ReserveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
         return buildReservePage(reserveRepository.findByUser(pageable, user));
+    }
+
+    /**
+     * 관리자 예약 페이지 조회
+     * @param pageable
+     * @param personalId
+     * @return GetReservePage
+     */
+    public GetAdminReservePage getAdminReservePage(Pageable pageable, String personalId, String name, Long bookId, String title) {
+//        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
+//            log.error("getAdminReservePage Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+//            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+//        });
+//
+//        if (user.getAuthType().equals(AuthType.USER)) {
+//            throw new LibraryException.AuthException(ExceptionCode.AUTH_ERROR);
+//        }
+        return buildAdminReservePage(reserveRepository.getAdminReservePage(pageable, personalId, name, bookId, title));
     }
 
     /**

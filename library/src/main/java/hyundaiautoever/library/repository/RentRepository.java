@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 
 import static hyundaiautoever.library.model.dto.RentDto.*;
 
-public interface RentRepository extends JpaRepository<Rent, Long>, RentRepositorySupport{
+public interface RentRepository extends JpaRepository<Rent, Long>, RentRepositorySupport {
     @Query("SELECT new hyundaiautoever.library.model.dto.RentDto$GetRentDto(r) FROM Rent r WHERE r.user = :user AND r.returnDate IS NULL")
     Page<GetRentDto> findGetRentDtoByUser(Pageable pageable, @Param("user") User user);
 

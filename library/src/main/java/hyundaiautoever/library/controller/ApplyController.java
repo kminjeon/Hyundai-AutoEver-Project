@@ -22,7 +22,7 @@ public class ApplyController {
     /**
      * 도서 신청 생성
      * @param request
-     * @return
+     * @return Apply ID
      */
     @PostMapping("/apply")
     public Response createApply(@RequestBody @Valid ApplyRequest.CreateApplyRequest request) {
@@ -57,13 +57,14 @@ public class ApplyController {
     @GetMapping("/admin/apply/list")
     public Response searchApplyPage(@PageableDefault(size = 10) Pageable pageable,
                                     @RequestParam(required = false) String personalId,
+                                    @RequestParam(required = false) String name,
                                     @RequestParam(required = false) String title,
                                     @RequestParam(required = false) String author,
                                     @RequestParam(required = false) String isbn,
                                     @RequestParam(required = false) String publisher
                                     ) {
         log.info("ApplyController : [searchApplyPage]");
-        return Response.ok().setData(applyService.searchApplyPage(pageable, personalId, title, author, isbn, publisher));
+        return Response.ok().setData(applyService.searchApplyPage(pageable, personalId, name, title, author, isbn, publisher));
     }
 
     /**

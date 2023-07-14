@@ -57,9 +57,10 @@ public class BookController {
     public Response searchAdminBookPage(@PageableDefault(size = 10) Pageable pageable,
                                    @RequestParam(required = false) Long bookId,
                                    @RequestParam(required = false) CategoryType categoryType,
-                                   @RequestParam(required = false) String title) {
+                                   @RequestParam(required = false) String title,
+                                        @RequestParam(required = false) String author) {
         log.info("BookController : [searchAdminBookPage]");
-        return Response.ok().setData(bookService.searchAdminBookPage(pageable, bookId, categoryType, title));
+        return Response.ok().setData(bookService.searchAdminBookPage(pageable, bookId, categoryType, title, author));
     }
 
 

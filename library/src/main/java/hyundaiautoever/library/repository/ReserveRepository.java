@@ -15,7 +15,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 import java.util.Optional;
 
-public interface ReserveRepository extends JpaRepository<Reserve, Long> {
+public interface ReserveRepository extends JpaRepository<Reserve, Long>, ReserveRepositorySupport {
 
     List<Reserve> findAllByBook(Book book);
 

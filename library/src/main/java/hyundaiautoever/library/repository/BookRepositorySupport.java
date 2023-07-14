@@ -13,7 +13,8 @@ public interface BookRepositorySupport {
     Page<SearchAdminBookDto> searchAdminBookPage(Pageable pageable,
                                                  Long bookId,
                                                  CategoryType categorytype,
-                                                 String title);
+                                                 String title,
+                                                 String author);
 
     Page<Book> getSearchBookPage(Pageable pageable, String SearchWord);
 }

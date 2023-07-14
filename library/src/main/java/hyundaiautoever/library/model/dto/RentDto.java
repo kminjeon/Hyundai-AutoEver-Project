@@ -110,6 +110,35 @@ public class RentDto {
         }
     }
 
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    public static class GetAdminRentHistoryDto {
+        private final Long rentId;
+        private final String personalId;
+        private final String name;
+        private final Long bookId;
+        private final String title;
+
+        private final String author;
+        private final String isbn;
+        private final String rentDate;
+        private final String returnDate;
+
+        @QueryProjection
+        public GetAdminRentHistoryDto(Rent rent) {
+            this.rentId = rent.getId();
+            this.personalId = rent.getUser().getPersonalId();
+            this.isbn = rent.getBook().getIsbn();
+            this.name = rent.getUser().getName();
+            this.author = rent.getBook().getAuthor();
+            this.bookId = rent.getBook().getId();
+            this.title = rent.getBook().getTitle();
+            this.rentDate = rent.getRentDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+            this.returnDate = rent.getReturnDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
+        }
+    }
+
     @Getter
     public static class GetAdminRentPage {
         private final Response.Pagination pagination;
@@ -121,12 +150,27 @@ public class RentDto {
         }
     }
 
+    @Getter
+    public static class GetAdminRentHistoryPage {
+        private final Response.Pagination pagination;
+        private final List<GetAdminRentHistoryDto> rentList;
+
+        public GetAdminRentHistoryPage(Page<GetAdminRentHistoryDto> page) {
+            this.pagination = new Response.Pagination(page);
+            this.rentList = page.getContent();
+        }
+    }
+
     public static GetRentPage buildGetRentPage(Page<GetRentDto> page) {
         return new GetRentPage(page);
     }
 
     public static GetAdminRentPage buildGetAdminRentPage(Page<GetAdminRentDto> page) {
         return new GetAdminRentPage(page);
+    }
+
+    public static GetAdminRentHistoryPage buildGetAdminRentHistoryPage(Page<GetAdminRentHistoryDto> page) {
+        return new GetAdminRentHistoryPage(page);
     }
 
     public static GetRentHistoryPage buildGetRentHistoryPage(Page<GetRentHistoryDto> page) {

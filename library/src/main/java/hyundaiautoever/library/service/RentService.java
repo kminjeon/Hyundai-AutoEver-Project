@@ -4,10 +4,7 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.dto.RentDto;
-import hyundaiautoever.library.model.dto.RentDto.GetAdminRentPage;
-import hyundaiautoever.library.model.dto.RentDto.GetRentDto;
-import hyundaiautoever.library.model.dto.RentDto.GetRentHistoryPage;
-import hyundaiautoever.library.model.dto.RentDto.GetRentPage;
+import hyundaiautoever.library.model.dto.RentDto.*;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Rent;
@@ -120,6 +117,20 @@ public class RentService {
      */
     public GetAdminRentPage getAdminRentPage(Pageable pageable, String personalId, String name, Long bookId, String title) {
         return RentDto.buildGetAdminRentPage(rentRepository.getAdminRentPage(pageable, personalId, name, bookId, title));
+    }
+
+
+    /**
+     * 관리자 대여 기록 페이지 (검색 가능)
+     * @param pageable
+     * @param personalId
+     * @param name
+     * @param bookId
+     * @param title
+     * @return GetAdminRentPage
+     */
+    public GetAdminRentHistoryPage getAdminRentHistoryPage(Pageable pageable, String personalId, String name, Long bookId, String title) {
+        return RentDto.buildGetAdminRentHistoryPage(rentRepository.getAdminRentHistoryPage(pageable, personalId, name, bookId, title));
     }
 
     /**
