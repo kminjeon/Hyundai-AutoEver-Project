@@ -1,17 +1,11 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import './BookItem_RentInfo.css'
 
 const BookItem_ApplyInfo = ({book, index}) => {
 
-    const navigate = useNavigate();
 
     const personalId = sessionStorage.getItem('personalId');
-
-    const handleBookClick = () => {
-      navigate(`/book/detail/${book.bookId}`);
-    };
 
     
   return (
@@ -21,7 +15,7 @@ const BookItem_ApplyInfo = ({book, index}) => {
         <div className="indexandimg">
         <p className="admin-rentinfo-index">{index}</p>      
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="title">{book.title}</p>
         <p className="author">{book.author}</p>
         </div>
         </div>

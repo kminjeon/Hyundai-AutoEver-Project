@@ -113,6 +113,17 @@ public class BookController {
     }
 
     /**
+     * 관리자 도서 상세 조회
+     * @param bookId
+     * @return GetBookDetailDto
+     */
+    @GetMapping("/admin/book/detail/{bookId}")
+    public Response getAdminBookDetail(@PathVariable("bookId") Long bookId) {
+        log.info("BookController : [getBookDetail]");
+        return Response.ok().setData(bookService.getAdminBookDetail(bookId));
+    }
+
+    /**
      * 도서 검색 (제목, 저자, 출판사)
      * @param pageable
      * @param searchWord

@@ -18,12 +18,10 @@ public class Love extends BaseEntity {
     @Column(name = "love_id")
     private Long id; // 좋아요 ID
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 좋아요 누른 예약자
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book; // 좋아요 누른 책

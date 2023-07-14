@@ -31,7 +31,6 @@ public class Apply extends BaseEntity {
     private String publisher;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "user_id")
     private User user;
 
