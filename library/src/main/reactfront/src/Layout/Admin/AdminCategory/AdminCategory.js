@@ -65,9 +65,11 @@ const handleSubmit = () => {
       </ul>
       <React.Fragment>
                 <CleanModal open={modalOpen} close={closeModal}>
-                회원 탈퇴하시겠습니까?
-                <button className='code-button' onClick={handleSubmit}>확인</button>
-                <button className='code-button' onClick={closeModal}>취소</button>
+                <p className='withdraw-msg'>회원 탈퇴하시겠습니까?</p>
+                <div className='withdraw-align'>
+                    <button className='withdraw-button' onClick={handleSubmit}>확인</button>
+                    <button className='withdraw-button' onClick={closeModal}>취소</button>
+                </div>
                 </CleanModal>
       </React.Fragment>
     </div>
