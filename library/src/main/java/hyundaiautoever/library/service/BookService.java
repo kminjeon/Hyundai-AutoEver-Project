@@ -3,16 +3,15 @@ package hyundaiautoever.library.service;
 import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
+import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.dto.BookDto;
 import hyundaiautoever.library.model.dto.BookDto.*;
 import hyundaiautoever.library.model.dto.request.BookRequest;
+import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Love;
 import hyundaiautoever.library.model.entity.User;
-import hyundaiautoever.library.repository.BookRepository;
-import hyundaiautoever.library.repository.LoveRepository;
-import hyundaiautoever.library.repository.ReviewRepository;
-import hyundaiautoever.library.repository.UserRepository;
+import hyundaiautoever.library.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -38,9 +37,12 @@ public class BookService {
 
     private final BookRepository bookRepository;
     private final ReviewRepository reviewRepository;
+    private final RentRepository rentRepository;
     private final UserRepository userRepository;
-
+    private final ReserveService reserveService;
     private final LoveRepository loveRepository;
+    private final ReserveRepository reserveRepository;
+
 
     /**
      * 도서 추가
@@ -225,11 +227,25 @@ public class BookService {
      * @param bookId
      */
     @Transactional
-    public void deleteBook(Long bookId) {
+    public Response deleteBook(Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("deleteBook Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
+        if (book.getRentType().equals(RentType.CLOSE)) {
+            // 삭제할 도서가 대여 중인 경우
+            return Response.withdrawException(ExceptionCode.DELETE_RENT_ERROR);
+        }
+
+        // 좋아요
+        loveRepository.deleteAllByBook(book);
+        // 대여
+        rentRepository.deleteAllByBook(book);
+        // 예약
+        reserveRepository.deleteAllByBook(book);
+        // 리뷰
+        reviewRepository.deleteAllByBook(book);
 
         // 도서 삭제
         try {
@@ -238,6 +254,7 @@ public class BookService {
             log.error("deleteBook Exception : {}", e.getMessage());
             throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
         }
+        return Response.ok();
     }
 
 }

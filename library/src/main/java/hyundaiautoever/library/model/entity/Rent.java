@@ -3,6 +3,8 @@ package hyundaiautoever.library.model.entity;
 import hyundaiautoever.library.model.entity.base.BaseEntity;
 import lombok.*;
 import org.aspectj.apache.bcel.classfile.LocalVariable;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -31,10 +33,12 @@ public class Rent extends BaseEntity {
     @Column(name = "extension_number")
     private Integer extensionNumber;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 예약자
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book; // 예약책

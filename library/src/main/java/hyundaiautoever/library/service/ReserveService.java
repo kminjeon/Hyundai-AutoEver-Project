@@ -85,7 +85,7 @@ public class ReserveService {
             log.error("getReservePage Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        return buildReservePage(reserveRepository.findByUser(pageable, user));
+        return buildReservePage(reserveRepository.findPageByUser(pageable, user));
     }
 
     /**

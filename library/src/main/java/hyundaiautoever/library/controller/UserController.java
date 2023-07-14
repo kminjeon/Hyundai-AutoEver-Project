@@ -122,8 +122,7 @@ public class UserController {
     @DeleteMapping("/mypage/withdraw")
     public Response deleteUser(@RequestParam("personalId") String personalId) {
         log.info("UserController : [deleteUser]");
-        userService.deleteUser(personalId);
-        return Response.ok();
+        return userService.deleteUser(personalId);
     }
 
 

@@ -15,4 +15,8 @@ public interface LoveRepository extends JpaRepository<Love, Long> {
     Optional<Love> findByUserAndBook(User user, Book book);
 
     List<Love> findByUserAndBookIn(User user, List<Book> books);
+
+    void deleteAllByUser(User user);
+    void deleteAllByBook(Book book);
+
 }

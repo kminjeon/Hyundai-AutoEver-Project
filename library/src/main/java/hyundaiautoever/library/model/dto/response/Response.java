@@ -41,6 +41,16 @@ public class Response<T> {
         return new Response<T>(ExceptionCode.SUCCESS);
     }
 
+    public static <T> Response<T> withdrawException(ExceptionCode exceptionCode) {
+        log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
+    public static <T> Response<T> deleteBookException(ExceptionCode exceptionCode) {
+        log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
     public static <T> Response<T> dataDuplicateException(ExceptionCode exceptionCode) {
         log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);

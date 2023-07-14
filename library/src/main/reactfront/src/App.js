@@ -27,6 +27,7 @@ import AdminReserveInfo from './Layout/Admin/AdminReserveInfo/AdminReserveInfo';
 import AdminApplyInfo from './Layout/Admin/AdminApplyInfo/AdminApplyInfo';
 import AdminBookInfo from './Layout/Admin/AdminBookInfo/AdminBookInfo';
 import AdminAuthInfo from './Layout/Admin/AdminAuth/AdminAuthInfo';
+import AdminProfile from './Layout/Admin/AdminProfile/AdminProfile';
 
 function App () {
   return (
@@ -57,6 +58,7 @@ function App () {
       <Route path='/admin/applyInfo' element={<AdminApplyInfo />} />
       <Route path='/admin/bookInfo' element={<AdminBookInfo />} />
       <Route path='/admin/authInfo' element={<AdminAuthInfo />} />
+      <Route path='/admin/profile' element={<AdminProfile />} />
     </Routes>
   );
 }

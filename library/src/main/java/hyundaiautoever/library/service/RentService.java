@@ -176,7 +176,7 @@ public class RentService {
         // 도서 이용 가능 상태(RentType.OPEN)로 업데이트
         rent.getBook().updateRentType(RentType.OPEN);
 
-        Reserve firstReserve = reserveRepository.findByWaitNumber(1);
+        Reserve firstReserve = reserveRepository.findByWaitNumberAndBook(1, rent.getBook());
 
         // 반납될 도서를 예약한 사람이 있는 경우
         if (firstReserve != null) {

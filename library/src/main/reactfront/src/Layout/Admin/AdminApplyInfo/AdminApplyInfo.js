@@ -154,7 +154,7 @@ const AdminApplyInfo = () => {
             <select className='select-box' onChange={onOptionaHandler}> 
 			{OPTIONS.map((option) => (
 				<option
-                    key={option.value}
+          key={option.value}
 					value={option.value}
 					defaultValue={option.value}
 				>

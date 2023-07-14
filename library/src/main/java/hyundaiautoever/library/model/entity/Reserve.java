@@ -2,6 +2,8 @@ package hyundaiautoever.library.model.entity;
 
 import hyundaiautoever.library.model.entity.base.BaseEntity;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -20,10 +22,12 @@ public class Reserve extends BaseEntity {
     @Column(name = "wait_number", nullable = false)
     private Integer waitNumber; // 대기 순번
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 예약자
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book; // 예약책
