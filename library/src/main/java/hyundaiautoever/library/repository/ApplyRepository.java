@@ -17,4 +17,7 @@ public interface ApplyRepository extends JpaRepository<Apply, Long>, ApplyReposi
 
     @Query("SELECT new hyundaiautoever.library.model.dto.ApplyDto$GetApplyDto(a) FROM Apply a WHERE a.user = :user")
     Page<GetApplyDto> findByUser(Pageable pageable, @Param("user") User user);
+
+    void deleteAllByUser(User user);
+
 }

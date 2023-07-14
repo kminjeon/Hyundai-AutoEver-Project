@@ -2,8 +2,7 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import axios from 'axios';
 
-
-const Switch = ({user, }) => {
+const Switch = ({user}) => {
 
     const [value, setValue] = useState(user.authType == 'ADMIN');
     console.log(user);

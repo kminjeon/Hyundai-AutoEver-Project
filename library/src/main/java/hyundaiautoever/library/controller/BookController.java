@@ -69,11 +69,10 @@ public class BookController {
      * @param bookId
      * @return ok
      */
-    @DeleteMapping("/admin/admin/book")
+    @DeleteMapping("/admin/book/delete")
     public Response deleteBook(@RequestParam("bookId") Long bookId) {
-        bookService.deleteBook(bookId);
-
-        return Response.ok();
+        log.info("BookController : [deleteBook]");
+        return bookService.deleteBook(bookId);
     }
 
     /**

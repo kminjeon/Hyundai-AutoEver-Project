@@ -21,11 +21,18 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long>, Reserve
 
     Optional<Reserve> findByUserAndBook(User user, Book book);
 
-    Reserve findByWaitNumber(Integer waitNumber);
+    Reserve findByWaitNumberAndBook(Integer waitNumber, Book book);
 
     @Query("SELECT r FROM Reserve r WHERE r.waitNumber > :waitNumber")
     List<Reserve> findReserveListByWaitNumber(@Param("waitNumber") Integer waitNumber);
 
     @Query("SELECT new hyundaiautoever.library.model.dto.ReserveDto$GetReserveDto(r)  FROM Reserve r WHERE r.user = :user")
-    Page<GetReserveDto> findByUser(Pageable pageable, @Param("user") User user);
+    Page<GetReserveDto> findPageByUser(Pageable pageable, @Param("user") User user);
+
+    List<Reserve> findByUser(User user);
+
+    void deleteAllByUser(User user);
+    void deleteAllByBook(Book book);
+
+    List<Reserve> findAllByBookAndWaitNumberGreaterThan(Book book, Integer waitNumber);
 }

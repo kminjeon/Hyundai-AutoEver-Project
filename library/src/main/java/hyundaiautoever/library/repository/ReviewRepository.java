@@ -17,6 +17,9 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     List<Review> findByBook(Book book);
 
+    void deleteAllByUser(User user);
+    void deleteAllByBook(Book book);
+
     @Query("SELECT new hyundaiautoever.library.model.dto.ReviewDto$GetReviewDto(r) FROM Review r WHERE r.user = :user")
     Page<GetReviewDto> findByUser(Pageable pageable, @Param("user") User user);
 }
