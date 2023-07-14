@@ -9,6 +9,7 @@ public interface ApplyRepositorySupport {
 
     Page<SearchApplyDto> searchApplyPage(Pageable pageable,
                                          String personalId,
+                                         String name,
                                          String title,
                                          String author,
                                          String isbn,

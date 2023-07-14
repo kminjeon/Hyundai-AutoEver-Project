@@ -44,6 +44,8 @@ public class BookDto {
         private final Long bookId;
         private final CategoryType categoryType;
         private final String title;
+        private final String author;
+        private final String isbn;
         private final Boolean rentType;
 
         @QueryProjection
@@ -51,6 +53,8 @@ public class BookDto {
             this.bookId = book.getId();
             this.categoryType = book.getCategoryType();
             this.title = book.getTitle();
+            this.author = book.getAuthor();
+            this.isbn = book.getIsbn();
             this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
         }
     }
@@ -58,10 +62,10 @@ public class BookDto {
     @Getter
     public static class SearchAdminBookPage {
         private final Pagination pagination;
-        private final List<SearchAdminBookDto> adminBookDtoList;
+        private final List<SearchAdminBookDto> bookList;
         public SearchAdminBookPage(Page<SearchAdminBookDto> page) {
                 this.pagination = new Pagination(page);
-                this.adminBookDtoList = page.getContent();
+                this.bookList = page.getContent();
         }
     }
 

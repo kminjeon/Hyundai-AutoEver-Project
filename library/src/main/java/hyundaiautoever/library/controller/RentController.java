@@ -67,6 +67,25 @@ public class RentController {
                                      @RequestParam(required = false) String title) {
         return Response.ok().setData(rentService.getAdminRentPage(pageable, personalId, name, bookId, title));
     }
+
+
+    /**
+     * 관리자 대여 기록 페이지
+     * @param pageable
+     * @param personalId
+     * @param name
+     * @param bookId
+     * @param title
+     * @return GetAdminRentPage
+     */
+    @GetMapping("/admin/rentHistory/getPage")
+    public Response getAdminRentHistoryPage(@PageableDefault(size = 10) Pageable pageable,
+                                     @RequestParam(required = false) String personalId,
+                                     @RequestParam(required = false) String name,
+                                     @RequestParam(required = false) Long bookId,
+                                     @RequestParam(required = false) String title) {
+        return Response.ok().setData(rentService.getAdminRentHistoryPage(pageable, personalId, name, bookId, title));
+    }
     /**
      * 도서 대여 연장 (14일)
      * @param rentId

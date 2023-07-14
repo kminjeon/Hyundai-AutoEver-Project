@@ -12,6 +12,12 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
+    public static class AuthException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class DataNotFoundException extends RuntimeException {
         private ExceptionCode exceptionCode;
     }

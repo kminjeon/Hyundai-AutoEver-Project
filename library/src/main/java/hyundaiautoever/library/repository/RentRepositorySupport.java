@@ -11,4 +11,10 @@ public interface RentRepositorySupport {
                                                    String name,
                                                    Long bookId,
                                                    String title);
+
+    Page<RentDto.GetAdminRentHistoryDto> getAdminRentHistoryPage(Pageable pageable,
+                                                   String personalId,
+                                                   String name,
+                                                   Long bookId,
+                                                   String title);
 }

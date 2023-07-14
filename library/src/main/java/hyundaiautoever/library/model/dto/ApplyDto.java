@@ -62,18 +62,22 @@ public class ApplyDto {
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class SearchApplyDto {
         private final String personalId;
+        private final String name;
         private final String title;
         private final String author;
         private final String publisher;
         private final String isbn;
+        private final String applyDate;
 
         @QueryProjection
         public SearchApplyDto(Apply apply) {
             this.personalId = apply.getUser().getPersonalId();
+            this.name = apply.getUser().getName();
             this.title = apply.getTitle();
             this.author = apply.getAuthor();
             this.publisher = apply.getPublisher();
             this.isbn = apply.getIsbn();
+            this.applyDate = apply.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
 
     }
@@ -81,11 +85,11 @@ public class ApplyDto {
     @Getter
     public static class ApplyListPage {
         private final Response.Pagination pagination;
-        private final List<SearchApplyDto> searchApplyDtoList;
+        private final List<SearchApplyDto> applyList;
 
         public ApplyListPage(Page<SearchApplyDto> page) {
             this.pagination = new Response.Pagination(page);
-            this.searchApplyDtoList = page.getContent();
+            this.applyList = page.getContent();
         }
     }
 

@@ -8,7 +8,7 @@ const AdminCategory = () => {
     { id: 3, name: '도서 예약 관리', link: 'reserveInfo' },
     { id: 4, name: '도서 신청 관리', link: 'applyInfo' },
     { id: 5, name: '도서 관리', link: 'bookInfo' },
-    { id: 6, name: '권한 관리', link: 'auth' },
+    { id: 6, name: '권한 관리', link: 'authInfo' },
     { id: 7, name: '개인 정보 변경', link: 'profile' },
     { id: 8, name: '회원 탈퇴', link: 'withdraw' },
   ];

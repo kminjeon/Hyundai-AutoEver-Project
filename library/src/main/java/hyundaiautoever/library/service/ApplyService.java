@@ -86,9 +86,9 @@ public class ApplyService {
      * @param publisher
      * @return ApplyListPage
      */
-    public ApplyListPage searchApplyPage(Pageable pageable, String personalId, String title, String author, String isbn, String publisher) {
+    public ApplyListPage searchApplyPage(Pageable pageable, String personalId, String title, String name, String author, String isbn, String publisher) {
         log.info("ApplyService : [searchApplyPage]");
-        return ApplyDto.buildApplyListPage(applyRepository.searchApplyPage(pageable, personalId, title, author, isbn, publisher));
+        return ApplyDto.buildApplyListPage(applyRepository.searchApplyPage(pageable, personalId, name, title, author, isbn, publisher));
     }
 
     /**

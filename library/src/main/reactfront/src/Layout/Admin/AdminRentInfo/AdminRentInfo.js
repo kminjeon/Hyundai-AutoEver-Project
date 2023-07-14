@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-import BookItem_RentInfo from '../BookItem_RentInfo/BookItem_RentInfo';
+import BookItem_RentInfo from '../ADMIN_BookItem/BookItem_RentInfo';
 import AdminHeader from '../Header/AdminHeader';
 import AdminCategory from '../AdminCategory/AdminCategory';
 import PaginationBox from '../../Page/PaginationBox';
@@ -19,10 +19,11 @@ const AdminRentInfo = () => {
     const [searchName, setSearchName] = useState('');
     const [searchBookId, setSearchBookId] = useState('');
     const [searchTitle, setSearchTitle] = useState('');
+    
     const [searchWord, setSearchWord] = useState('');
 
     const [select, setSelect] = useState("title")
-
+    const [searchOnOff, setSearchOnOff] = useState('');
 
     const OPTIONS = [
         { value: "title", name: "도서 제목" },
@@ -31,26 +32,18 @@ const AdminRentInfo = () => {
         { value: "personalId", name: "회원 ID" },
     ];
 
-
-    const [searchList, setSearchList] = useState({
-        personalId : '',
-        name : '',
-        bookId : '',
-        title : '',
-    });
-
-
     useEffect(() => {
       // 도서 데이터를 가져오는 API 호출
       const getRentPage = async () => {
+
         try {
             const response = await axios.get(`/api/admin/rent/getPage`, {
         params : {
             page : page,
-            personalId : searchList.personalId.length == 0 ? null : searchList.personalId,
-            name : searchList.name.length == 0 ? null : searchList.name,
-            bookId : searchList.bookId.length == 0 ? null : searchList.bookId,
-            title : searchList.title.length == 0 ? null : searchList.title
+            personalId : searchPersonalId.length === 0 ? null : searchPersonalId,
+            name : searchName.length === 0 ? null : searchName,
+            bookId : searchBookId.length === 0 ? null : searchBookId,
+            title : searchTitle.length === 0 ? null : searchTitle
         }
       });
           console.log(response.data.data); 
@@ -61,7 +54,7 @@ const AdminRentInfo = () => {
         }
     };
         getRentPage();
-    }, [page, searchList]);
+    }, [page, searchOnOff]);
     
     if (!pageInfo) {
         return null; // pageInfo가 없을 때 null을 반환하여 Pagination 컴포넌트를 렌더링하지 않음
@@ -69,51 +62,48 @@ const AdminRentInfo = () => {
 
 
 
-    const handleSearch = () => {
-        let updatedState = {};
-      
+    const handleSearch = () => {      
         switch (select) {
           case 'title':
-            updatedState = {
-                searchTitle: searchWord,
-                searchName: '',
-                searchBookId: '',
-                searchPersonalId: '',
-              };
+                setSearchTitle(searchWord);
+                setSearchName('');
+                setSearchBookId('');
+                setSearchPersonalId('');
               break;
             case 'bookId':
-              updatedState = {
-                searchTitle: '',
-                searchName: '',
-                searchBookId: searchWord,
-                searchPersonalId: '',
-              };
+                setSearchTitle('');
+                setSearchName('');
+                setSearchBookId(searchWord);
+                setSearchPersonalId('');
               break;
             case 'personalId':
-              updatedState = {
-                searchTitle: '',
-                searchName: '',
-                searchBookId: '',
-                searchPersonalId: searchWord,
-              };
+              setSearchTitle('');
+              setSearchName('');
+              setSearchBookId('');
+              setSearchPersonalId(searchWord);
               break;
             case 'name':
-              updatedState = {
-                searchTitle: '',
-                searchName: searchWord,
-                searchBookId: '',
-                searchPersonalId: '',
-            };
+              setSearchTitle('');
+              setSearchName(searchWord);
+              setSearchBookId('');
+              setSearchPersonalId('');
             break;
           default:
             break;
         }
         setPage(0);
-        setSearchList(updatedState);
+        setSearchOnOff({select, searchWord});
       };
 
       const handleInputChange = (e) => {
-        setSearchWord(e.target.value);
+        if (select == 'bookId') {
+            const { value } = e.target
+            // value의 값이 숫자가 아닐경우 빈문자열로 replace 해버림.
+            const onlyNumber = value.replace(/[^0-9]/g, '')
+            setSearchWord(onlyNumber)
+        } else {
+          setSearchWord(e.target.value);
+        }
       };
 
       const handleKeyDown = (e) => {
@@ -140,7 +130,7 @@ const AdminRentInfo = () => {
                   onChange={handleInputChange}
                   onKeyDown={handleKeyDown}
                 />
-                <img className='searchimg' src='/img/search.png' />
+                <img className='searchimg' src='/img/search.png'  onClick={handleSearch}/>
             <select className='select-box' onChange={onOptionaHandler}> 
 			{OPTIONS.map((option) => (
 				<option
