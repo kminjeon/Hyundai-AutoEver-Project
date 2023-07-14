@@ -58,7 +58,6 @@ public class BookService {
                 .isbn(request.getIsbn())
                 .categoryType(request.getCategoryType())
                 .description(request.getDescription())
-                .img(request.getImg())
                 .build();
 
         // Book Repository 저장

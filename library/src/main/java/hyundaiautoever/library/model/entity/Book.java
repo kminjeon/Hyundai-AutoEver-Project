@@ -24,7 +24,7 @@ public class Book extends BaseEntity {
     @Column(name = "isbn", nullable = false)
     private String isbn;
 
-    @Column(name = "img", nullable = false)
+    @Column(name = "img")
     private String img;
 
     @Column(name = "author", nullable = false)
@@ -51,13 +51,12 @@ public class Book extends BaseEntity {
     private Integer loveCount; // 좋아요 개수
 
     @Builder
-    public Book(String title, String author, String publisher, String isbn, CategoryType categoryType, String img, String description) {
+    public Book(String title, String author, String publisher, String isbn, CategoryType categoryType, String description) {
         this.title = title;
         this.author = author;
         this.publisher = publisher;
         this.isbn = isbn;
         this.categoryType = categoryType;
-        this.img = img;
         this.description = description;
         this.rentCount = 0;
         this.rentType = RentType.OPEN;

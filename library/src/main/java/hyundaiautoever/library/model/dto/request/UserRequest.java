@@ -4,6 +4,7 @@ import hyundaiautoever.library.common.type.PartType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.apache.groovy.parser.antlr4.util.StringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -47,6 +48,7 @@ public class UserRequest {
     }
 
     @Getter
+    @Setter
     public static class CreateUserRequest {
         @NotEmpty(message = "회원 이름은 필수입니다")
         @NotNull
