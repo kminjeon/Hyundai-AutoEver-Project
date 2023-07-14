@@ -169,6 +169,26 @@ public class BookService {
         return BookDto.buildGetBookDetailDto(book, reviewList, love.isPresent() ? true : false);
     }
 
+
+
+    /**
+     * 관리자 도서 상세 조회
+     * @param bookId
+     * @return GetBookDetailDto
+     */
+    public GetAdminBookDetailDto getAdminBookDetail(Long bookId) {
+        log.info("BookService : [getBookDetail]");
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
+            log.error("getBookDetail Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+
+        // 해당 도서 리뷰 리스트
+        List<CreateReviewDto> reviewList = reviewRepository.findByBook(book).stream().map(CreateReviewDto::new).collect(Collectors.toList());
+        return BookDto.buildAdminGetBookDetailDto(book, reviewList);
+    }
+
+
     /**
      * 도서 검색
      * @param pageable

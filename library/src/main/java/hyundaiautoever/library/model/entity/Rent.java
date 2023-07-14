@@ -33,12 +33,10 @@ public class Rent extends BaseEntity {
     @Column(name = "extension_number")
     private Integer extensionNumber;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user; // 예약자
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
     private Book book; // 예약책

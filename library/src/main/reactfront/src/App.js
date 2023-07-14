@@ -28,6 +28,7 @@ import AdminApplyInfo from './Layout/Admin/AdminApplyInfo/AdminApplyInfo';
 import AdminBookInfo from './Layout/Admin/AdminBookInfo/AdminBookInfo';
 import AdminAuthInfo from './Layout/Admin/AdminAuth/AdminAuthInfo';
 import AdminProfile from './Layout/Admin/AdminProfile/AdminProfile';
+import AdminBookDetail from './Layout/Admin/AdminBookDetail/AdminBookDetail';
 
 function App () {
   return (
@@ -59,6 +60,7 @@ function App () {
       <Route path='/admin/bookInfo' element={<AdminBookInfo />} />
       <Route path='/admin/authInfo' element={<AdminAuthInfo />} />
       <Route path='/admin/profile' element={<AdminProfile />} />
+      <Route path='/admin/book/detail/:bookId' element={<AdminBookDetail />} />
     </Routes>
   );
 }
