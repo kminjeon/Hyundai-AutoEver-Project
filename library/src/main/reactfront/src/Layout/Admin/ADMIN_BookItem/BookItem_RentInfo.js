@@ -10,7 +10,7 @@ const BookItem_RentInfo = ({book, index}) => {
     const personalId = sessionStorage.getItem('personalId');
 
     const handleBookClick = () => {
-      navigate(`/book/detail/${book.bookId}`);
+      navigate(`/admin/book/detail/${book.bookId}`);
     };
 
     const [day, setDay] = useState();

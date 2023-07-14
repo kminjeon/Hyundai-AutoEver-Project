@@ -166,6 +166,33 @@ public class BookDto {
         }
     }
 
+    @Getter
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    public static class GetAdminBookDetailDto {
+        private final Long bookId;
+        private final String title;
+        private final String author;
+        private final String publisher;
+        private final CategoryType categoryType;
+        private final String isbn;
+        private final Boolean rentType;
+        private final String description;
+        private final Integer loveCount;
+        private final List<CreateReviewDto> reviewList;
+        public GetAdminBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
+            this.bookId = book.getId();
+            this.title = book.getTitle();
+            this.author = book.getAuthor();
+            this.publisher = book.getPublisher();
+            this.categoryType = book.getCategoryType();
+            this.isbn = book.getIsbn();
+            this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
+            this.description = book.getDescription();
+            this.loveCount = book.getLoveCount();
+            this.reviewList = reviewList;
+        }
+    }
+
 
     public static BookDto.UpdateBookDto buildUpdateBookDto(Book book) {
         return new UpdateBookDto(book);
@@ -185,6 +212,10 @@ public class BookDto {
 
     public static HeartAddBookPage buildHeartAddBookPage(Page<Book> page, List<BestBookDto> bookList) {
         return new HeartAddBookPage(page, bookList);
+    }
+
+    public static GetAdminBookDetailDto buildAdminGetBookDetailDto(Book book, List<CreateReviewDto> reviewList) {
+        return new GetAdminBookDetailDto(book, reviewList);
     }
 
 }
