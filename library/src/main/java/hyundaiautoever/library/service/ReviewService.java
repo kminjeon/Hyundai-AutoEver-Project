@@ -35,7 +35,7 @@ public class ReviewService {
      * @return CreateReviewDto
      */
     @Transactional
-    public CreateReviewDto createReview(Long bookId, ReviewRequest.CreateReviewRequest request) {
+    public Long createReview(Long bookId, ReviewRequest.CreateReviewRequest request) {
         Book book  = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("createReview Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -57,7 +57,7 @@ public class ReviewService {
             log.error("createReview Exception : {}", e.getMessage());
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
-        return buildCreateReviewDto(review);
+        return review.getId();
     }
 
 

@@ -110,11 +110,6 @@ public class Response<T> {
         return new Response<>(exceptionCode);
     }
 
-    public static <T> Response<T> canNotMoveException(ExceptionCode exceptionCode) {
-        log.info("[canNotMoveException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
-        return new Response<>(exceptionCode);
-    }
-
     public static <T> Response<T> referentialException(ExceptionCode exceptionCode) {
         log.info("[referentialException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<>(exceptionCode);

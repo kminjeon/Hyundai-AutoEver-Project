@@ -7,17 +7,15 @@ const ReserveButton = ({ personalId, bookId }) => {
     // 예약 처리 로직
     axios
       .post(`/api/reserve/create?personalId=${personalId}&bookId=${bookId}`)
-      .then((response) => {
-        // 성공적으로 예약됐을 때 처리할 로직
-        if (response.data.code === 409) {
-          console.log("동일한 예약이 존재합니다");
-        } else {
+      .then(() => {
           console.log("예약 성공");
           window.location.reload();
-        }
       })
       .catch((error) => {
-        // 예약 처리 중 에러가 발생했을 때 처리할 로직
+        if (error.response.status === 409) {
+          console.log("동일한 예약이 존재합니다");
+          alert("동일한 예약이 존재합니다.")
+        }
         console.error("예약 에러", error);
       });
   };

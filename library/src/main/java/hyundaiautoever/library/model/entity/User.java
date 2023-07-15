@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -44,6 +45,9 @@ public class User extends BaseEntity {
 
     @Column(name = "last_login_date")
     private LocalDateTime lastLoginDate;
+
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Love> loves; // 좋아요 목록
 
     @Builder
     public User(String name, String personalId, String password, String email, PartType partType, String nickname) {

@@ -235,8 +235,9 @@ public class BookService {
         book.updateTitle(request.getTitle() != null ? request.getTitle() : book.getTitle());
         book.updateAuthor(request.getAuthor() != null ? request.getAuthor() : book.getAuthor());
         book.updatePublisher(request.getPublisher() != null ? request.getPublisher() : book.getPublisher());
-        book.updateCategoryType(request.getCategory() != null ? request.getCategory() : book.getCategoryType());
+        book.updateCategoryType(request.getCategoryType() != null ? request.getCategoryType() : book.getCategoryType());
         book.updateIsbn(request.getIsbn() != null ? request.getIsbn() : book.getIsbn());
+        book.updateDescription(request.getDescription() != null ? request.getDescription() : book.getDescription());
         return buildUpdateBookDto(book);
     }
 

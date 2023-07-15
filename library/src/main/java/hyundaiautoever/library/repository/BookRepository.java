@@ -18,4 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
 
     Page<Book> findByCategoryType(Pageable pageable, CategoryType categoryType);
     List<Book> findTop10ByOrderByRentCountDesc();
+
+    Book findByIsbn(String isbn);
+
 }

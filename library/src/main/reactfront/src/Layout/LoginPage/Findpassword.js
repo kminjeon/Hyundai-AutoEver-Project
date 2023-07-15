@@ -38,10 +38,10 @@ const FindPassword = () => {
       };
 
     const openModal = () => {
-        axios.get(`api/check/personalId/${personalId}`)
+        axios.get(`/api/check/personalId/${personalId}`)
           .then((response) => {
             console.log(response)
-            if (response.data.code != 409) {
+            if (response.data.code !== 409) {
                 alert("해당하는 사용자가 없습니다")
                 return;
             } else {

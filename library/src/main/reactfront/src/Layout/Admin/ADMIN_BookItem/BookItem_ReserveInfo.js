@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './BookItem_RentInfo.css'
+import './Admin_BookItem.css'
 
 const BookItem_ReserveInfo = ({book, index}) => {
 
@@ -33,7 +33,8 @@ const BookItem_ReserveInfo = ({book, index}) => {
           <p>예약일 : {book.reserveDate}</p>
           <p>대기 순번 : {book.waitNumber} </p>
           <p>책 ID : {book.bookId}</p>
-          <p>대여 회원 : {book.personalId}  {book.name}</p>
+          <p>회원 Id: {book.personalId}</p>
+          <p>회원 이름: {book.name}</p>
         </div>
       </div>
     </li>

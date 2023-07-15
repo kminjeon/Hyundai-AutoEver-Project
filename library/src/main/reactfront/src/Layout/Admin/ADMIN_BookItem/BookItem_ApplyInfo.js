@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import './BookItem_RentInfo.css'
+import './Admin_BookItem.css'
 
 const BookItem_ApplyInfo = ({book, index}) => {
 

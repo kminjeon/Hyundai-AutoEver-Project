@@ -54,7 +54,7 @@ public class ReserveService {
         });
 
         if (reserveRepository.findByUserAndBook(user, book).isPresent()) { // 이미 예약 내역 존재
-            return Response.dataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
+            throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
         }
 
         Reserve reserve = Reserve.builder()
@@ -71,7 +71,7 @@ public class ReserveService {
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
 
-        return Response.ok();
+        return Response.ok().setData(reserve.getId());
     }
 
     /**
@@ -95,14 +95,6 @@ public class ReserveService {
      * @return GetReservePage
      */
     public GetAdminReservePage getAdminReservePage(Pageable pageable, String personalId, String name, Long bookId, String title) {
-//        User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
-//            log.error("getAdminReservePage Exception : [존재하지 않는 personalId]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-//            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-//        });
-//
-//        if (user.getAuthType().equals(AuthType.USER)) {
-//            throw new LibraryException.AuthException(ExceptionCode.AUTH_ERROR);
-//        }
         return buildAdminReservePage(reserveRepository.getAdminReservePage(pageable, personalId, name, bookId, title));
     }
 

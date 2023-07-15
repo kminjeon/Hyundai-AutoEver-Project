@@ -57,6 +57,11 @@ public class RentService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
+        // 대여 불가 상태
+        if (book.getRentType().equals(RentType.CLOSE)) {
+            throw new LibraryException.RentStateException(ExceptionCode.RENT_STATE_ERROR);
+        }
+
         Rent rent = Rent.builder()
                     .book(book)
                     .user(user)

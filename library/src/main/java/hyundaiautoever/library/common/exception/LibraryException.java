@@ -1,12 +1,23 @@
 package hyundaiautoever.library.common.exception;
 
+import hyundaiautoever.library.model.dto.response.Response;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 public class LibraryException {
     @Getter
     @AllArgsConstructor
+    @ResponseStatus(HttpStatus.CONFLICT)
     public static class DataDuplicateException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class RentStateException extends RuntimeException {
         private final ExceptionCode exceptionCode;
     }
 
@@ -18,6 +29,7 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public static class DataNotFoundException extends RuntimeException {
         private ExceptionCode exceptionCode;
     }

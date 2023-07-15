@@ -35,4 +35,5 @@ public interface ReserveRepository extends JpaRepository<Reserve, Long>, Reserve
     void deleteAllByBook(Book book);
 
     List<Reserve> findAllByBookAndWaitNumberGreaterThan(Book book, Integer waitNumber);
+
 }

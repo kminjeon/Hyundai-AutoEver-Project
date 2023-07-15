@@ -6,6 +6,7 @@ import hyundaiautoever.library.model.entity.base.BaseEntity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -50,6 +51,12 @@ public class Book extends BaseEntity {
     @Column(name = "love_count", nullable = false)
     private Integer loveCount; // 좋아요 개수
 
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+//    private List<Love> loves; // 좋아요 목록
+//
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+//    private List<Review> reviews; // 리뷰 목록
+
     @Builder
     public Book(String title, String author, String publisher, String isbn, CategoryType categoryType, String description) {
         this.title = title;
@@ -93,4 +100,9 @@ public class Book extends BaseEntity {
     public void updateRentCount(Integer rentCount) {
         this.rentCount = rentCount;
     }
+
+    public void updateDescription(String description) {
+        this.description = description;
+    }
+
 }

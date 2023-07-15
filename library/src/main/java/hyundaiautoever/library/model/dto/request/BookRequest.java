@@ -4,6 +4,7 @@ import hyundaiautoever.library.common.type.CategoryType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 public class BookRequest {
 
     @Getter
+    @Setter
     public static class AddBookRequest {
         @NotEmpty(message = "책 이름은 필수입니다")
         @NotNull
@@ -32,12 +34,14 @@ public class BookRequest {
     }
 
     @Getter
+    @Setter
     public static class updateBookRequest {
 
         private String title;
         private String author;
         private String publisher;
-        private CategoryType category;
+        private CategoryType categoryType;
         private String isbn;
+        private String description;
     }
 }

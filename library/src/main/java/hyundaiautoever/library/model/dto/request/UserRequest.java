@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 public class UserRequest {
 
     @Getter
+    @Setter
     public static class LoginRequest {
         @NotEmpty(message = "회원 아이디은 필수입니다")
         @NotNull

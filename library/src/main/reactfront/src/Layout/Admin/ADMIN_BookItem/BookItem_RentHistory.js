@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './BookItem_RentInfo.css'
+import './Admin_BookItem.css'
 
 const BookItem_RentHistory = ({book, index}) => {
 
@@ -32,7 +32,8 @@ const BookItem_RentHistory = ({book, index}) => {
           <p>대여일 : {book.rentDate}</p>
           <p>반납일 : {book.returnDate}</p>
           <p>책 ID : {book.bookId}</p>
-          <p>대여 회원 : {book.personalId}  {book.name}</p>
+          <p>회원 Id: {book.personalId}</p>
+          <p>회원 이름: {book.name}</p>
         </div>
       </div>
     </li>

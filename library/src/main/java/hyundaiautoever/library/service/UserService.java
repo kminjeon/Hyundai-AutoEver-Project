@@ -76,6 +76,11 @@ public class UserService {
                 .partType(request.getPartType())
                 .nickname(request.getNickname())
                 .build();
+
+        if (checkEmail(request.getEmail()) || checkNickname(request.getNickname()) || checkPersonalId(request.getPersonalId())) {
+            throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
+        }
+
         try {
             userRepository.save(user);
         } catch (Exception e) {
@@ -286,6 +291,7 @@ public class UserService {
         try {
             user.updateUserPassword(passwordEncoder.encode(request.getNewPassword()));
         } catch (Exception e) {
+
             log.error("resetPassword Exception : {}", e.getMessage());
             throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);
         }

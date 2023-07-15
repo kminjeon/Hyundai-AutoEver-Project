@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './BookItem_RentInfo.css'
+import './Admin_BookItem.css'
 
 const BookItem_RentInfo = ({book, index}) => {
 
@@ -17,7 +17,6 @@ const BookItem_RentInfo = ({book, index}) => {
 
     useEffect (() => {
         if (book.lateDays < 0) {
-          const newDay = book.
             setDay(`D+${book.lateDays * -1}`)
         } else if (book.lateDays == 0) {
           setDay("D-day")
@@ -25,6 +24,19 @@ const BookItem_RentInfo = ({book, index}) => {
           setDay(`D-${book.lateDays}`)
         }
     }, [])
+
+    const handleReturn = () => {
+      axios.put(`/api/rent/return?rentId=${book.rentId}`)
+      .then(response => {
+          console.log('도서 반납 성공')
+          console.log(response)
+          window.location.reload()
+      })
+      .catch (error => {
+      console.log(error);
+      console.log('도서 반납 실패')
+      });
+    }
     
   return (
     <>    
@@ -43,9 +55,14 @@ const BookItem_RentInfo = ({book, index}) => {
         <div>
         <div className="align-right">
           <p>대여일 : {book.rentDate}</p>
-          <p>반납 예정일 : {book.expectedReturnDate} {day}</p>
+          <div>
+            <p className="red-Latedays"> {day}</p>
+            <p>반납 예정일 : {book.expectedReturnDate}</p>
+          </div>
           <p>책 ID : {book.bookId}</p>
-          <p>대여 회원 : {book.personalId}  {book.name}</p>
+          <p>회원 Id: {book.personalId}</p>
+          <p>회원 이름: {book.name}</p>
+          <button className='return-button' onClick={handleReturn} >반납</button>
         </div>
       </div>
     </li>
