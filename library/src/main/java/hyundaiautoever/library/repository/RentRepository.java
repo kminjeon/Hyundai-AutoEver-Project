@@ -31,6 +31,9 @@ public interface RentRepository extends JpaRepository<Rent, Long>, RentRepositor
     @Query("SELECT r FROM Rent r WHERE r.book = :book AND r.returnDate IS NULL")
     List<Rent> findByBook(@Param("book")Book book);
 
+    @Query("SELECT r FROM Rent r WHERE r.user = :user AND r.book = :book AND r.returnDate IS NULL")
+    Rent findByUserAndBook(@Param("user") User user, @Param("book") Book book);
+
     void deleteAllByUser(User user);
 
     void deleteAllByBook(Book book);

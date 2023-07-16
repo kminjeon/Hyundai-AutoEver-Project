@@ -39,6 +39,8 @@ public class RentService {
 
     public final ReserveService reserveService;
 
+    public final EmailService emailService;
+
     /**
      * 도서 대여 생성
      * @param personalId
@@ -51,6 +53,11 @@ public class RentService {
             log.error("createRent Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
+        // 대여 횟수 최대 3회
+        if (user.getRentCount() >= 3) {
+            throw new LibraryException.MaxRentException(ExceptionCode.MAX_RENT_EXCEPTION);
+        }
 
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("createRent Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -79,6 +86,8 @@ public class RentService {
         book.updateRentType(RentType.CLOSE);
         book.updateRentCount(book.getRentCount() + 1);
 
+        // user 현재 대여 횟수
+        user.updateUserRentCount(user.getRentCount() + 1);
         return rent.getId();
     }
 
@@ -181,13 +190,19 @@ public class RentService {
         // 도서 이용 가능 상태(RentType.OPEN)로 업데이트
         rent.getBook().updateRentType(RentType.OPEN);
 
+        // 사용자 현재 대여 횟수 -1
+        rent.getUser().updateUserRentCount(rent.getUser().getRentCount() - 1);
+
         Reserve firstReserve = reserveRepository.findByWaitNumberAndBook(1, rent.getBook());
 
         // 반납될 도서를 예약한 사람이 있는 경우
         if (firstReserve != null) {
 
-            // 예약 첫 번째 사람 (자동 대여 -> 추가) -> 이메일로 전송하기 '대여되었습니다'
+            // 예약 첫 번째 사람 (자동 대여 -> 추가)
             createRent(firstReserve.getUser().getPersonalId(), rent.getBook().getId());
+
+            // 이메일 전송하기 '도서가 대여되었습니다'
+            emailService.sendRentEmail(firstReserve.getUser().getEmail(), rent.getBook().getTitle());
 
             // 예약 첫 번째 사람 (예약 -> 삭제)
             reserveService.deleteReserve(firstReserve.getId());

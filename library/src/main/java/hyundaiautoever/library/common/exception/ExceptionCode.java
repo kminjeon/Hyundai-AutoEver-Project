@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 public enum ExceptionCode {
     SUCCESS(HttpStatus.OK.value(), "성공"),
     DATA_DUPLICATE_EXCEPTION(HttpStatus.CONFLICT.value(), "중복된 데이터가 있습니다."), // code : 409
-    DATA_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND.value(), "요정하신 데이터가 없습니다."),
+    DATA_NOT_FOUND_EXCEPTION(HttpStatus.NOT_FOUND.value(), "요청하신 데이터가 없습니다."), // code : 404
     DATA_UPDATE_EXCEPTION(HttpStatus.CONFLICT.value(), "데이터 수정에 실패하였습니다."),
     DATA_DELETE_EXCEPTION(HttpStatus.CONFLICT.value(), "데이터 삭제에 실패하였습니다."),
     DATA_OUT_OF_BOUNDS_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR.value(), "데이터 범위가 초과하였습니다."),
@@ -23,11 +23,16 @@ public enum ExceptionCode {
     PERSONALID_ERROR(-2, "로그인 아이디가 틀렸습니다"),
     LOGIN_SUCCESS(0, "로그인이 성공했습니다"),
     EXTENSION_ERROR(-1, "대여 연장 횟수를 초과했습니다"),
-
+    AUTH_ERROR(303, "권한이 없습니다."),
     DELETE_RENT_ERROR(304, "대여 중인 도서가 있습니다."),
-    AUTH_ERROR(303, "권한이 없습니다.");
+    MAX_RENT_EXCEPTION(305, "대여 횟수를 초과했습니다"),
+
+    ALREADY_RENT_ERROR(306, "이미 대여 중인 도서입니다."),
+    FAIL_SEND_EMAIL_ERROR(307, "이메일 전송에 실패했습니다.");
+
 
     private final int code;
     private final String message;
+
 }
 

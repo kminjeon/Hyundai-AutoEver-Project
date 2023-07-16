@@ -13,9 +13,12 @@ const ReserveButton = ({ personalId, bookId }) => {
           window.location.reload();
       })
       .catch((error) => {
-        if (error.response.status === 409) {
+        if (error.response.data.code === 409) {
           console.log("동일한 예약이 존재합니다");
           alert("동일한 예약이 존재합니다.")
+        } else if (error.response.data.code === 306){
+          console.log("이미 대여중인 도서입니다");
+          alert("이미 대여중인 도서입니다")
         }
         console.error("예약 에러", error);
       });

@@ -18,6 +18,10 @@ const RentButton = ({ personalId, bookId }) => {
           })
           .catch(error => {
             // 대여 처리 중 에러가 발생했을 때 처리할 로직
+            if (error.response.data.code === 305) {
+              console.log("대여 횟수를 초과했습니다");
+              alert("대여 횟수를 초과했습니다.")
+            }
             console.error('대여 에러', error);
           });
       };  

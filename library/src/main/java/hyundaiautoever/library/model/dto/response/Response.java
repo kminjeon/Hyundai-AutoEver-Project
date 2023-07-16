@@ -42,22 +42,40 @@ public class Response<T> {
     }
 
     public static <T> Response<T> withdrawException(ExceptionCode exceptionCode) {
-        log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        log.info("[withdrawException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }
 
     public static <T> Response<T> deleteBookException(ExceptionCode exceptionCode) {
-        log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        log.info("[deleteBookException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }
 
+    public static <T> Response<T> authException(ExceptionCode exceptionCode) {
+        log.info("[authException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
+    public static <T> Response<T> maxRentException(ExceptionCode exceptionCode) {
+        log.info("[maxRentException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
+    public static <T> Response<T> rentStateException(ExceptionCode exceptionCode) {
+        log.info("[rentStateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
     public static <T> Response<T> dataDuplicateException(ExceptionCode exceptionCode) {
         log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }
 
+    public static <T> Response<T> alreadyRentException(ExceptionCode exceptionCode) {
+        log.info("[dataDuplicateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
     public static <T> Response<T> personalIdError(ExceptionCode exceptionCode) {
-        log.info("[personlIdError] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        log.info("[personalIdError] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);
     }
     public static <T> Response<T> passwordError(ExceptionCode exceptionCode) {
@@ -110,9 +128,5 @@ public class Response<T> {
         return new Response<>(exceptionCode);
     }
 
-    public static <T> Response<T> referentialException(ExceptionCode exceptionCode) {
-        log.info("[referentialException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
-        return new Response<>(exceptionCode);
-    }
 }
 

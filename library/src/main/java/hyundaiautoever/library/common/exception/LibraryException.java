@@ -1,6 +1,7 @@
 package hyundaiautoever.library.common.exception;
 
 import hyundaiautoever.library.model.dto.response.Response;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -10,14 +11,32 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class LibraryException {
     @Getter
     @AllArgsConstructor
-    @ResponseStatus(HttpStatus.CONFLICT)
     public static class DataDuplicateException extends RuntimeException {
         private final ExceptionCode exceptionCode;
     }
 
     @Getter
     @AllArgsConstructor
+    public static class AlreadyRentException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class FailSendEmailException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+
+    @Getter
+    @AllArgsConstructor
     public static class RentStateException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class MaxRentException extends RuntimeException {
         private final ExceptionCode exceptionCode;
     }
 

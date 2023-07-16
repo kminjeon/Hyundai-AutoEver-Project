@@ -46,9 +46,28 @@ public class EmailService {
             log.info("Success");
             return authNum;
 
-        } catch (MessagingException e) {
-            log.info("fail");
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            log.error("sendMail Exception : {}", e.getMessage());
+            throw new LibraryException.FailSendEmailException(ExceptionCode.FAIL_SEND_EMAIL_ERROR);
+        }
+    }
+
+    public void sendRentEmail(String email, String title) {
+
+        log.info("EmailService : [sendRentEmail]");
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(email); // 메일 수신자
+            mimeMessageHelper.setSubject("[HYUNDAI LIBRARY] 예약하신 도서가 준비되었습니다."); // 메일 제목
+            mimeMessageHelper.setText("\" " + title + " \""+ " 도서가 대여 완료되었습니다. 도서관에서 도서를 수령하시길 바랍니다.");
+            javaMailSender.send(mimeMessage);
+            log.info("Success");
+
+        } catch (Exception e) {
+            log.error("sendRentEmail Exception : {}", e.getMessage());
+            throw new LibraryException.FailSendEmailException(ExceptionCode.FAIL_SEND_EMAIL_ERROR);
         }
     }
 

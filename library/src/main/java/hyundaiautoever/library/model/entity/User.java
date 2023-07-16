@@ -46,6 +46,9 @@ public class User extends BaseEntity {
     @Column(name = "last_login_date")
     private LocalDateTime lastLoginDate;
 
+    @Column(name = "rent_count")
+    private Integer rentCount;
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 //    private List<Love> loves; // 좋아요 목록
 
@@ -59,6 +62,7 @@ public class User extends BaseEntity {
         this.nickname = nickname;
         this.authType = AuthType.USER;
         this.lastLoginDate = null;
+        this.rentCount = 0;
     }
 
     public void updateUserEmail(String email) {
@@ -80,5 +84,10 @@ public class User extends BaseEntity {
     public void updateUserNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public void updateUserRentCount(Integer rentCount) {
+        this.rentCount = rentCount;
+    }
+
 }
 

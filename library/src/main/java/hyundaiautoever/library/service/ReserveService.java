@@ -11,6 +11,7 @@ import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Reserve;
 import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.BookRepository;
+import hyundaiautoever.library.repository.RentRepository;
 import hyundaiautoever.library.repository.ReserveRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +36,8 @@ public class ReserveService {
     private final UserRepository userRepository;
     private final BookRepository bookRepository;
 
+    private final RentRepository rentRepository;
+
     /**
      * 도서 예약 생성
      * @param personalId
@@ -52,6 +55,10 @@ public class ReserveService {
             log.error("createReserve Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
+        if (rentRepository.findByUserAndBook(user, book) != null) { // 대여 중인 도서
+            throw new LibraryException.AlreadyRentException(ExceptionCode.ALREADY_RENT_ERROR);
+        }
 
         if (reserveRepository.findByUserAndBook(user, book).isPresent()) { // 이미 예약 내역 존재
             throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);

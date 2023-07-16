@@ -25,9 +25,6 @@ public class Book extends BaseEntity {
     @Column(name = "isbn", nullable = false)
     private String isbn;
 
-    @Column(name = "img")
-    private String img;
-
     @Column(name = "author", nullable = false)
     private String author;
 
@@ -46,7 +43,6 @@ public class Book extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "category_type", nullable = false)
     private CategoryType categoryType; // 카테고리 타입 [개발, 소설, 인문, 과학, 경제]
-
 
     @Column(name = "love_count", nullable = false)
     private Integer loveCount; // 좋아요 개수

@@ -40,7 +40,6 @@ public class ReviewDto {
         private final String title;
         private final String author;
         private final String publisher;
-        private final String img;
 
         public GetReviewDetailDto(Review review, User user, Book book) {
             this.content = review.getContent();
@@ -50,7 +49,6 @@ public class ReviewDto {
             this.publisher = book.getPublisher();
             this.title = book.getTitle();
             this.author = book.getAuthor();
-            this.img = book.getImg();
         }
     }
 
