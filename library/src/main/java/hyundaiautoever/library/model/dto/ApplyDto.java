@@ -61,6 +61,8 @@ public class ApplyDto {
     @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class SearchApplyDto {
+
+        private final Long applyId;
         private final String personalId;
         private final String name;
         private final String title;
@@ -71,6 +73,7 @@ public class ApplyDto {
 
         @QueryProjection
         public SearchApplyDto(Apply apply) {
+            this.applyId = apply.getId();
             this.personalId = apply.getUser().getPersonalId();
             this.name = apply.getUser().getName();
             this.title = apply.getTitle();

@@ -1,6 +1,5 @@
 package hyundaiautoever.library.service;
 
-import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.common.type.PartType;
@@ -11,7 +10,6 @@ import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.BookRepository;
 import hyundaiautoever.library.repository.RentRepository;
 import hyundaiautoever.library.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import javax.validation.constraints.NotNull;
-
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -118,9 +112,9 @@ class RentServiceTest {
         bookRepository.save(book);
 
         // when
-        //then
         rentService.createRent(user.getPersonalId(), book.getId());
 
+        //then
         assertThrows(LibraryException.RentStateException.class, () -> {
             rentService.createRent(user2.getPersonalId(), book.getId());
         });

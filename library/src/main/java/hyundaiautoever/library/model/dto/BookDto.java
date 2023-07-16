@@ -29,12 +29,15 @@ public class BookDto {
         private final CategoryType categoryType;
         private final String isbn;
 
+        private final String description;
+
         public UpdateBookDto (Book book) {
             this.title = book.getTitle();
             this.author = book.getAuthor();
             this.publisher = book.getPublisher();
             this.categoryType = book.getCategoryType();
             this.isbn = book.getIsbn();
+            this.description = book.getDescription();
         }
     }
 

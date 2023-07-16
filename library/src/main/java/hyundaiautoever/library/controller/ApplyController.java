@@ -84,7 +84,7 @@ public class ApplyController {
      * @param applyId
      * @return
      */
-    @DeleteMapping("/admin/apply/{applyId}")
+    @DeleteMapping("/admin/apply/delete")
     public Response deleteApply(@RequestParam("applyId") Long applyId) {
         log.info("ApplyController : [deleteApply]");
         applyService.deleteApply(applyId);

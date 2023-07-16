@@ -30,6 +30,7 @@ const BookItem_RentInfo = ({book, index}) => {
       .then(response => {
           console.log('도서 반납 성공')
           console.log(response)
+          alert("반납되었습니다")
           window.location.reload()
       })
       .catch (error => {

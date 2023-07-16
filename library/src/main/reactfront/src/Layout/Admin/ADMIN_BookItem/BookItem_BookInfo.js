@@ -14,14 +14,6 @@ const BookItem_BookInfo = ({book, index}) => {
     };
 
     const [rentType, setRentType] = useState();
-    const [updateBody, setUpdateBody] = useState({
-          title: '',
-          author:'',
-          publisher:'',
-          categoryType:'',
-          isbn:'',
-          description : '',
-    })
     
       useEffect(() => {
         if (book) {
@@ -43,23 +35,8 @@ const BookItem_BookInfo = ({book, index}) => {
       }
 
       const handleBookUpdate = () => {
-        axios.put(`/api/admin/book/update/${book.bookId}`, {
-          title: updateBody.title.length == 0? null : updateBody.title,
-          author: updateBody.author.length == 0 ? null : updateBody.author,
-          publisher: updateBody.publisher.length == 0 ? null : updateBody.publisher,
-          categoryType: updateBody.categoryType.length == 0? null : updateBody.categoryType,
-          isbn:updateBody.isbn.length == 0 ? null : updateBody.isbn,
-          description : updateBody.description.length == 0? null : updateBody.description
-        })
-        .then(response => {
-            console.log('도서 삭제 성공')
-            console.log(response)
-            window.location.reload()
-        })
-        .catch (error => {
-        console.log(error);
-        console.log('도서 삭제 실패')
-        });
+          window.location.assign(`/admin/bookInfo/update/${book.bookId}`);
+        
       }
 
   return (

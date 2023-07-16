@@ -241,6 +241,18 @@ public class BookService {
         return buildUpdateBookDto(book);
     }
 
+    /**
+     * 도서 수정 페이지 조회
+     * @return updateBookDto
+     */
+    public UpdateBookDto getUpdateBook(Long bookId) {
+        Book book = bookRepository.findById(bookId).orElseThrow(() -> {
+            log.error("getUpdateBook Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+        });
+        return buildUpdateBookDto(book);
+    }
+
 
     /**
      * 도서 삭제

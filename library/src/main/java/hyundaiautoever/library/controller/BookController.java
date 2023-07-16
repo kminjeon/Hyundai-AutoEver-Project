@@ -46,6 +46,17 @@ public class BookController {
     }
 
     /**
+     * 도서 수정 페이지 조회
+     * @param bookId
+     * @return
+     */
+    @GetMapping("/admin/book/get/{bookId}")
+    public Response getUpdateBook(@PathVariable("bookId") Long bookId) {
+        log.info("BookController : [getUpdateBook]");
+        return Response.ok().setData(bookService.getUpdateBook(bookId));
+    }
+
+    /**
      * 관리자 도서 관리 페이지
      * @param pageable
      * @param bookId

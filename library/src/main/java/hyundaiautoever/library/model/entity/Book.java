@@ -40,7 +40,7 @@ public class Book extends BaseEntity {
     @Column(name = "rent_type", nullable = false)
     private RentType rentType; // 대출 가능 상태 [OPEN, CLOSE]
 
-    @Column(name = "description", length = 5000, nullable = false)
+    @Column(name = "description", length = 5000)
     private String description; // 설명
 
     @Enumerated(EnumType.STRING)

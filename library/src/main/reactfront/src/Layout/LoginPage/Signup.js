@@ -21,6 +21,13 @@ const Signup = () => {
       nickname : false
     })
 
+    const OPTIONS = [
+      { value: "MOBIS", name: "모비스연구소시스템" },
+      { value: "PLATFORM", name: "차량SW플랫폼" },
+      { value: "FACTORY", name: "스마트팩토리" },
+      { value: "NAVIGATION", name: "내비게이션" },
+  ];
+  
       const [showPassword, setShowPassword] = useState(false);
       const [eyeIcon, setEyeIcon] = useState('img/eye_close.png');
       const [passwordMismatch, setPasswordMismatch] = useState(false);

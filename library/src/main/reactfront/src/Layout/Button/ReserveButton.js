@@ -9,6 +9,7 @@ const ReserveButton = ({ personalId, bookId }) => {
       .post(`/api/reserve/create?personalId=${personalId}&bookId=${bookId}`)
       .then(() => {
           console.log("예약 성공");
+          alert("성공적으로 예약됐습니다")
           window.location.reload();
       })
       .catch((error) => {

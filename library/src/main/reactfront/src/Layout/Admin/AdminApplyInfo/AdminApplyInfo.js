@@ -164,8 +164,8 @@ const AdminApplyInfo = () => {
 		</select>
         </div>
         <ol className='numbered-list'>
-          {applyList && applyList.map((reserve, index) => {
-            return <BookItem_ApplyInfo key={reserve.reserveId} book ={reserve} index={(page * 10 ) + index + 1} /> 
+          {applyList && applyList.map((apply, index) => {
+            return <BookItem_ApplyInfo key={apply.applyId} book ={apply} index={(page * 10 ) + index + 1} /> 
           })}
         </ol>
         <PaginationBox className = 'page'>

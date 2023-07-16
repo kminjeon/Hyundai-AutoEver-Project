@@ -28,8 +28,6 @@ public class BookRequest {
         private String isbn;
         @NotNull
         private CategoryType categoryType;
-        @NotEmpty(message = "설명은 필수입니다")
-        @NotNull
         private String description;
     }
 
