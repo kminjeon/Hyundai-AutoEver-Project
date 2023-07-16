@@ -24,6 +24,9 @@ const AdminAuthInfo = () => {
     const [select, setSelect] = useState("personalId")
     const [searchOnOff, setSearchOnOff] = useState('');
 
+    const [onlyAdmin, setOnlyAdmin] = useState(false);
+
+
     const OPTIONS = [
         { value: "personalId", name: "사용자 ID" },
         { value: "name", name: "이름" },
@@ -91,6 +94,10 @@ const AdminAuthInfo = () => {
         console.log(e.target.value)
     }
 
+    const handleAdminUser = () => {
+      setOnlyAdmin(!onlyAdmin);
+    }
+
     return (
       <div>
         <AdminCategory />
@@ -115,9 +122,18 @@ const AdminAuthInfo = () => {
 				</option>
 			))}
 		</select>
-        </div>
+        <input
+        onChange={handleAdminUser}
+        type="checkbox"/>
+      <label>
+        관리자 권한
+      </label>
+      </div>
         <ol className='numbered-list'>
           {userList && userList.map((user, index) => {
+            if (onlyAdmin && user.authType != 'ADMIN') {
+              return null;
+            }
             return <AdminAuthUser key={user.id} user ={user} index={(page * 10 ) + index + 1} /> 
           })}
         </ol>

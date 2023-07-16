@@ -4,6 +4,7 @@ import MypageCategory from "../../Category/MypageCategory";
 import Header from "../../Header/Header";
 import Pagination from 'react-js-pagination'
 import styled from 'styled-components'
+import BookItem_User_ReserveInfo from "./BookItem_User_ReserveInfo";
 
 
 
@@ -36,27 +37,11 @@ const ReserveInfo = () => {
         <MypageCategory />
         <Header />
         <div className="reviewInfoMargin">
-            <div className="reviewInfo-title">
-                <p>도서명</p>
-                <p>작가</p>
-                <p>출판사</p>
-                <p>예약일</p>
-                <p>대기 순번</p>
-            </div>
-            <hr/>
-            {reserveList ? (
-            reserveList.map((reserve) => (
-                <div key={reserve.rentId} className="reviewInfo-item">
-                    <p>{reserve.title}</p>
-                    <p>{reserve.author}</p>
-                    <p>{reserve.publisher}</p>
-                    <p>{reserve.reserveDate}</p>
-                    <p>{reserve.waitNumber}</p>
-                </div>
-            ))
-        ) : (
-            <p>No reserves found.</p>
-        )}
+        <ol className='numbered-list'>
+          {reserveList && reserveList.map((reserve, index) => {
+            return <BookItem_User_ReserveInfo  key={reserve.reserveId} book ={reserve} index={(page * 10 ) + index + 1} /> 
+          })}
+        </ol>
             <PaginationBox className = 'page'>
             <Pagination 
                 activePage={page + 1}

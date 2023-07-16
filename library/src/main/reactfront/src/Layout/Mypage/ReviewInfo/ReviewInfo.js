@@ -5,8 +5,7 @@ import Header from "../../Header/Header";
 import './ReviewInfo.css'
 import Pagination from 'react-js-pagination'
 import styled from 'styled-components'
-
-
+import BookItem_User_ReviewInfo from "./BookItem_User_ReviewInfo"
 
 const ReviewInfo = () => {
     const personalId = sessionStorage.getItem('personalId'); // 로그인한 사용자
@@ -37,25 +36,11 @@ const ReviewInfo = () => {
         <MypageCategory />
         <Header />
         <div className="reviewInfoMargin">
-            <div className="reviewInfo-title">
-                <p>도서명</p>
-                <p>작가</p>
-                <p>출판사</p>
-                <p>리뷰 작성일</p>
-            </div>
-            <hr/>
-            {reviewList ? (
-            reviewList.map((review) => (
-                <div key={review.reviewId} className="reviewInfo-item">
-                    <p>{review.title}</p>
-                    <p>{review.author}</p>
-                    <p>{review.publisher}</p>
-                    <p>{review.reviewDate}</p>
-                </div>
-            ))
-        ) : (
-            <p>No reviews found.</p>
-        )}
+        <ol className='numbered-list'>
+          {reviewList && reviewList.map((review, index) => {
+            return <BookItem_User_ReviewInfo key={review.reviewId} book ={review} index={(page * 10 ) + index + 1} /> 
+          })}
+        </ol>
             <PaginationBox className = 'page'>
             <Pagination 
                 activePage={page + 1}

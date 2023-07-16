@@ -23,7 +23,12 @@ public class ReserveDto {
         private final String publisher;
         private final String reserveDate;
         private final Integer waitNumber;
+        private final String isbn;
+        private final Long bookId;
+
         public GetReserveDto(Reserve reserve) {
+            this.bookId = reserve.getBook().getId();
+            this.isbn = reserve.getBook().getIsbn();
             this.reserveId = reserve.getId();
             this.title = reserve.getBook().getTitle();
             this.author = reserve.getBook().getAuthor();

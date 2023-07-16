@@ -56,7 +56,6 @@ const BookItem_ApplyInfo = ({book, index}) => {
         console.log(error);
         console.log('도서 신청 삭제 실패')
       });
-      
     }
 
     const [modalOpen, setModalOpen] = useState(false);

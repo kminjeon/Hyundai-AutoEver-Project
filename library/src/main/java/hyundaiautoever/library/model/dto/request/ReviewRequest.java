@@ -24,9 +24,6 @@ public class ReviewRequest {
 
     @Getter
     public static class UpdateReviewRequest {
-        @NotEmpty(message = "리뷰 ID는 필수입니다")
-        @NotNull
-        private Long reviewId;
         @NotEmpty(message = "내용은 필수입니다")
         @NotNull
         private String content;

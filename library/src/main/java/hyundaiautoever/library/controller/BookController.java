@@ -65,7 +65,7 @@ public class BookController {
      * @return SearchAdminBookPage
      */
     @GetMapping("/admin/book/search")
-    public Response searchAdminBookPage(@PageableDefault(size = 10) Pageable pageable,
+    public Response searchAdminBookPage(@PageableDefault(size = 5) Pageable pageable,
                                    @RequestParam(required = false) Long bookId,
                                    @RequestParam(required = false) CategoryType categoryType,
                                    @RequestParam(required = false) String title,
@@ -93,7 +93,7 @@ public class BookController {
      * @return SimpleBookPage
      */
     @GetMapping("/book/category/{categoryType}")
-    public Response getCategoryBookPage(@PageableDefault(size = 1) Pageable pageable,
+    public Response getCategoryBookPage(@PageableDefault(size = 5) Pageable pageable,
                                         @PathVariable("categoryType") CategoryType categoryType,
                                         @RequestParam("personalId") String personalId) {
         log.info("BookController : [getCategoryBookPage]");
@@ -141,7 +141,7 @@ public class BookController {
      * @return SimpleBookPage
      */
     @GetMapping("/book/search")
-    public Response getSearchBookPage(@PageableDefault(size = 1) Pageable pageable,
+    public Response getSearchBookPage(@PageableDefault(size = 5) Pageable pageable,
                                       @RequestParam String searchWord,
                                       @RequestParam String personalId) {
         log.info("BookController : [getSearchBookPage]");

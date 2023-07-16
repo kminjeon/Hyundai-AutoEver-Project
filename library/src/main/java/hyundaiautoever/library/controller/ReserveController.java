@@ -62,8 +62,8 @@ public class ReserveController {
      * @param reserveId
      * @return ok
      */
-    @DeleteMapping("/mypage/reserve/delete")
-    public Response deleteReserve(@RequestParam("reserveId") Long reserveId) {
+    @DeleteMapping("/mypage/reserve/{reserveId}")
+    public Response deleteReserve(@PathVariable("reserveId") Long reserveId) {
         reserveService.deleteReserve(reserveId);
         return Response.ok();
     }

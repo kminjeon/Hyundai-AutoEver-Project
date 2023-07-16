@@ -168,6 +168,7 @@
     height: 150px;
     border-radius: 5px;
     border: 1px solid #B9B9B9;
+    font-family: 'YouandiModernTR', sans-serif;
 }
 
 .modal-book-detail {
@@ -181,4 +182,14 @@
 
 .modal-flex {
     display: flex;
+}
+
+.xandfirst {
+    display: flex;
+    justify-content: space-between;
+}
+
+.mar-r {
+    margin-right: 120px;
+    padding-top: 20px;
 }

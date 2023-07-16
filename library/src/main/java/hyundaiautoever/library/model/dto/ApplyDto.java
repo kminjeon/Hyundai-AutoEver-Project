@@ -35,6 +35,7 @@ public class ApplyDto {
         private final String title;
         private final String author;
         private final String publisher;
+        private final String isbn;
         private final String applyDate;
 
         public GetApplyDto(Apply apply) {
@@ -42,6 +43,7 @@ public class ApplyDto {
             this.title = apply.getTitle();
             this.author = apply.getAuthor();
             this.publisher = apply.getPublisher();
+            this.isbn = apply.getIsbn();
             this.applyDate = apply.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
     }

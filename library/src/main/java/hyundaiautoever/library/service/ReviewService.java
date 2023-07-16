@@ -104,13 +104,14 @@ public class ReviewService {
      * @param request
      * @return
      */
-    public UpdateReviewDto updateReview(ReviewRequest.UpdateReviewRequest request) {
-        Review review = reviewRepository.findById(request.getReviewId()).orElseThrow(() -> {
+    @Transactional
+    public UpdateReviewDto updateReview(Long reviewId, ReviewRequest.UpdateReviewRequest request) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(() -> {
             log.error("updateReview Exception : [존재하지 않는 Review ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        review.updateReviewContent(request.getContent()); // 프론트에서 수정되면 주는지 아니면 다주는지 보고 생각
+        review.updateReviewContent(request.getContent());
         return buildUpdateReviewDto(review);
     }
 

@@ -91,8 +91,8 @@ public class RentController {
      * @param rentId
      * @return ok
      */
-    @PutMapping("/rent/extend")
-    public Response extendRent(@RequestParam("rentId") Long rentId){
+    @PutMapping("/rent/extend/{rentId}")
+    public Response extendRent(@PathVariable("rentId") Long rentId){
         return rentService.extentRent(rentId);
     }
 

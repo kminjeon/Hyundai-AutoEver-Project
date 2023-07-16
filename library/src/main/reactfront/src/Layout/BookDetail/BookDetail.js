@@ -17,8 +17,6 @@ const BookDetail = () => {
   const [rentType, setRentType] = useState();
   const [book, setBook] = useState(null);
 
-  const [showPopup, setShowPopup] = useState(false); // 팝업 창 표시 여부
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const [content, setContent] = useState('');
@@ -70,6 +68,7 @@ const handleWrite = () => {
   .then(response => {
       console.log(response);
       console.log('리뷰 등록 성공')
+      alert("성공적으로 리뷰를 등록했습니다")
       closeModal();
       window.location.reload();
   })

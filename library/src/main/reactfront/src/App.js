@@ -31,6 +31,7 @@ import AdminProfile from './Layout/Admin/AdminProfile/AdminProfile';
 import AdminBookDetail from './Layout/Admin/AdminBookDetail/AdminBookDetail';
 import AdminUpdateBook from './Layout/Admin/AdminBookInfo/AdminUpdateBook';
 import AdminBookAdd from './Layout/Admin/AdminBookInfo/AdminBookAdd';
+import BookApply from './Layout/Mypage/ApplyInfo/BookApply';
 
 function App () {
   return (
@@ -46,6 +47,7 @@ function App () {
       <Route path='/mypage/rentHistory' element={<RentHistory />} />
       <Route path='/mypage/reserveInfo' element={<ReserveInfo />} />
       <Route path='/mypage/applyInfo' element={<Applyinfo />} />
+      <Route path='/mypage/applyInfo/apply' element={<BookApply />} />
       <Route path='/mypage/profile' element={<Profile />} />
       <Route path='/mypage/reviewInfo' element={<ReviewInfo />} />
       <Route path='/mypage/likeBook' element={<LikeBook />} />

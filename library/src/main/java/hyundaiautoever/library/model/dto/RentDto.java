@@ -26,7 +26,11 @@ public class RentDto {
         private final String rentDate;
         private final String expectedReturnDate;
         private final Long lateDays;
+        private final String isbn;
+        private final Long bookId;
         public GetRentDto(Rent rent) {
+            this.bookId = rent.getBook().getId();
+            this.isbn = rent.getBook().getIsbn();
             this.rentId = rent.getId();
             this.title = rent.getBook().getTitle();
             this.author = rent.getBook().getAuthor();
@@ -57,8 +61,12 @@ public class RentDto {
         private final String publisher;
         private final String rentDate;
         private final String returnDate;
+        private final String isbn;
+        private final Long bookId;
 
         public GetRentHistoryDto(Rent rent) {
+            this.isbn = rent.getBook().getIsbn();
+            this.bookId = rent.getBook().getId();
             this.rentId = rent.getId();
             this.title = rent.getBook().getTitle();
             this.author = rent.getBook().getAuthor();

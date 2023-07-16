@@ -20,11 +20,9 @@ public class ApplyRequest {
 
     @Getter
     public static class updateApplyRequest {
-        private Long applyId;
         private String title;
         private String author;
         private String publisher;
         private String isbn;
-        private String applyUser;
     }
 }

@@ -18,6 +18,7 @@ const Switch = ({user}) => {
         console.log(response);
         console.log('권한 수정 성공')
         setValue(!value)
+        alert("성공적으로 권한을 수정했습니다.")
         })
         .catch (error => {
         console.log(error);
@@ -35,10 +36,11 @@ const Switch = ({user}) => {
         type="checkbox"
       />
       <label
-        style={{ background: value && '#06D6A0' }}
+        style={{ background: value && '#9DC8F6' }}
         className="react-switch-label"
         htmlFor={`react-switch-new`}
       >
+        관리자 권한
         <span className={`react-switch-button`} />
       </label>
     </>

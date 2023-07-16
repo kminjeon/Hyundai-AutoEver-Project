@@ -39,6 +39,20 @@ const AdminBookDetail = () => {
     return null; 
 }
 
+const handleReviewDelete = (reviewId) => {
+  axios.delete(`/api/mypage/review/delete/${reviewId}`)
+  .then(response => {
+      console.log('도서 리뷰 삭제 성공')
+      console.log(response)
+      alert("해당 도서 리뷰을 삭제했습니다")
+      window.location.reload()
+  })
+  .catch (error => {
+    console.log(error);
+    console.log('도서 리뷰 삭제 실패')
+  });
+}
+
   return (
     <div>
         <AdminCategory />
@@ -92,10 +106,13 @@ const AdminBookDetail = () => {
         </div>
       {reviewList.map((review) => (
         <div key={review.reviewId}>
-          <div className='firstline'>
+          <div className='xandfirst'>
+            <div className='firstline'>
           <p className='autoever margin-rignt-20'>{review.nickname}</p>
           <span className='margin-rignt-20'> | </span>
           <p>{review.createDate}</p>
+          </div>
+          <img className='x mar-r' src='/img/x.png' alt='x' onClick={() => handleReviewDelete(review.reviewId)} />
           </div>
           <p>{review.content}</p>
           <hr className="divider-review" />

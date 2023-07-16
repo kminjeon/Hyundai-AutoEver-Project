@@ -25,6 +25,8 @@ const AdminRentInfo = () => {
     const [select, setSelect] = useState("title")
     const [searchOnOff, setSearchOnOff] = useState('');
 
+    const [onlyLate, setOnlyLate] = useState(false);
+
     const OPTIONS = [
         { value: "title", name: "도서 제목" },
         { value: "bookId", name: "도서 ID" },
@@ -118,6 +120,10 @@ const AdminRentInfo = () => {
         console.log(e.target.value)
     }
 
+    const handleLateBooks = () => {
+      setOnlyLate(!onlyLate);
+    }
+
     return (
       <div>
         <AdminCategory />
@@ -142,9 +148,19 @@ const AdminRentInfo = () => {
 				</option>
 			))}
 		</select>
-        </div>
+       
+        <input
+        onChange={handleLateBooks}
+        type="checkbox"/>
+      <label>
+        연체된 도서
+      </label>
+      </div>
         <ol className='numbered-list'>
           {rentList && rentList.map((rent, index) => {
+            if (onlyLate && rent.lateDays > 0) {
+              return null; 
+            }
             return <BookItem_RentInfo key={rent.rentId} book ={rent} index={(page * 10 ) + index + 1} /> 
           })}
         </ol>

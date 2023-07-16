@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import MypageCategory from "../../Category/MypageCategory";
 import Header from "../../Header/Header";
-import './RentInfo.css'
 import Pagination from 'react-js-pagination'
 import styled from 'styled-components'
-
+import BookItem_User_RentInfo from "./BookItem_User_RentInfo";
 
 
 const RentInfo = () => {
@@ -37,28 +36,11 @@ const RentInfo = () => {
         <MypageCategory />
         <Header />
         <div className="reviewInfoMargin">
-            <div className="reviewInfo-title">
-                <p>도서명</p>
-                <p>작가</p>
-                <p>출판사</p>
-                <p>대여일</p>
-                <p>반납 예정일</p>
-            </div>
-            <hr/>
-            {rentList ? (
-            rentList.map((rent) => (
-                <div key={rent.rentId} className="reviewInfo-item">
-                    <p>{rent.title}</p>
-                    <p>{rent.author}</p>
-                    <p>{rent.publisher}</p>
-                    <p>{rent.rentDate}</p>
-                    <p>{rent.expectedReturnDate}</p>
-                    {rent.lateDays <= 0 ? null : <p>{rent.lateDays}</p>}
-                </div>
-            ))
-        ) : (
-            <p>No rents found.</p>
-        )}
+          <ol className='numbered-list'>
+          {rentList && rentList.map((rent, index) => {
+            return <BookItem_User_RentInfo key={rent.rentId} book ={rent} index={(page * 10 ) + index + 1} /> 
+          })}
+        </ol>
             <PaginationBox className = 'page'>
             <Pagination 
                 activePage={page + 1}

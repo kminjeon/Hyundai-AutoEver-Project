@@ -58,9 +58,20 @@ public class ReviewController {
      * @param request
      * @return UpdateReviewDto
      */
-    @PutMapping("/mypage/review")
-    public Response updateReview(@RequestBody @Valid ReviewRequest.UpdateReviewRequest request) {
-        return Response.ok().setData(reviewService.updateReview(request));
+    @PutMapping("/mypage/review/{reviewId}")
+    public Response updateReview(@PathVariable("reviewId") Long reviewId, @RequestBody @Valid ReviewRequest.UpdateReviewRequest request) {
+        return Response.ok().setData(reviewService.updateReview(reviewId, request));
+    }
+
+    /**
+     * 리뷰 삭제
+     * @param reviewId
+     * @return ok
+     */
+    @DeleteMapping("/mypage/review/delete/{reviewId}")
+    public Response updateReview(@PathVariable("reviewId") Long reviewId) {
+        reviewService.deleteReview(reviewId);
+        return Response.ok();
     }
 
 }

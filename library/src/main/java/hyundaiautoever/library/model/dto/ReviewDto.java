@@ -73,14 +73,18 @@ public class ReviewDto {
         private final Long reviewId;
         private final String title;
         private final String author;
-        private final String publisher;
         private final String reviewDate;
+        private final String isbn;
+        private final Long bookId;
+        private final String content;
 
         public GetReviewDto(Review review) {
+            this.content = review.getContent();
+            this.bookId = review.getBook().getId();
+            this.isbn = review.getBook().getIsbn();
             this.reviewId = review.getId();
             this.title = review.getBook().getTitle();
             this.author = review.getBook().getAuthor();
-            this.publisher = review.getBook().getPublisher();
             this.reviewDate = review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
     }

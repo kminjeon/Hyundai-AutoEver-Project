@@ -10,8 +10,8 @@ const AdminAuthUser = ({user, index}) => {
     <li key={user.id} className="align separator">
       <div>
             <p className="admin-rentinfo-index">{index}</p>  
-            <p>{user.personalId}</p>
-            <p>{user.name}</p>
+            <p>아이디 : {user.personalId}</p>
+            <p>이름 : {user.name}</p>
             <div className="app">
             <Switch
                 user={user}
