@@ -1,0 +1,15 @@
+/* .App {
+  margin : 0 auto;
+  margin-top: 200px;
+  text-align: center;
+} */
+
+
+@font-face {
+  font-family: 'YouandiModernTR';
+  src: url('C:\\Users\\user\\AppData\\Local\\Microsoft\\Windows\\Fonts\\fontYouandiModernTR.ttf');
+}
+
+body {
+  font-family: 'YouandiModernTR', sans-serif;
+}

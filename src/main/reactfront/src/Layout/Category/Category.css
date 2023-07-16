@@ -1,0 +1,50 @@
+.category-banner {
+    position: fixed;
+    left : 0;
+    top : 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+    width: 200px;
+  }
+
+  .category-banner::before {
+    content: "";
+    position: absolute;
+    top: 130px;
+    right: 0;
+    height: calc(100% - 300px);
+    width: 3px;
+    background-color: #A8A8A8;
+  }
+  
+  .category-banner h2 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-top: 150px;
+  }
+  
+  .category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .category-list li {
+    margin-bottom: 30px;
+    font-size: 25px;
+    color: #4E4E4E;
+    cursor : pointer;
+    transition: color 0.3s ease; /*부드럽게*/
+  }
+  
+  .category-list li:hover {
+    color: #00448D;
+  }
+  
+
+  .active {
+    color: #00448D;
+  }

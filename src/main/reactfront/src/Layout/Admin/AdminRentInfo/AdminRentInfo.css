@@ -1,0 +1,42 @@
+.admin-rent-info-search-input {
+    width: 350px;
+    height : 40px;
+    border-radius: 15px;
+    border-color: #a8a8a8;
+    background-color: transparent;
+    padding-left: 105px;
+    font-size: 18px;
+    font-family: 'YouandiModernTR', sans-serif;
+}
+
+.admin-search {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.admin-search .searchimg {
+    width: 30px;
+    position: absolute;
+    margin-left: 415px;
+}
+
+
+.admin-search .select-box {
+    position: absolute;
+    margin-left: 2px;
+    font-family: 'YouandiModernTR', sans-serif;
+}
+
+
+.select-box {
+    margin: 0;
+	min-width: 0;
+	display: block;
+	padding: 8px 8px;
+	font-size: inherit;
+	line-height: inherit;
+	border: none;
+	color: inherit;
+	background-color: transparent;
+}

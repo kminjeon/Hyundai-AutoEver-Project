@@ -1,0 +1,80 @@
+.book-img {
+    width: 129px;
+    margin-right: 60px;
+    cursor : pointer;
+}
+
+.index {
+    font-size: 45px; /* 숫자 텍스트 크기 조정 */
+    margin-right: 70px;
+}
+
+.indexandimg {
+    display: flex;
+    align-items: center;
+}
+
+.heart {
+    width: 31px;
+    height: 31px;
+    cursor : pointer;
+}
+
+.align {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 200px;
+}
+
+.rent {
+    display: flex;
+    align-items: center;
+}
+
+.separator {
+    border-top: 2px solid #EBEBEB;
+    margin-top: 10px;
+    padding-top: 10px;
+    width : calc(100% - 180px);
+  }
+
+.align-right {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
+.title {
+    font-size: 25px;
+    cursor : pointer;
+}
+
+
+.author {
+    color: #7D7D7D;
+    font-size: 15px;
+}
+
+.loveCount {
+    margin-left: 10px;
+    margin-top: -5px;
+    color: #A8A8A8;
+}
+
+.blue {
+    color: #00448D;
+    margin-right: 10px;
+}
+
+.red {
+    color: #C43927;
+    margin-right: 10px;
+}
+
+
+.heart-div {
+    align-items: center;
+    margin-left: 10px;
+}

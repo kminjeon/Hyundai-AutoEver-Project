@@ -1,0 +1,38 @@
+.admin-rentinfo-index {
+    font-size: 25px; /* 숫자 텍스트 크기 조정 */
+    margin-right: 45px;
+}
+
+.return-button {
+    background-color: #E7E7E7;
+    width: 90px;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'YouandiModernTR', sans-serif;
+    font-size : 20px;
+    cursor : pointer;
+    letter-spacing :15px;
+    padding-left: 15px;
+    align-items: center;
+}
+
+.red-Latedays {
+    color: #C43927;
+}
+
+.book-delete-button {
+    background-color: #595959;
+    width: 90px;
+    color: white;
+    height: 45px;
+    border-radius: 10px;
+    border: none;
+    font-family: 'YouandiModernTR', sans-serif;
+    font-size : 20px;
+    cursor : pointer;
+    letter-spacing :15px;
+    padding-left: 15px;
+    align-items: center;
+    margin-left: 10px;
+}

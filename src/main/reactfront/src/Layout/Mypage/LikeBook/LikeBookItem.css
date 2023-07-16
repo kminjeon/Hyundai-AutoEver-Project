@@ -1,0 +1,21 @@
+
+.like-book-box {
+    border: 1px solid #B3B3B3;
+    padding: 20px;
+    border-radius: 15px;
+    justify-content: space-between;
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.x {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+.like-front {
+  justify-content: space-between;
+  display: flex;
+}
