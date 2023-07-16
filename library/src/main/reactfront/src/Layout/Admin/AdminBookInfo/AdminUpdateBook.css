@@ -28,3 +28,49 @@
     outline: none;
     margin: 10px;
 }
+
+.book-add-button {
+    background-color: transparent;
+    width: 120px;
+    height: 45px;
+    border-radius: 10px;
+    border: 1px solid #000000;
+    font-family: 'YouandiModernTR', sans-serif;
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 180px;
+}
+
+
+.add-admin-search {
+    display: flex;
+    align-items: center;
+    position: relative;
+    justify-content: space-between;
+}
+
+.add-admin-search .searchimg {
+    width: 30px;
+    position: absolute;
+    margin-left: 415px;
+}
+
+
+.add-admin-search .select-box {
+    position: absolute;
+    margin-left: 2px;
+    font-family: 'YouandiModernTR', sans-serif;
+}
+
+
+.select-box {
+    margin: 0;
+	min-width: 0;
+	display: block;
+	padding: 8px 8px;
+	font-size: inherit;
+	line-height: inherit;
+	border: none;
+	color: inherit;
+	background-color: transparent;
+}

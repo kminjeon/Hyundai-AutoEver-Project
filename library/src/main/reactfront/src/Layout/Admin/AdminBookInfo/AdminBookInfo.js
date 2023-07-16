@@ -119,12 +119,16 @@ const AdminBookInfo = () => {
         console.log(e.target.value)
     }
 
+    const handleBookAdd = () => {
+      window.location.assign("/admin/bookInfo/add");
+    }
+
     return (
       <div>
         <AdminCategory />
         <AdminHeader />
         <div className='headercategoryline'>
-        <div className='admin-search'>
+        <div className='add-admin-search'>
                 <input
                   className="admin-rent-info-search-input"
                   value={searchWord}
@@ -143,6 +147,9 @@ const AdminBookInfo = () => {
 				</option>
 			))}
 		</select>
+    <button className="book-add-button" onClick={handleBookAdd}>
+      도서 추가
+    </button>
         </div>
         <ol className='numbered-list'>
           {bookList && bookList.map((book, index) => {
