@@ -30,6 +30,16 @@ public class ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Response.dataUpdateException(dataUpdateException.getExceptionCode()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(LibraryException.AlreadyExistBook.class)
+    public ResponseEntity<Response<Object>> handleAlreadyExistBookException(LibraryException.AlreadyExistBook alreadyExistBook) {
+        return new ResponseEntity<>(Response.alreadyExistBookException(alreadyExistBook.getExceptionCode()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(LibraryException.EmptyResultBook.class)
+    public ResponseEntity<Response<Object>> handleEmptyResultBookException(LibraryException.EmptyResultBook emptyResultBook) {
+        return new ResponseEntity<>(Response.emptyResultBookException(emptyResultBook.getExceptionCode()), HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(LibraryException.RentExtensionException.class)
     public ResponseEntity<Response<Object>> handleRentExtensionException(LibraryException.RentExtensionException rentExtensionException) {
         return new ResponseEntity<>(Response.rentExtensionException(rentExtensionException.getExceptionCode()), HttpStatus.CONFLICT);

@@ -175,7 +175,7 @@ const handleInputChange = (e) => {
                 <div className='modal-line'>
                 <p className='review-title'>{book.title}</p>
                 <div className='modal-flex'>
-                <div className='margin-rignt-40'>
+                <div className='margin-rignt-20'>
                     <p className='review-width'>저자</p>
                     <p className='review-width'>출판사</p>
                 </div>

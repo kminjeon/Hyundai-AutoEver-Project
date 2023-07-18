@@ -10,10 +10,10 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
     const personalId = sessionStorage.getItem('personalId');
 
     const [updateBody, setUpdateBody] = useState({
-        title: '',
-        author:'',
-        publisher:'',
-        isbn:'',
+        title: book.title,
+        author: book.author,
+        publisher: book.publisher,
+        isbn: book.isbn,
   })
 
     const handleUpdateApply = () => {
@@ -104,7 +104,7 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
         <div className="indexandimg">
         <p className="admin-rentinfo-index">{index}</p>      
         <div>
-        <p className="title">{book.title}</p>
+        <p className="rent-title">{book.title}</p>
         <p className="author">{book.author}</p>
         <p>신청 {book.applyDate}</p>
 
@@ -132,7 +132,6 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
                     name="title"
                     value={updateBody.title}
                     onChange={handleChange}
-                    placeholder={book.title}
                 />
             </div>
             <div className='input-container'>
@@ -144,7 +143,6 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
                     name="author"
                     value={updateBody.author}
                     onChange={handleChange}
-                    placeholder={book.author}
                 />
             </div>
             <div className='input-container'>
@@ -156,7 +154,6 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
                     name="publisher"
                     value={updateBody.publisher}
                     onChange={handleChange}
-                    placeholder={book.publisher}
                 />
             </div>
                 <div className='input-container'>
@@ -168,7 +165,6 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
                     name="isbn"
                     value={updateBody.isbn}
                     onChange={handleChange}
-                    placeholder={book.isbn}
                 />
             </div>
                 <button className='apply-button' onClick={handleUpdateApply}>수정</button>

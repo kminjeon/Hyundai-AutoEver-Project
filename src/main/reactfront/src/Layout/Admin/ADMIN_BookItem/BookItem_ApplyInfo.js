@@ -103,8 +103,9 @@ const BookItem_ApplyInfo = ({book, index}) => {
         <div className="indexandimg">
         <p className="admin-rentinfo-index">{index}</p>      
         <div>
-        <p className="title">{book.title}</p>
+        <p className="rent-title">{book.title}</p>
         <p className="author">{book.author}</p>
+        <p className="author">[ {book.isbn} ]</p>
         <p>신청 {book.applyDate}</p>
         </div>
         </div>

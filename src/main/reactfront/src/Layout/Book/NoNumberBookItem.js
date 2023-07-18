@@ -32,7 +32,7 @@ const NoNumberBookItem = ({book}) => {
         <div className="indexandimg">
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
         </div>
         </div>

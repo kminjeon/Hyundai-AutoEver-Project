@@ -56,6 +56,12 @@ public class ReserveController {
         return Response.ok().setData(reserveService.getAdminReservePage(pageable, personalId, name, bookId, title));
     }
 
+    @PostMapping("/reserveRent/create")
+    public Response reserveRent(@RequestParam("reserveId") Long reserveId) {
+        reserveService.reserveRent(reserveId);
+        return Response.ok();
+    }
+
 
     /**
      * 도서 예약 삭제

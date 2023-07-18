@@ -12,7 +12,6 @@ const RentButton = ({ personalId, bookId }) => {
               bookId: bookId
             }})
           .then((response) => {
-            // 성공적으로 대여됐을 때 처리할 로직
             Swal.fire({
               icon: "success",
               title: "대여 성공",
@@ -23,7 +22,6 @@ const RentButton = ({ personalId, bookId }) => {
           });
           })
           .catch(error => {
-            // 대여 처리 중 에러가 발생했을 때 처리할 로직
             if (error.response.data.code === 305) {
               Swal.fire({
                 icon: "warning",

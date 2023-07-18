@@ -50,7 +50,8 @@
 }
 
 .title {
-    size: 50px;
+    width : 580px;
+    font-weight: bold;
 }
 
 .review-title {
@@ -63,7 +64,6 @@
 
 .flex-container {
     display: flex;
-    justify-content: space-between;
 }
 
 
@@ -88,6 +88,10 @@
 
 
 .margin-rignt-40 {
+    margin-right: 40px;
+}
+
+.margin-rignt-20 {
     margin-right: 20px;
 }
 

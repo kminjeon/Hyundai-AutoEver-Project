@@ -40,6 +40,12 @@ const BookItem_RentInfo = ({book, index}) => {
       })
       .catch (error => {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "도서 반납 실패",
+        text: `반납 실패했습니다`,
+        confirmButtonText: "확인",
+    })
       });
     }
     

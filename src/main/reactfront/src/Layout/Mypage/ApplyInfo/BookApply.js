@@ -19,7 +19,6 @@ const BookApply = () => {
     { value: "SCIENCE", name: "과학" },
     { value: "ECONOMY", name: "경제" },
     { value: "HUMANITY", name: "인문" },
-
     ];
 
       const handleChange = (e) => {

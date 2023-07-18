@@ -102,6 +102,16 @@ public class Response<T> {
         return new Response<T>(exceptionCode);
     }
 
+    public static <T> Response<T> alreadyExistBookException(ExceptionCode exceptionCode) {
+        log.info("[alreadyExistBookException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
+    public static <T> Response<T> emptyResultBookException(ExceptionCode exceptionCode) {
+        log.info("[emptyResultBookException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
     public static <T> Response<T> dataDeleteException(ExceptionCode exceptionCode) {
         log.info("[dataDeleteException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);

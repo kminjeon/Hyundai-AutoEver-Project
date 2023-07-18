@@ -20,5 +20,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, BookRepositor
     List<Book> findTop10ByOrderByRentCountDesc();
 
     Book findByIsbn(String isbn);
+    boolean existsByIsbn(String isbn);
+
 
 }

@@ -24,6 +24,8 @@ const AdminBookInfo = () => {
 
     const [select, setSelect] = useState("title")
     const [searchOnOff, setSearchOnOff] = useState('');
+    const [cateOption, setCateOption] = useState(false);
+    const [defaultCate, setDefaltCate] = useState('DEV')
 
     const OPTIONS = [
         { value: "title", name: "도서 제목" },
@@ -32,10 +34,17 @@ const AdminBookInfo = () => {
         { value: "categoryType", name: "카테고리" },
     ];
 
+    const cateOPTIONS = [
+      { value: "DEV", name: "개발" },
+      { value: "NOVEL", name: "소설" },
+      { value: "SCIENCE", name: "과학" },
+      { value: "ECONOMY", name: "경제" },
+      { value: "HUMANITY", name: "인문" },
+      ];
+
     useEffect(() => {
       // 도서 데이터를 가져오는 API 호출
       const getBookPage = async () => {
-
         try {
             const response = await axios.get(`/api/admin/book/search`, {
         params : {
@@ -111,7 +120,16 @@ const AdminBookInfo = () => {
 
       const onOptionaHandler = (e) => {
         setSelect(e.target.value);
+        if (e.target.value == 'categoryType') {
+          setCateOption(true);
+        } else {
+          setCateOption(false);
+        }
     }
+
+    const onCateOptionaHandler = (e) => {
+      setSearchWord(e.target.value);
+  }
 
     const handleBookAdd = () => {
       window.location.assign("/admin/bookInfo/add");
@@ -141,6 +159,17 @@ const AdminBookInfo = () => {
 				</option>
 			))}
 		</select>
+    {cateOption && <select className='select-cate-bookinfo' onChange={onCateOptionaHandler} defaultValue={defaultCate}> 
+                        {cateOPTIONS.map((option) => (
+                            <option
+                                key={option.value}
+                                value={option.value}
+                            >
+                                {option.name}
+                            </option>
+                        ))}
+                </select>}
+
     <button className="book-add-button" onClick={handleBookAdd}>
       도서 추가
     </button>

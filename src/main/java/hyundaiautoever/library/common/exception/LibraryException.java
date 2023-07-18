@@ -48,6 +48,18 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
+    public static class AlreadyExistBook extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class EmptyResultBook extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class AuthException extends RuntimeException {
         private final ExceptionCode exceptionCode;
     }

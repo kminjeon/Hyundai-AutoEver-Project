@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from "sweetalert2";
+
 
 import AdminHeader from '../Header/AdminHeader';
 import AdminCategory from '../AdminCategory/AdminCategory';
 import PaginationBox from '../../Page/PaginationBox';
 import Pagination from 'react-js-pagination';
 import BookItem_ApplyInfo from '../ADMIN_BookItem/BookItem_ApplyInfo';
+import Category from '../../Category/Category';
+import CleanModal from '../../Modal/CleanModal';
 
 const AdminApplyInfo = () => {
 
@@ -25,6 +29,11 @@ const AdminApplyInfo = () => {
 
     const [select, setSelect] = useState("title")
     const [searchOnOff, setSearchOnOff] = useState('');
+
+
+    const [categoryType, setCategoryType] = useState('DEV');
+    const [isbn, setIsbn] = useState('');
+    const [modalOpen, setModalOpen] = useState(false);
 
     const OPTIONS = [
         { value: "title", name: "도서명" },
@@ -66,6 +75,59 @@ const AdminApplyInfo = () => {
     }
 
 
+
+const cateOPTIONS = [
+  { value: "DEV", name: "개발" },
+  { value: "NOVEL", name: "소설" },
+  { value: "SCIENCE", name: "과학" },
+  { value: "ECONOMY", name: "경제" },
+  { value: "HUMANITY", name: "인문" },
+  ];
+
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+
+const closeModal = () => {
+    setModalOpen(false);
+  };
+
+
+    const handleIsbnAdd = () => {
+      axios.post('/api/getJson', null, {
+        params : {
+          query : isbn,
+          display :1,
+          categoryType :categoryType,
+        }
+      })
+      .then(response => {
+          console.log('도서 추가 성공')
+          console.log(response)
+          Swal.fire({
+            icon: "success",
+            title: "추가 성공",
+            text: `도서를 추가했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
+      })
+      .catch (error => {
+        console.log(error);
+        if (error.response.data.code == 309 || error.response.data.code == 310) {
+          Swal.fire({
+            icon: "warning",
+            title: "오류",
+            text: `${error.response.data.message}`,
+            confirmButtonText: "확인",
+        })
+        }
+        
+        console.log('도서 추가 실패')
+      });
+    }
 
     const handleSearch = () => {      
         switch (select) {
@@ -132,17 +194,20 @@ const AdminApplyInfo = () => {
         }
       };
 
-      const onOptionaHandler = (e) => {
-        setSelect(e.target.value);
-        console.log(e.target.value)
-    }
+          const onOptionaHandler = (e) => {
+      setCategoryType(e.target.value);
+  }
 
+    const handleIsbn = (e) => {
+      setIsbn(e.target.value);
+    };
+  
     return (
       <div>
         <AdminCategory />
         <AdminHeader />
         <div className='headercategoryline'>
-        <div className='admin-search'>
+        <div className='add-admin-search'>
                 <input
                   className="admin-rent-info-search-input"
                   value={searchWord}
@@ -161,6 +226,9 @@ const AdminApplyInfo = () => {
 				</option>
 			))}
 		</select>
+    <button className="book-add-button" onClick={openModal}>
+      isbn 추가
+    </button>
         </div>
         <ol className='numbered-list'>
           {applyList && applyList.map((apply, index) => {
@@ -177,6 +245,39 @@ const AdminApplyInfo = () => {
             </Pagination>
             </PaginationBox>
         </div>
+
+        <React.Fragment>
+                <CleanModal open={modalOpen} close={closeModal}>
+                  <div className='apply-center-align'>
+                <p>도서 자동 추가</p>
+                <div className='input-container'>
+                <label>카테고리</label>
+                    <select className='update-book-select-box' onChange={onOptionaHandler} defaultValue={categoryType}> 
+                  {cateOPTIONS.map((option) => (
+                    <option
+                      key={option.value}
+                      value={option.value}
+                    >
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+                </div>
+                <div className='input-container'>
+                <label>isbn</label>
+                <input
+                    className='input'
+                    type="text"
+                    id="isbn"
+                    name="isbn"
+                    value={isbn}
+                    onChange={handleIsbn}
+                />
+            </div>
+                <button className='apply-button' onClick={handleIsbnAdd}>확인</button>
+                </div>
+                </CleanModal>
+        </React.Fragment>
       </div>
     );
 };

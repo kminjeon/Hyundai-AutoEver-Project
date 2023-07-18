@@ -71,7 +71,7 @@ public class BookRepositorySupportImpl implements BookRepositorySupport{
     }
 
     private BooleanExpression categoryTypeEq(CategoryType categoryType) {
-        return categoryType == null ? null : book.categoryType.stringValue().contains(categoryType.toString());
+        return categoryType == null ? null : book.categoryType.stringValue().contains(categoryType.getValue());
     }
 
     private BooleanExpression titleContains(String title) {

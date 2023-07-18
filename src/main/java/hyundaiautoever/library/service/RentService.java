@@ -185,9 +185,6 @@ public class RentService {
         // 반납일 업데이트
         rent.updateReturnDate(LocalDateTime.now());
 
-        // 도서 이용 가능 상태(RentType.OPEN)로 업데이트
-        rent.getBook().updateRentType(RentType.OPEN);
-
         // 사용자 현재 대여 횟수 -1
         rent.getUser().updateUserRentCount(rent.getUser().getRentCount() - 1);
 
@@ -196,20 +193,19 @@ public class RentService {
         // 반납될 도서를 예약한 사람이 있는 경우
         if (firstReserve != null) {
 
-            // 예약 첫 번째 사람 (자동 대여 -> 추가)
-            createRent(firstReserve.getUser().getPersonalId(), rent.getBook().getId());
-
-            // 이메일 전송하기 '도서가 대여되었습니다'
+            // 이메일 전송하기 '도서가 준비되었습니다'
             emailService.sendRentEmail(firstReserve.getUser().getEmail(), rent.getBook().getTitle());
-
-            // 예약 첫 번째 사람 (예약 -> 삭제)
-            reserveService.deleteReserve(firstReserve.getId());
 
             // 반납된 도서를 예약한 사용자 리스트
             List<Reserve> reserveList = reserveRepository.findAllByBook(rent.getBook());
 
-            // 예약 된 사람 대기 순번 -1
+            // 예약 된 사람 대기 순번 -1 / 예약 첫 번째 사람 (0번으로)
             reserveList.forEach(reserve -> reserve.updateWaitNumber(reserve.getWaitNumber() - 1));
+        }
+        else { // 예약한 사람 없는 경우
+
+            // 도서 이용 가능 상태(RentType.OPEN)로 업데이트
+            rent.getBook().updateRentType(RentType.OPEN);
         }
     }
 

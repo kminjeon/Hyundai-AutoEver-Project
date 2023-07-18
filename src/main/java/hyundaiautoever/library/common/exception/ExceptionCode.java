@@ -28,7 +28,10 @@ public enum ExceptionCode {
 
     ALREADY_RENT_ERROR(306, "이미 대여 중인 도서입니다."),
     FAIL_SEND_EMAIL_ERROR(307, "이메일 전송에 실패했습니다."),
-    RENT_EXTENSION_ERROR(308, "대여 연장 횟수를 초과했습니다");
+    RENT_EXTENSION_ERROR(308, "대여 연장 횟수를 초과했습니다"),
+    ALREADY_EXIST_ERROR(309, "이미 존재하는 도서입니다"),
+    EMPTY_RESULT_BOOK_ERROR(310, "해당하는 도서가 없습니다");
+
 
 
     private final int code;

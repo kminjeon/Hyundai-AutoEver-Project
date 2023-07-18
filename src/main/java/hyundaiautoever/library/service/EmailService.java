@@ -61,7 +61,7 @@ public class EmailService {
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
             mimeMessageHelper.setTo(email); // 메일 수신자
             mimeMessageHelper.setSubject("[HYUNDAI LIBRARY] 예약하신 도서가 준비되었습니다."); // 메일 제목
-            mimeMessageHelper.setText("\" " + title + " \""+ " 도서가 대여 완료되었습니다. 도서관에서 도서를 수령하시길 바랍니다.");
+            mimeMessageHelper.setText("[ " + title + " ]"+ " 도서관에서 도서를 대여하시길 바랍니다.");
             javaMailSender.send(mimeMessage);
             log.info("Success");
 

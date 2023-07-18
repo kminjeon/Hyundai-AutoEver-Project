@@ -14,6 +14,32 @@ const BookItem_ReserveInfo = ({book, index}) => {
       navigate(`/admin/book/detail/${book.bookId}`);
     };
 
+    const handleReserveRent = () => {
+      // 대여 처리 로직
+      axios.post(`/api/reserveRent/create?reserveId=${book.reserveId}`)
+        .then((response) => {
+          Swal.fire({
+            icon: "success",
+            title: "대여 성공",
+            text: `성공적으로 대여됐습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
+        })
+        .catch(error => {
+          if (error.response.data.code === 305) {
+            Swal.fire({
+              icon: "warning",
+              title: "대여 횟수 초과",
+              confirmButtonText: "확인",
+          })
+            console.log("대여 횟수를 초과했습니다");
+          }
+          console.error('대여 에러', error);
+        });
+    }; 
+
     const handleReserveCancle = () => {
       axios.delete(`/api/mypage/reserve/${book.reserveId}`)
       .then(response => {
@@ -36,7 +62,18 @@ const BookItem_ReserveInfo = ({book, index}) => {
       })
       });
     }
+    
+    const [reserveFisrt, setReserveFirst] = useState('');
+    const [canRent, setCanRent] = useState(false);
 
+    useEffect (() => {
+      if (book.waitNumber == 0) {
+        setReserveFirst("대여가능")
+        setCanRent(true);
+      } else {
+        setReserveFirst(`대기 ${book.waitNumber}번째 `);
+      }
+  }, [])
   return (
     <>    
     <li key={book.rentId} className="align separator">
@@ -46,10 +83,10 @@ const BookItem_ReserveInfo = ({book, index}) => {
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
       
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
         <p>예약 {book.reserveDate}</p>
-        <p>대기 {book.waitNumber}번째 </p>
+        <p className="reserve-color">{reserveFisrt}</p>
         </div>
         </div>
         </div>
@@ -57,7 +94,13 @@ const BookItem_ReserveInfo = ({book, index}) => {
         <div className="align-right">
           <div className="col-his">
           <p>{book.personalId} / {book.name}</p>
+          <div>
           <button className='return-button' onClick={handleReserveCancle}>취소</button>
+          {canRent && <button 
+        className = 'reserve-rent-button' 
+            onClick={handleReserveRent}>
+                대여</button>}
+             </div>
           </div>
         </div>
       </div>
