@@ -27,6 +27,7 @@ const LikeSet = ({book}) => {
                   bookId: book.bookId
                 },})
             .then((response) => {
+              alert(`'${book.title}' 좋아요가 취소됐습니다`)
               setShowHeart(false);
               setHeart("/img/blank_heart.png");
               setLoveCount(loveCount-1)
@@ -44,6 +45,7 @@ const LikeSet = ({book}) => {
                   bookId: book.bookId
             },})
             .then((response) => {
+              alert(`'${book.title}' 좋아요가 성공했습니다`)
               setShowHeart(true);
               setHeart("/img/full_heart.png");
               setLoveCount(loveCount+1)

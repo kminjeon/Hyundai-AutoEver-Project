@@ -10,10 +10,11 @@ const Signup = () => {
         password: '',
         confirmPassword: '',
         email: '',
-        part: '',
+        part : "MOBIS",
         nickname: '',
         agree : false, // 이용약관 동의 여부
       });
+
 
     const [dupData, setDupData] = useState ({
       personalId : false,
@@ -28,6 +29,11 @@ const Signup = () => {
       { value: "NAVIGATION", name: "내비게이션" },
   ];
   
+  const onOptionaHandler = (e) => {
+    setFormData(e.target.value);
+    console.log(e.target.value)
+}
+
       const [showPassword, setShowPassword] = useState(false);
       const [eyeIcon, setEyeIcon] = useState('img/eye_close.png');
       const [passwordMismatch, setPasswordMismatch] = useState(false);
@@ -40,6 +46,7 @@ const Signup = () => {
       const handleCheckIdDuplicate = () => {
         if (formData.personalId == '') 
         {
+          alert("아이디를 입력해주세요")
           return;
         }
         // 아이디 중복확인 로직
@@ -49,6 +56,7 @@ const Signup = () => {
           if (response.data.code == 409) {
             console.log("아이디 중복");
           } else {
+            alert("아이디 중복확인 완료")
             console.log("아이디 성공");
             setDupData({...dupData, 'personalId': true})
           }
@@ -61,6 +69,7 @@ const Signup = () => {
       const handleCheckEmailDuplicate = () => {
         if (formData.email == '') 
         {
+          alert("이메일을 입력해주세요")
           return;
         }
         // 이메일 중복확인 로직
@@ -70,6 +79,7 @@ const Signup = () => {
           if (response.data.code == 409) {
             console.log("이메일 중복");
           } else {
+            alert("이메일 중복확인 완료")
             console.log("이메일 성공");
             setDupData({...dupData, 'email' : true})
           }
@@ -82,6 +92,7 @@ const Signup = () => {
       const handleCheckNicknameDuplicate = () => {
         if (formData.nickname == '') 
         {
+          alert("닉네임을 입력해주세요")
           return;
         }
         // 닉네임 중복확인 로직
@@ -91,6 +102,7 @@ const Signup = () => {
           if (response.data.code == 409) {
             console.log("닉네임 중복");
           } else {
+            alert("닉네임 중복확인 완료")
             console.log("닉네임 성공");
             setDupData({nickname : true})
             setDupData({...dupData, 'nickname' : true});
@@ -126,6 +138,7 @@ const Signup = () => {
                 })
             .then((response) => {
               console.log("회원가입 성공");
+              alert("회원가입 되었습니다")
             sessionStorage.setItem("personalId", formData.personalId); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("name", formData.name); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("email", formData.email);
@@ -220,16 +233,18 @@ const Signup = () => {
             </div>
           </div>
           <div className='input-container'>
-          <label htmlFor="part"> *부서</label>
-            <input
-            className='input'
-              type="part"
-              id="part"
-              name="part"
-              value={formData.part}
-              onChange={handleChange}
-            />
-          </div>
+                <label>*부서</label>
+            <select className='update-book-select-box' onChange={onOptionaHandler} defaultValue={formData.part}> 
+                        {OPTIONS.map((option) => (
+                            <option
+                                key={option.value}
+                                value={option.value}
+                            >
+                                {option.name}
+                            </option>
+                        ))}
+                </select>
+            </div>
           <div className='input-container'>
           <label htmlFor="nickname"> *닉네임</label>
           <div className='align-dup'>

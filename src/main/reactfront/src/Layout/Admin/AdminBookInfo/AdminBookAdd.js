@@ -114,7 +114,7 @@ const AdminBookAdd = () => {
                                 {option.name}
                             </option>
                         ))}
-                    </select>
+                </select>
             </div>
             <div className='input-container'>
                 <label>isbn</label>

@@ -150,6 +150,7 @@ const AdminRentInfo = () => {
 		</select>
        
         <input
+        className='margin-check'
         onChange={handleLateBooks}
         type="checkbox"/>
       <label>

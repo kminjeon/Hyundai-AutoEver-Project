@@ -35,6 +35,7 @@ public class UserRequest {
         private String password;
         private String newPassword;
         private String email;
+        private PartType partType;
         private String nickname;
     }
 

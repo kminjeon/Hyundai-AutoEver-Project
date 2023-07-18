@@ -62,18 +62,15 @@ const BookItem_User_RentInfo = ({book, index}) => {
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
       
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>대여 {book.rentDate}</p>
+        <p className="red-Latedays"> 반납 {day} ({book.expectedReturnDate} 까지) </p>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>대여일 : {book.rentDate}</p>
-          <div>
-            <p className="red-Latedays"> {day}</p>
-            <p>반납 예정일 : {book.expectedReturnDate}</p>
-          </div>
           <button className='return-button' onClick={handleReturn} >반납</button>
           <button className='book-delete-button' onClick={handleExtend} >연장</button>
         </div>

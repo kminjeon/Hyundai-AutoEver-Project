@@ -122,7 +122,7 @@ const AdminAuthInfo = () => {
 				</option>
 			))}
 		</select>
-        <input
+        <input className='margin-check'
         onChange={handleAdminUser}
         type="checkbox"/>
       <label>

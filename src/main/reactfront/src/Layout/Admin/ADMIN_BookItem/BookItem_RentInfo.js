@@ -39,6 +39,20 @@ const BookItem_RentInfo = ({book, index}) => {
       });
     }
     
+    const handleExtend = () => {
+      axios.put(`/api/rent/extend/${book.rentId}`)
+      .then(response => {
+          console.log('도서 대여 연장 성공')
+          console.log(response)
+          alert("도서 대여가 14일 연장되었습니다")
+          window.location.reload()
+      })
+      .catch (error => {
+      console.log(error);
+      console.log('도서 대여 연장 실패')
+      });
+    }
+
   return (
     <>    
     <li key={book.rentId} className="align separator">
@@ -48,23 +62,23 @@ const BookItem_RentInfo = ({book, index}) => {
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
       
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>대여 {book.rentDate}</p>
+        <p className="red-Latedays"> 반납 {day} ({book.expectedReturnDate} 까지) </p>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>대여일 : {book.rentDate}</p>
+        <div className='col-his'>
+          <p>{book.personalId} /  {book.name}</p>
           <div>
-            <p className="red-Latedays"> {day}</p>
-            <p>반납 예정일 : {book.expectedReturnDate}</p>
-          </div>
-          <p>책 ID : {book.bookId}</p>
-          <p>회원 Id: {book.personalId}</p>
-          <p>회원 이름: {book.name}</p>
           <button className='return-button' onClick={handleReturn} >반납</button>
+          <button className='book-delete-button' onClick={handleExtend} >연장</button>
+          </div>
         </div>
+      </div>
       </div>
     </li>
     </>

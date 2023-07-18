@@ -13,8 +13,17 @@ const BookItem_BookInfo = ({book, index}) => {
       navigate(`/admin/book/detail/${book.bookId}`);
     };
 
+    const OPTIONS = [
+      { value: "DEV", name: "개발" },
+      { value: "NOVEL", name: "소설" },
+      { value: "SCIENCE", name: "과학" },
+      { value: "ECONOMY", name: "경제" },
+      { value: "HUMANITY", name: "인문" },
+    ];
+
     const [rentType, setRentType] = useState();
-    
+    const selectedOption = OPTIONS.find(option => option.value === book.categoryType);
+
       useEffect(() => {
         if (book) {
           setRentType(book.rentType ? '대여가능' : '대여불가');
@@ -50,16 +59,19 @@ const BookItem_BookInfo = ({book, index}) => {
         <div>
         <p className="title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <div className="bookInfo-flex">
+        <p>카테고리 
+        <span className="category-type-color">{selectedOption.name}</span>
+        </p>
+        <div className="rent">
+            <p className={book.rentType ? "blue" : "red"}>{rentType}</p>
+          </div>
+          </div>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>도서 ID : {book.bookId}</p>
-          <p>카테고리 : {book.categoryType} </p>
-          <div className="rent">
-            <p className={book.rentType ? "blue" : "red"}>{rentType}</p>
-          </div>
           <button className='return-button' onClick={handleBookUpdate} >수정</button>
           <button className='book-delete-button' onClick={handleBookDelete} >삭제</button>
         </div>

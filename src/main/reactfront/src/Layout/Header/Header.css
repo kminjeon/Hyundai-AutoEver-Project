@@ -23,12 +23,13 @@
     width: 450px;
     height : 45px;
     border-radius: 42px;
-    border-color: #00448D;
+    border : 3px solid #00448D;
     background-color: transparent;
     padding-left: 50px;
     font-size: 18px;
     font-family: 'YouandiModernTR', sans-serif;
 }
+
 
 .logout {
     color: #525151;

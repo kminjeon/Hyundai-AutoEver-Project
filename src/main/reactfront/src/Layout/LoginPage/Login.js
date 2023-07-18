@@ -95,6 +95,7 @@ function Login() {
           }
         })
         .catch(error => {
+          alert("서버 연결이 필요합니다")
           console.log(error);
         })
     }

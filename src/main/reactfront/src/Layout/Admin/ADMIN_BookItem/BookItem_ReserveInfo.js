@@ -38,17 +38,17 @@ const BookItem_ReserveInfo = ({book, index}) => {
         <div>
         <p className="title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>예약 {book.reserveDate}</p>
+        <p>대기 {book.waitNumber}번째 </p>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>예약일 : {book.reserveDate}</p>
-          <p>대기 순번 : {book.waitNumber} </p>
-          <p>책 ID : {book.bookId}</p>
-          <p>회원 Id: {book.personalId}</p>
-          <p>회원 이름: {book.name}</p>
+          <div className="col-his">
+          <p>{book.personalId} / {book.name}</p>
           <button className='return-button' onClick={handleReserveCancle}>취소</button>
+          </div>
         </div>
       </div>
     </li>

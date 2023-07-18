@@ -5,14 +5,14 @@
 
 .return-button {
     background-color: #E7E7E7;
-    width: 90px;
-    height: 45px;
+    width:95px;
+    height: 40px;
     border-radius: 10px;
     border: none;
     font-family: 'YouandiModernTR', sans-serif;
-    font-size : 20px;
+    font-size : 16px;
     cursor : pointer;
-    letter-spacing :15px;
+    letter-spacing :10px;
     padding-left: 15px;
     align-items: center;
 }
@@ -23,16 +23,31 @@
 
 .book-delete-button {
     background-color: #595959;
-    width: 90px;
+    width:95px;
     color: white;
-    height: 45px;
+    height: 40px;
     border-radius: 10px;
     border: none;
     font-family: 'YouandiModernTR', sans-serif;
-    font-size : 20px;
+    font-size : 16px;
     cursor : pointer;
-    letter-spacing :15px;
+    letter-spacing :10px;
     padding-left: 15px;
     align-items: center;
     margin-left: 10px;
 }
+
+.bookInfo-flex {
+    display: flex;
+}
+
+.category-type-color {
+    color: #00448D;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 20px;
+}
+
+.margin-check {
+    margin-left: 10px;
+  }

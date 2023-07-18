@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './RentHistory.css'
 
 const BookItem_User_RentHistory = ({book, index}) => {
 
@@ -9,7 +10,7 @@ const BookItem_User_RentHistory = ({book, index}) => {
     const personalId = sessionStorage.getItem('personalId');
 
     const handleBookClick = () => {
-      navigate(`/admin/book/detail/${book.bookId}`);
+      navigate(`/book/detail/${book.bookId}`);
     };
     
   return (
@@ -23,13 +24,16 @@ const BookItem_User_RentHistory = ({book, index}) => {
         <div>
         <p className="title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>대여일 : {book.rentDate}</p>
-          <p>반납일 : {book.returnDate}</p>
+          <div className="col-his">
+        <p>대여 {book.rentDate}</p>
+          <p>반납 {book.returnDate}</p>
+          </div>
         </div>
       </div>
     </li>

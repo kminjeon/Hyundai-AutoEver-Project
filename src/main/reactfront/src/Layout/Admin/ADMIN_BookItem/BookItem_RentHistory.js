@@ -24,16 +24,14 @@ const BookItem_RentHistory = ({book, index}) => {
         <div>
         <p className="title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>대여 {book.rentDate}</p>
+          <p>반납 {book.returnDate}</p>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>대여일 : {book.rentDate}</p>
-          <p>반납일 : {book.returnDate}</p>
-          <p>책 ID : {book.bookId}</p>
-          <p>회원 Id: {book.personalId}</p>
-          <p>회원 이름: {book.name}</p>
+          <p>{book.personalId} / {book.name}</p>
         </div>
       </div>
     </li>

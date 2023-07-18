@@ -63,7 +63,7 @@ public class UserDto {
         private final String personalId;
         private final String email;
         private final AuthType authType;
-        private final PartType part;
+        private final PartType partType;
         private final String nickname;
         private final LocalDateTime lastLogin;
 
@@ -72,7 +72,7 @@ public class UserDto {
             this.personalId = user.getPersonalId();
             this.email = user.getEmail();
             this.authType = user.getAuthType();
-            this.part = user.getPartType();
+            this.partType = user.getPartType();
             this.nickname = user.getNickname();
             this.lastLogin = user.getLastLoginDate();
         }

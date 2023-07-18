@@ -76,15 +76,17 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
         <div>
         <p className="title">{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>신청 {book.applyDate}</p>
+
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>신청일 : {book.applyDate}</p>
-          <p>출판사 : {book.publisher}</p>
+          <div>
           <button className='return-button' onClick={openModal}>수정</button>
           <button className='book-delete-button' onClick={handleApplyDelete} >삭제</button>
+          </div>
         </div>
       </div>
       <React.Fragment>

@@ -17,6 +17,7 @@ const Profile = () => {
         confirmPassword: '',
         newPassword: '',
         email: '',
+        partType : '',
         nickname: '',
       });
 
@@ -24,6 +25,18 @@ const Profile = () => {
         email : true,
         nickname : true
       })
+
+      const OPTIONS = [
+        { value: "MOBIS", name: "모비스연구소시스템" },
+        { value: "PLATFORM", name: "차량SW플랫폼" },
+        { value: "FACTORY", name: "스마트팩토리" },
+        { value: "NAVIGATION", name: "내비게이션" },
+    ];
+    
+    const onOptionaHandler = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+      console.log(e.target.value)
+  }
 
       const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -40,6 +53,7 @@ const Profile = () => {
             const response = await axios.get(`/api/mypage/profile/${personalId}`);
             console.log(response.data.data)
             setProfile(response.data.data)
+            setFormData({ ...formData, "partType": response.data.data.partType })
           } catch (error) {
             console.log(error);
           }
@@ -97,8 +111,13 @@ const Profile = () => {
 
 
     const handleSubmit = () => {
+      console.log(formData)
+      if (formData.password.length == 0) {
+        alert("프로필 변경은 비밀번호 필수 입력값입니다")
+        return ;
+      }
         if (formData.newPassword !== formData.confirmPassword) {
-            alert("비밀번호가 틀렸습니다.")
+            alert("비밀번호가 동일하지 않습니다.")
             console.log("비밀번호 틀림")
             setPasswordMismatch(true);
             return;
@@ -109,21 +128,25 @@ const Profile = () => {
         axios.put('/api/mypage/profile/update', {
             
             personalId : personalId,
-            password :formData.password,
+            password :formData.password, // 무조건 입력
             newPassword : formData.newPassword.length == 0 ? null : formData.newPassword,
             email : formData.email.length == 0 ? null : formData.email,
+            partType : formData.partType == profile.part ? null : formData.partType, 
             nickname : formData.nickname.length == 0 ? null : formData.nickname,
         })
          .then(response => {
             console.log(response.data)
             if (response.data.code === -1) {
+                alert("현재 비밀번호가 틀렸습니다")
                 console.log('비밀번호가 틀렸습니다')
             } else {
+                alert("프로필을 수정했습니다")
                 console.log('프로필 수정 성공')
                 window.location.reload();
             }
          })
          .catch (error => {
+            alert("프로필 수정에 실패했습니다")
             console.log(error);
           });
     }
@@ -134,6 +157,8 @@ const Profile = () => {
             return true;
         }
     }
+
+
     return (
         <div>
             <MypageCategory />
@@ -208,6 +233,19 @@ const Profile = () => {
                 />
                 </div>
                 <div className='input-container'>
+                <label>*부서</label>
+            <select className='update-book-select-box' name="partType" onChange={onOptionaHandler} defaultValue={profile.partType}> 
+                        {OPTIONS.map((option) => (
+                            <option
+                                key={option.value}
+                                value={option.value}
+                            >
+                                {option.name}
+                            </option>
+                        ))}
+                </select>
+            </div>
+                <div className='input-container'>
                 
                 <label>닉네임</label>
                 <input
@@ -215,7 +253,7 @@ const Profile = () => {
                     type="text"
                     id="nickname"
                     name="nickname"
-                    value={formData.emanicknameil}
+                    value={formData.nickname}
                     onChange={handleChange}
                     placeholder={profile.nickname}
                 />

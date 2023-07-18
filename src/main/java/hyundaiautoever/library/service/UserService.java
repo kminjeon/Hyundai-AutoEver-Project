@@ -150,10 +150,14 @@ public class UserService {
             return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
         }
         // 비밀번호 변경
-        user.updateUserPassword(passwordEncoder.encode(request.getNewPassword()));
+        user.updateUserPassword(request.getNewPassword() != null ? passwordEncoder.encode(request.getNewPassword()) : user.getPassword());
 
         // 이메일 변경
         user.updateUserEmail(request.getEmail() != null ? request.getEmail() : user.getEmail());
+
+        // 부서 변경
+        user.updateUserPart(request.getPartType() != null ? request.getPartType() : user.getPartType());
+
         // 닉네임 변경
         user.updateUserNickname(request.getNickname() != null ? request.getNickname() : user.getNickname());
 

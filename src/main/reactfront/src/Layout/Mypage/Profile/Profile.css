@@ -15,6 +15,7 @@
     cursor : pointer;
     margin-left: 10px;
     font-family: 'YouandiModernTR', sans-serif;
+    margin-bottom: 20px;
   }
 
 
@@ -26,7 +27,7 @@
   .profile-title {
     font-size: 40px;
     align-items: center;
-    margin-left: 15%;
+    margin-left: 12%;
   }
 
   .profile-line {
@@ -34,3 +35,10 @@
     margin-bottom: 10px;
   }
 
+
+  .password-input-p {
+    display: flex;
+    align-items: center;
+    position: relative;
+    z-index: -1;
+}

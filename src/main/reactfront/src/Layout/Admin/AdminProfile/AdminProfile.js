@@ -16,6 +16,7 @@ const AdminProfile = () => {
         confirmPassword: '',
         newPassword: '',
         email: '',
+        partType : '',
         nickname: '',
       });
 
@@ -23,6 +24,17 @@ const AdminProfile = () => {
         email : true,
         nickname : true
       })
+      const OPTIONS = [
+        { value: "MOBIS", name: "모비스연구소시스템" },
+        { value: "PLATFORM", name: "차량SW플랫폼" },
+        { value: "FACTORY", name: "스마트팩토리" },
+        { value: "NAVIGATION", name: "내비게이션" },
+    ];
+    
+    const onOptionaHandler = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+      console.log(e.target.value)
+  }
 
       const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -39,6 +51,7 @@ const AdminProfile = () => {
             const response = await axios.get(`/api/mypage/profile/${personalId}`);
             console.log(response.data.data)
             setProfile(response.data.data)
+            setFormData({ ...formData, "partType": response.data.data.partType })
           } catch (error) {
             console.log(error);
           }
@@ -96,6 +109,11 @@ const AdminProfile = () => {
 
 
     const handleSubmit = () => {
+      console.log(formData)
+      if (formData.password.length == 0) {
+        alert("프로필 변경은 비밀번호 필수 입력값입니다")
+        return ;
+      }
         if (formData.newPassword !== formData.confirmPassword) {
             alert("비밀번호가 틀렸습니다.")
             console.log("비밀번호 틀림")
@@ -111,6 +129,7 @@ const AdminProfile = () => {
             password :formData.password,
             newPassword : formData.newPassword.length == 0 ? null : formData.newPassword,
             email : formData.email.length == 0 ? null : formData.email,
+            partType : formData.partType == profile.part ? null : formData.partType, 
             nickname : formData.nickname.length == 0 ? null : formData.nickname,
         })
          .then(response => {
@@ -207,7 +226,21 @@ const AdminProfile = () => {
                 />
                 </div>
                 <div className='input-container'>
-                
+                <label>*부서</label>
+            <select className='update-book-select-box' name="partType" onChange={onOptionaHandler} defaultValue={profile.partType}> 
+                        {OPTIONS.map((option) => (
+                            <option
+                                key={option.value}
+                                value={option.value}
+                            >
+                                {option.name}
+                            </option>
+                        ))}
+                </select>
+              </div>
+
+
+                <div className='input-container'>
                 <label>닉네임</label>
                 <input
                     className='input'

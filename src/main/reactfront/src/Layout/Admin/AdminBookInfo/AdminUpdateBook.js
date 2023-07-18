@@ -25,7 +25,6 @@ const AdminUpdateBook = () => {
     { value: "SCIENCE", name: "과학" },
     { value: "ECONOMY", name: "경제" },
     { value: "HUMANITY", name: "인문" },
-
     ];
 
       useEffect(() => { // 처음 도서 정보 가져오기

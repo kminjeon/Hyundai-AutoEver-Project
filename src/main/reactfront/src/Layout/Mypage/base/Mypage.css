@@ -22,7 +22,7 @@
   font-size: 25px;
   -webkit-text-stroke-width: 0.5px;
   -webkit-text-stroke-color: black;
-  margin-right: 25%;
+  margin-right: 22%;
 }
 
 .line {
@@ -45,4 +45,13 @@
 .click {
   font-size: 25px;
   cursor: pointer;
+  transition: color 0.3s ease; /*부드럽게*/
+  background-color: transparent;
+  transition: background-color 0.3s ease;
+
+
+}
+
+.click:hover {
+  background-color: #e6f1fe;
 }
