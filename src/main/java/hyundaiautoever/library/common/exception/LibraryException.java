@@ -23,6 +23,12 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
+    public static class RentExtensionException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
     public static class FailSendEmailException extends RuntimeException {
         private final ExceptionCode exceptionCode;
     }

@@ -30,9 +30,13 @@ public class ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Response.dataUpdateException(dataUpdateException.getExceptionCode()), HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(LibraryException.RentExtensionException.class)
+    public ResponseEntity<Response<Object>> handleRentExtensionException(LibraryException.RentExtensionException rentExtensionException) {
+        return new ResponseEntity<>(Response.rentExtensionException(rentExtensionException.getExceptionCode()), HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(LibraryException.AlreadyRentException.class)
-    public ResponseEntity<Response<Object>> handleDataUpdateException(LibraryException.AlreadyRentException alreadyRentException) {
+    public ResponseEntity<Response<Object>> handleAlreadyRentException(LibraryException.AlreadyRentException alreadyRentException) {
         return new ResponseEntity<>(Response.alreadyRentException(alreadyRentException.getExceptionCode()), HttpStatus.CONFLICT);
     }
 

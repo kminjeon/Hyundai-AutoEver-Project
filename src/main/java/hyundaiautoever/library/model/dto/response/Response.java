@@ -46,6 +46,10 @@ public class Response<T> {
         return new Response<T>(exceptionCode);
     }
 
+    public static <T> Response<T> rentExtensionException(ExceptionCode exceptionCode) {
+        log.info("[rentExtensionException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
     public static <T> Response<T> deleteBookException(ExceptionCode exceptionCode) {
         log.info("[deleteBookException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);

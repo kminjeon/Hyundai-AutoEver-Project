@@ -41,6 +41,9 @@ const Signup = () => {
       const handleChange = (e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         setFormData({ ...formData, [e.target.name]: value });
+        if (e.target.name === 'personalId' || e.target.name === 'email' || e.target.name === 'nickname') {
+          setDupData({...dupData, [e.target.name]: false });
+      }
       };
     
       const handleCheckIdDuplicate = () => {
@@ -115,7 +118,8 @@ const Signup = () => {
       const handleSubmit = (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            console.log("비밀번호 틀림")
+          alert("비밀번호가 동일하지 않습니다")  
+          console.log("비밀번호 틀림")
             setPasswordMismatch(true);
             return;
         } else {
@@ -123,6 +127,7 @@ const Signup = () => {
           console.log(formData);
         }
         if (!dupData.personalId || !dupData.email || !dupData.nickname) {
+          alert("중복확인은 필수입니다")
           console.log("중복확인 안함")
           console.log(dupData)
           return;
@@ -272,8 +277,6 @@ const Signup = () => {
         </label>
       </div>
           <button className='join-button' onClick={handleSubmit} disabled={isButtonDisabled}>회원가입</button>
-          {(!dupData.personalId || !dupData.email || !dupData.nickname) && 
-          <p className="error-message">중복체크를 확인해주세요</p>}
         </div>
       );
 };

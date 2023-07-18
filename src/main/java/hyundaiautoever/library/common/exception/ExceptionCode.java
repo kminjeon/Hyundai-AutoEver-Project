@@ -22,13 +22,13 @@ public enum ExceptionCode {
     PASSWORD_ERROR(-1, "비밀번호가 틀렸습니다"),
     PERSONALID_ERROR(-2, "로그인 아이디가 틀렸습니다"),
     LOGIN_SUCCESS(0, "로그인이 성공했습니다"),
-    EXTENSION_ERROR(-1, "대여 연장 횟수를 초과했습니다"),
     AUTH_ERROR(303, "권한이 없습니다."),
     DELETE_RENT_ERROR(304, "대여 중인 도서가 있습니다."),
     MAX_RENT_EXCEPTION(305, "대여 횟수를 초과했습니다"),
 
     ALREADY_RENT_ERROR(306, "이미 대여 중인 도서입니다."),
-    FAIL_SEND_EMAIL_ERROR(307, "이메일 전송에 실패했습니다.");
+    FAIL_SEND_EMAIL_ERROR(307, "이메일 전송에 실패했습니다."),
+    RENT_EXTENSION_ERROR(308, "대여 연장 횟수를 초과했습니다");
 
 
     private final int code;

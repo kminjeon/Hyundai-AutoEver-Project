@@ -45,11 +45,8 @@
 .click {
   font-size: 25px;
   cursor: pointer;
-  transition: color 0.3s ease; /*부드럽게*/
   background-color: transparent;
   transition: background-color 0.3s ease;
-
-
 }
 
 .click:hover {

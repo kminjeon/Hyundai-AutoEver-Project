@@ -93,7 +93,8 @@ public class RentController {
      */
     @PutMapping("/rent/extend/{rentId}")
     public Response extendRent(@PathVariable("rentId") Long rentId){
-        return rentService.extentRent(rentId);
+        rentService.extentRent(rentId);
+        return Response.ok();
     }
 
 

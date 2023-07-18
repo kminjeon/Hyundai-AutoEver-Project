@@ -2,6 +2,7 @@
   max-width: 200px;
   max-height: 70px;
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .find {
@@ -57,7 +58,13 @@
   color: #9DA7B2;
   font-family: 'YouandiModernTR', sans-serif;
   margin: 20px;
+  transition: background-color 0.3s ease; /*부드럽게*/
+}
+
+.signin:hover {
   cursor: pointer;
+  color: #798087;
+  background-color: #b8d0ef;
 }
 
 

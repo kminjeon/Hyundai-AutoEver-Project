@@ -48,6 +48,10 @@ const BookItem_RentInfo = ({book, index}) => {
           window.location.reload()
       })
       .catch (error => {
+        if (error.response.data.code === 308) {
+          console.log(error.response.data.message);
+          alert(error.response.data.message);
+        }
       console.log(error);
       console.log('도서 대여 연장 실패')
       });

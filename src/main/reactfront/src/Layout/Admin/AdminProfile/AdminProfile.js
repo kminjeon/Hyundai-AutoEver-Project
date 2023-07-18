@@ -66,6 +66,7 @@ const AdminProfile = () => {
       const handleCheckEmailDuplicate = () => {
         if (formData.email == '') 
         {
+          alert("이메일을 입력해주세요")
           return;
         }
         // 이메일 중복확인 로직
@@ -75,6 +76,7 @@ const AdminProfile = () => {
           if (response.data.code == 409) {
             console.log("이메일 중복");
           } else {
+            alert("이메일 중복확인 완료")
             console.log("이메일 성공");
             setDupData({...dupData, 'email' : true})
           }
@@ -85,27 +87,29 @@ const AdminProfile = () => {
       };
 
     
-    const handleCheckNicknameDuplicate = () => {
+      const handleCheckNicknameDuplicate = () => {
         if (formData.nickname == '') 
         {
-        return;
+          alert("닉네임을 입력해주세요")
+          return;
         }
         // 닉네임 중복확인 로직
         axios
         .get(`/api/check/nickname/${formData.nickname}`)
         .then((response) => {
-        if (response.data.code == 409) {
+          if (response.data.code == 409) {
             console.log("닉네임 중복");
-        } else {
+          } else {
+            alert("닉네임 중복확인 완료")
             console.log("닉네임 성공");
             setDupData({nickname : true})
             setDupData({...dupData, 'nickname' : true});
-        }
+          }
         })
         .catch((error) => {
-        console.error("닉네임 중복 확인 에러", error);
+          console.error("닉네임 중복 확인 에러", error);
         });
-    };
+      };
 
 
     const handleSubmit = () => {
@@ -122,6 +126,12 @@ const AdminProfile = () => {
         } else {
             setPasswordMismatch(false);
             console.log(formData);
+        }
+        if (!dupData.email || !dupData.nickname) {
+          alert("중복확인은 필수입니다")
+          console.log("중복확인 안함")
+          console.log(dupData)
+          return;
         }
         axios.put('/api/mypage/profile/update', {
             
@@ -215,6 +225,7 @@ const AdminProfile = () => {
           <div className='input-container'>
                 
                 <label>이메일</label>
+          <div className='align-dup'>
                 <input
                     className='input'
                     type="email"
@@ -224,6 +235,10 @@ const AdminProfile = () => {
                     onChange={handleChange}
                     placeholder={profile.email}
                 />
+              <button className = 'dup' vtype='button' onClick={handleCheckEmailDuplicate}>
+              중복확인
+            </button>
+            </div>
                 </div>
                 <div className='input-container'>
                 <label>*부서</label>
@@ -242,6 +257,8 @@ const AdminProfile = () => {
 
                 <div className='input-container'>
                 <label>닉네임</label>
+          <div className='align-dup'>
+
                 <input
                     className='input'
                     type="text"
@@ -251,6 +268,10 @@ const AdminProfile = () => {
                     onChange={handleChange}
                     placeholder={profile.nickname}
                 />
+              <button className = 'dup' type='button' onClick={handleCheckNicknameDuplicate}>
+              중복확인
+            </button>
+            </div>
                 </div>
             <button className = 'updateprofile-button' onClick={handleSubmit}>회원 정보 수정</button>
             </div>

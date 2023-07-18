@@ -101,10 +101,15 @@ function Login() {
     }
   };
 
+
+  const handleReload = () => {
+    window.location.reload();
+  }
+
   return (
       <div>
           <form onSubmit={onSubmitHandler} className='centered-form'>
-              <img className='login-logo ' src='/img/logo.svg' alt='로고'></img>
+              <img className='login-logo ' src='/img/logo.svg' alt='로고' onClick={handleReload}></img>
               <h2 className='login-h2'>HYUNDAI LIBRARY</h2>
               <input className='input-login' type='personalId' id ='personalId' value={personalId} onChange={onPersonalIdHandler} placeholder='Login'/>
               <div className='error-msg'>{error.personalId}</div>

@@ -150,10 +150,9 @@ public class RentService {
     /**
      * 대출 연장
      * @param rentId
-     * @return ok
      */
     @Transactional
-    public Response extentRent(Long rentId) {
+    public void extentRent(Long rentId) {
         Rent rent = rentRepository.findById(rentId).orElseThrow(() -> {
             log.error("extentRent Exception : [존재하지 않는 Rent ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -161,7 +160,7 @@ public class RentService {
 
         // 도서 대여 연장 1회 사용 -> 연장 불가
         if (rent.getExtensionNumber().equals(1)) {
-            return Response.extensionError(ExceptionCode.EXTENSION_ERROR);
+            throw new LibraryException.RentExtensionException(ExceptionCode.RENT_EXTENSION_ERROR);
         }
 
         // 도서 대여 가능할 경우 : 7일 연장
@@ -169,7 +168,6 @@ public class RentService {
 
         // 도서 대여 연장 1회 추가
         rent.updateExtensionNumber(1);
-        return Response.ok();
     }
 
 
