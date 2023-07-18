@@ -23,8 +23,7 @@ public class BookApiController {
                             @RequestParam("display") int display,
                             @RequestParam("categoryType") CategoryType categoryType) {
         log.info("BookAPIController : [getJson]");
-        bookApiService.getJson(query, display, categoryType);
-        return Response.ok();
+        return Response.ok().setData(bookApiService.getJson(query, display, categoryType));
     }
 
 }

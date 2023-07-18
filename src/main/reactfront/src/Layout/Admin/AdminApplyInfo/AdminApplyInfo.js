@@ -108,7 +108,7 @@ const closeModal = () => {
           Swal.fire({
             icon: "success",
             title: "추가 성공",
-            text: `도서를 추가했습니다`,
+            text: `[ ${response.data.data} ] 도서를 추가했습니다`,
             confirmButtonText: "확인",
         }).then(() => {
           window.location.reload();

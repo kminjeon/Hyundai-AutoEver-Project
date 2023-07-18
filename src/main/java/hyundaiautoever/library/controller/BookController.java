@@ -65,7 +65,7 @@ public class BookController {
      * @return SearchAdminBookPage
      */
     @GetMapping("/admin/book/search")
-    public Response searchAdminBookPage(@PageableDefault(size = 5) Pageable pageable,
+    public Response searchAdminBookPage(@PageableDefault(size = 10) Pageable pageable,
                                    @RequestParam(required = false) Long bookId,
                                    @RequestParam(required = false) CategoryType categoryType,
                                    @RequestParam(required = false) String title,

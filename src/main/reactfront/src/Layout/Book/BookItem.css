@@ -5,8 +5,8 @@
 }
 
 .index {
-    font-size: 45px; /* 숫자 텍스트 크기 조정 */
-    margin-right: 50px;
+    font-size: 40px; /* 숫자 텍스트 크기 조정 */
+    margin-right: 45px;
 }
 
 .indexandimg {
@@ -36,7 +36,7 @@
     border-top: 2px solid #EBEBEB;
     margin-top: 10px;
     padding-top: 10px;
-    width : calc(100% - 180px);
+    width : calc(100% - 120px);
   }
 
 .align-right {

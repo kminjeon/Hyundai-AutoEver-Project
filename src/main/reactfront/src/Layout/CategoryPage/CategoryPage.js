@@ -8,6 +8,7 @@ import BookItem from "../Book/BookItem";
 import './CategoryPage.css'
 import PaginationBox from "../Page/PaginationBox";
 import NoNumberBookItem from "../Book/NoNumberBookItem";
+import CategoryBookItem from "../Book/CategoryBookItem";
 
 const CategoryPage = () => {
     const { categoryType } = useParams();
@@ -46,8 +47,8 @@ const CategoryPage = () => {
           <Header />
           <div>
           <ol className='numbered-list'>
-            {bookList&&bookList.map((book) => {
-              return <NoNumberBookItem key={book.bookId} book ={book} /> 
+            {bookList&&bookList.map((book, index) => {
+              return <CategoryBookItem key={book.bookId} book ={book} index={(page * 5) + index + 1}/> 
             })}
           </ol>
 

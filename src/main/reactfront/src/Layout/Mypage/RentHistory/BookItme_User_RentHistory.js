@@ -22,7 +22,7 @@ const BookItem_User_RentHistory = ({book, index}) => {
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
       
         <div>
-        <p className="title" onClick={handleBookClick}>{book.title}</p>
+        <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
 
         </div>

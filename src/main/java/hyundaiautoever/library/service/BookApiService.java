@@ -47,7 +47,7 @@ public class BookApiService {
     @Value("${naver.clientSecret}")
     private String naverSecret;
 
-    public void getJson(String query, int display, CategoryType categoryType) {
+    public String getJson(String query, int display, CategoryType categoryType) {
         if (bookRepository.existsByIsbn(query)) {
             throw new LibraryException.AlreadyExistBook(ExceptionCode.ALREADY_EXIST_ERROR);
         }
@@ -87,20 +87,23 @@ public class BookApiService {
             throw new LibraryException.EmptyResultBook(ExceptionCode.EMPTY_RESULT_BOOK_ERROR);
         }
 
-        List<BookResult> bookList = jsonResult.getItems();
+        BookResult firstBook = jsonResult.getItems().get(0);
 
-        for (BookResult bookResult : bookList) {
-            BookRequest.AddBookRequest request = new BookRequest.AddBookRequest();
-            request.setTitle(bookResult.getTitle());
-            request.setAuthor(bookResult.getAuthor());
-            request.setIsbn(bookResult.getIsbn());
-            request.setPublisher(bookResult.getPublisher());
-            request.setCategoryType(categoryType);
-            request.setDescription(bookResult.getDescription());
-            bookService.addBook(request);
-
-            // 이미지 저장
-            imageService.callImage(bookResult.getImage(), bookResult.getIsbn());
+        if (bookRepository.existsByIsbn(firstBook.getIsbn())) {
+            throw new LibraryException.AlreadyExistBook(ExceptionCode.ALREADY_EXIST_ERROR);
         }
+        BookRequest.AddBookRequest request = new BookRequest.AddBookRequest();
+        request.setTitle(firstBook.getTitle());
+        request.setAuthor(firstBook.getAuthor());
+        request.setIsbn(firstBook.getIsbn());
+        request.setPublisher(firstBook.getPublisher());
+        request.setCategoryType(categoryType);
+        request.setDescription(firstBook.getDescription());
+        bookService.addBook(request);
+
+        // 이미지 저장
+        imageService.callImage(firstBook.getImage(), firstBook.getIsbn());
+
+        return firstBook.getTitle();
     }
 }
