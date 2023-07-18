@@ -52,3 +52,10 @@
 .click:hover {
   background-color: #e6f1fe;
 }
+
+.a-withdraw-align {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}

@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 import './LikeBookItem.css'
 import axios from 'axios';
 
@@ -14,11 +15,23 @@ const LikeBookItem = ({personalId, book}) => {
         axios.delete(`/api/love/delete?personalId=${personalId}&bookId=${book.bookId}`)
          .then(response => {
             console.log('좋아요 삭제 성공')
+            Swal.fire({
+              icon: "success",
+              title: "삭제 성공",
+              text :  `좋아요를 삭제했습니다`,
+              confirmButtonText: "확인",
+          }).then(() => {
             window.location.reload();
+          });
          })
          .catch (error => {
             console.log(error);
             console.log('좋아요 삭제 실패')
+            Swal.fire({
+              icon: "error",
+              title: "좋아요 삭제 실패",
+              confirmButtonText: "확인",
+          })
           });
     }
 

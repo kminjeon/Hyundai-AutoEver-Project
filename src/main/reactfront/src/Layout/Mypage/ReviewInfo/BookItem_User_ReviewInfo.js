@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 import CleanModal from "../../Modal/CleanModal";
 
 const BookItem_User_ReviewInfo = ({book, index}) => {
@@ -21,12 +22,23 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
       .then(response => {
           console.log('도서 리뷰 삭제 성공')
           console.log(response)
-          alert("해당 도서 리뷰을 삭제했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "리뷰 삭제 성공",
+            text: `해당 도서 리뷰을 삭제했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
         console.log(error);
         console.log('도서 리뷰 삭제 실패')
+        Swal.fire({
+          icon: "error",
+          title: "도서 리뷰 삭제 실패",
+          confirmButtonText: "확인",
+      })
       });
     }
 
@@ -40,7 +52,12 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
       
       const handleReviewUpdate = () => {
         if ( content.length == 0) {
-            alert("수정된 내용이 없습니다")
+          Swal.fire({
+            icon: "warning",
+            title: "수정 내용 필요",
+            text: `수정된 내용이 없습니다`,
+            confirmButtonText: "확인",
+        })
             return;
         }
         axios.put(`/api/mypage/review/${book.reviewId}`, {
@@ -49,9 +66,15 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
         .then(response => {
             console.log(response);
             console.log('리뷰 수정 성공')
-            alert("성공적으로 리뷰를 수정했습니다")
+            Swal.fire({
+              icon: "success",
+              title: "리뷰 수정 성공",
+              text: `성공적으로 리뷰를 수정했습니다`,
+              confirmButtonText: "확인",
+          }).then(() => {
             closeModal();
             window.location.reload();
+          });
         })
         .catch (error => {
         console.log(error);

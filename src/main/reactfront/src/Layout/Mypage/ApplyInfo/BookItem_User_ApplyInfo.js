@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect } from "react";
 import axios from 'axios';
+import Swal from "sweetalert2";
 import CleanModal from "../../Modal/CleanModal";
 
 const BookItem_User_ApplyInfo = ({book, index}) => {
@@ -17,7 +18,12 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
 
     const handleUpdateApply = () => {
         if (updateBody.title.length == 0 && updateBody.author.length == 0 && updateBody.publisher.length == 0 && updateBody.isbn.length == 0) {
-            alert("수정 내역이 없습니다")
+            Swal.fire({
+              icon: "warning",
+              title: "수정 내역 필요",
+              text: `수정 내역이 없습니다`,
+              confirmButtonText: "확인",
+          })
             return;
         }
       axios.put(`/api/apply/${book.applyId}`, {
@@ -29,11 +35,23 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
       .then(response => {
           console.log('도서 신청 수정 성공')
           console.log(response)
-          alert("해당 도서 신청을 수정했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "수정 성공",
+            text: `해당 도서 신청을 수정했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
       console.log(error);
+      Swal.fire({
+        icon: "error",
+        title: "수정 실패",
+        text: `해당 도서 신청을 수정을 실패했습니다`,
+        confirmButtonText: "확인",
+    })
       console.log('도서 신청 수정 실패')
       });
     }
@@ -43,11 +61,23 @@ const BookItem_User_ApplyInfo = ({book, index}) => {
       .then(response => {
           console.log('도서 신청 삭제 성공')
           console.log(response)
-          alert("해당 도서 신청을 삭제했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "삭제 성공",
+            text: `해당 도서 신청을 삭제했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
         console.log(error);
+        Swal.fire({
+          icon: "error",
+          title: "삭제 실패",
+          text: `해당 도서 신청 삭제를 실패했습니다`,
+          confirmButtonText: "확인",
+      })
         console.log('도서 신청 삭제 실패')
       });
       

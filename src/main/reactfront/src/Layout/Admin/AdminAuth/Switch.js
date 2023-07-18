@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from 'axios';
 
 const Switch = ({user}) => {
@@ -16,13 +17,16 @@ const Switch = ({user}) => {
         })
         .then(response => {
         console.log(response);
-        console.log('권한 수정 성공')
         setValue(!value)
-        alert("성공적으로 권한을 수정했습니다.")
+        Swal.fire({
+          icon: "success",
+          title: "권한 수정 성공",
+          text: `성공적으로 권한을 수정했습니다`,
+          confirmButtonText: "확인",
+      })
         })
         .catch (error => {
         console.log(error);
-        console.log('권한 수정 실패')
         });
     }
 

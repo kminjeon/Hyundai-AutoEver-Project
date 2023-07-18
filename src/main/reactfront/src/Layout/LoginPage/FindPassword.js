@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Modal from "../Modal/Modal";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 const FindPassword = () => {
@@ -42,7 +43,12 @@ const FindPassword = () => {
           .then((response) => {
             console.log(response)
             if (response.data.code !== 409) {
-                alert("해당하는 사용자가 없습니다")
+                Swal.fire({
+                    icon: "warning",
+                    title: "사용자 없음",
+                    html : `[${personalId}] <br/> 해당하는 사용자가 없습니다`,
+                    confirmButtonText: "확인",
+                })
                 return;
             } else {
                 axios.post('api/email', null, {
@@ -74,7 +80,12 @@ const FindPassword = () => {
             setModalOpen(false)
             setResetModalOpen(true);   
         } else {
-            alert("코드가 다릅니다.")
+            Swal.fire({
+                icon: "warning",
+                title: "확인 코드 오류",
+                text : `확인 코드가 다릅니다`,
+                confirmButtonText: "확인",
+            })
         }
     }
 
@@ -82,7 +93,12 @@ const FindPassword = () => {
     const onSubmitHandler = () => {
         if (password !== confirmPassword) {
             console.log("비밀번호 틀림")
-            alert("비밀번호가 다릅니다")
+            Swal.fire({
+                icon: "warning",
+                title: "비밀번호 오류",
+                text : `비밀번호가  다릅니다`,
+                confirmButtonText: "확인",
+            })
             return;
         }
         axios.put('/api/passwordReset', {
@@ -91,11 +107,21 @@ const FindPassword = () => {
             })
         .then(response => {
            console.log(response);
+           Swal.fire({
+            icon: "success",
+            title: "비밀번호 재설정 성공",
+            confirmButtonText: "확인",
+        })
            console.log('비밀번호 재설정 성공')
            window.location.assign("/");
         })
         .catch (error => {
            console.log(error);
+           Swal.fire({
+            icon: "error",
+            title: "비밀번호 재설정 실패",
+            confirmButtonText: "확인",
+        })
            console.log('비밀번호 재설정 실패')
          });
     }

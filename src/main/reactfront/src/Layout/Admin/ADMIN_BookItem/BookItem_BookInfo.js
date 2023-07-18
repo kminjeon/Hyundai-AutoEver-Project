@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 import './Admin_BookItem.css'
 
 const BookItem_BookInfo = ({book, index}) => {
@@ -33,13 +34,21 @@ const BookItem_BookInfo = ({book, index}) => {
       const handleBookDelete = () => {
         axios.delete(`/api/admin/book/delete?bookId=${book.bookId}`)
         .then(response => {
-            console.log('도서 삭제 성공')
-            console.log(response)
-            window.location.reload()
+            Swal.fire({
+              icon: "warning",
+              title: "도서 삭제 성공",
+              text: "도서가 삭제되었습니다",
+              confirmButtonText: "확인",
+          }).then(() => {
+            window.location.reload();
+          });
         })
         .catch (error => {
-        console.log(error);
-        console.log('도서 삭제 실패')
+        Swal.fire({
+          icon: "error",
+          title: "도서 삭제 실패",
+          confirmButtonText: "확인",
+      })
         });
       }
 

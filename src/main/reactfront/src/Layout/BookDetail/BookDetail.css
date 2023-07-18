@@ -53,6 +53,10 @@
     size: 50px;
 }
 
+.review-title {
+    font-weight: bold;
+}
+
 .align-detail {
     align-items: center;
 }
@@ -84,7 +88,7 @@
 
 
 .margin-rignt-40 {
-    margin-right: 40px;
+    margin-right: 20px;
 }
 
 .gray {
@@ -192,4 +196,8 @@
 .mar-r {
     margin-right: 120px;
     padding-top: 20px;
+}
+
+.review-width {
+    width: 45px;
 }

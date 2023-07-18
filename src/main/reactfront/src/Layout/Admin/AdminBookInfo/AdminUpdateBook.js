@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import Swal from "sweetalert2";
 import AdminCategory from '../AdminCategory/AdminCategory';
 import AdminHeader from '../Header/AdminHeader';
 import './AdminUpdateBook.css'
@@ -32,7 +33,6 @@ const AdminUpdateBook = () => {
           try {
             const response = await axios.get(`/api/admin/book/get/${bookId}`);
             setBook(response.data.data);
-            console.log(response.data.data)
             setCategoryType(response.data.data.categoryType);
           } catch (error) {
             console.log(error);
@@ -60,14 +60,23 @@ const AdminUpdateBook = () => {
           description : updateBody.description.length == 0? null : updateBody.description
         })
         .then(response => {
-            console.log('도서 수정 성공')
             console.log(response)
-            alert("도서 수정 완료되었습니다")
-            window.location.reload()
+            Swal.fire({
+                icon: "success",
+                title: '도서 수정 성공',
+                text: `도서 수정이 완료되었습니다`,
+                confirmButtonText: "확인",
+            }).then(() => {
+                window.location.reload();
+              });
         })
         .catch (error => {
         console.log(error);
-        console.log('도서 수정 실패')
+        Swal.fire({
+            icon: "error",
+            title: '도서 수정 실패',
+            confirmButtonText: "확인",
+        })
         });
       }
 

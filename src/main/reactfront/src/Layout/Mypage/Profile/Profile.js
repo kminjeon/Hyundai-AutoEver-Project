@@ -1,6 +1,7 @@
 import MypageCategory from "../../Category/MypageCategory";
 import Header from "../../Header/Header";
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from 'axios';
 import './Profile.css'
 
@@ -67,7 +68,12 @@ const Profile = () => {
       const handleCheckEmailDuplicate = () => {
         if (formData.email == '') 
         {
-          alert("이메일을 입력해주세요")
+          Swal.fire({
+            icon: "warning",
+            title: "이메일 입력",
+            text: `이메일을 입력해주세요`,
+            confirmButtonText: "확인",
+        })
           return;
         }
         // 이메일 중복확인 로직
@@ -76,13 +82,28 @@ const Profile = () => {
         .then((response) => {
           if (response.data.code == 409) {
             console.log("이메일 중복");
+            Swal.fire({
+              icon: "warning",
+              title: "이메일 중복",
+              text: `이메일이 중복됩니다`,
+              confirmButtonText: "확인",
+          })
           } else {
-            alert("이메일 중복확인 완료")
+            Swal.fire({
+              icon: "success",
+              title: "이메일 중복확인 완료",
+              confirmButtonText: "확인",
+          })
             console.log("이메일 성공");
             setDupData({...dupData, 'email' : true})
           }
         })
         .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "이메일 중복확인 에러",
+            confirmButtonText: "확인",
+        })
           console.error("이메일 중복 확인 에러", error);
         });
       };
@@ -91,7 +112,12 @@ const Profile = () => {
       const handleCheckNicknameDuplicate = () => {
         if (formData.nickname == '') 
         {
-          alert("닉네임을 입력해주세요")
+          Swal.fire({
+            icon: "warning",
+            title: "닉네임 입력",
+            text: `닉네임을 입력해주세요`,
+            confirmButtonText: "확인",
+        })
           return;
         }
         // 닉네임 중복확인 로직
@@ -100,14 +126,29 @@ const Profile = () => {
         .then((response) => {
           if (response.data.code == 409) {
             console.log("닉네임 중복");
+            Swal.fire({
+              icon: "warning",
+              title: "닉네임 중복",
+              text: `닉네임이 중복됩니다`,
+              confirmButtonText: "확인",
+          })
           } else {
-            alert("닉네임 중복확인 완료")
+            Swal.fire({
+              icon: "success",
+              title: "닉네임 중복확인 완료",
+              confirmButtonText: "확인",
+          })
             console.log("닉네임 성공");
             setDupData({nickname : true})
             setDupData({...dupData, 'nickname' : true});
           }
         })
         .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "닉네임 중복확인 에러",
+            confirmButtonText: "확인",
+        })
           console.error("닉네임 중복 확인 에러", error);
         });
       };
@@ -115,11 +156,21 @@ const Profile = () => {
     const handleSubmit = () => {
       console.log(formData)
       if (formData.password.length == 0) {
-        alert("프로필 변경은 비밀번호 필수 입력값입니다")
+        Swal.fire({
+          icon: "warning",
+          title: "비밀번호 입력",
+          text: `프로필 변경은 비밀번호 필수 입력값입니다`,
+          confirmButtonText: "확인",
+      })
         return ;
       }
         if (formData.newPassword !== formData.confirmPassword) {
-            alert("비밀번호가 동일하지 않습니다.")
+          Swal.fire({
+            icon: "warning",
+            title: "비밀번호 불일치",
+            text: `비밀번호가 동일하지 않습니다`,
+            confirmButtonText: "확인",
+        })
             console.log("비밀번호 틀림")
             setPasswordMismatch(true);
             return;
@@ -128,7 +179,12 @@ const Profile = () => {
             console.log(formData);
         }
         if (!dupData.email || !dupData.nickname) {
-          alert("중복확인은 필수입니다")
+          Swal.fire({
+            icon: "warning",
+            title: "중복확인 필요",
+            text: '중복확인은 필수입니다',
+            confirmButtonText: "확인",
+        })
           console.log("중복확인 안함")
           console.log(dupData)
           return;
@@ -145,16 +201,31 @@ const Profile = () => {
          .then(response => {
             console.log(response.data)
             if (response.data.code === -1) {
-                alert("현재 비밀번호가 틀렸습니다")
+              Swal.fire({
+                icon: "warning",
+                title: "비밀번호 오류",
+                text: '현재 비밀번호가 틀렸습니다',
+                confirmButtonText: "확인",
+            })
                 console.log('비밀번호가 틀렸습니다')
             } else {
-                alert("프로필을 수정했습니다")
-                console.log('프로필 수정 성공')
-                window.location.reload();
+              Swal.fire({
+                icon: "success",
+                title: "수정 성공",
+                text: '프로필을 수정했습니다.',
+                confirmButtonText: "확인",
+            }).then(() => {
+              window.location.reload();
+            });
             }
          })
          .catch (error => {
-            alert("프로필 수정에 실패했습니다")
+          Swal.fire({
+            icon: "error",
+            title: "수정 실패",
+            text: '프로필 수정에 실패했습니다',
+            confirmButtonText: "확인",
+        })
             console.log(error);
           });
     }

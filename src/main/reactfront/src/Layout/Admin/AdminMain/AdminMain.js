@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import AdminHeader from '../Header/AdminHeader';
 import CleanModal from '../../Modal/CleanModal';
+import Swal from "sweetalert2";
 
 const AdminMain = () => {
 
@@ -24,13 +25,26 @@ const AdminMain = () => {
           if (response.data.code == 304) {
             console.log("대여 중인 도서 존재")
           } else {
-            console.log(response);
-            console.log('회원 탈퇴 성공')
+            sessionStorage.removeItem('personalId');
+            sessionStorage.removeItem('name');
+            sessionStorage.removeItem("email");
+            sessionStorage.removeItem("authType");
+            Swal.fire({
+                icon: "success",
+                title: "회원 탈퇴 성공",
+                confirmButtonText: "확인",
+            }).then(() => {
+              window.location.assign('/');
+            });
           }
         })
         .catch (error => {
         console.log(error);
-        console.log('회원 탈퇴 실패')
+        Swal.fire({
+            icon: "error",
+            title: "회원 탈퇴 실패",
+            confirmButtonText: "확인",
+        })
         });
     }
     return (

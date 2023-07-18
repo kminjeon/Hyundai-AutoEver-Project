@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 import './Admin_BookItem.css'
 
 const BookItem_ReserveInfo = ({book, index}) => {
@@ -16,14 +17,23 @@ const BookItem_ReserveInfo = ({book, index}) => {
     const handleReserveCancle = () => {
       axios.delete(`/api/mypage/reserve/${book.reserveId}`)
       .then(response => {
-          console.log('도서 예약 삭제 성공')
           console.log(response)
-          alert("해당 도서 예약을 삭제했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "도서 예약 삭제 성공",
+            text: `해당 도서 예약을 삭제했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
         console.log(error);
-        console.log('도서 예약 삭제 실패')
+        Swal.fire({
+          icon: "error",
+          title: "도서 예약 삭제 실패",
+          confirmButtonText: "확인",
+      })
       });
     }
 

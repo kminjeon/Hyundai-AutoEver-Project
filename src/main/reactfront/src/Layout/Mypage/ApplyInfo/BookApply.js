@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, {useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router';
+import Swal from "sweetalert2";
 import MypageCategory from '../../Category/MypageCategory';
 import Header from '../../Header/Header';
 
@@ -29,7 +29,12 @@ const BookApply = () => {
     const handleBookAdd = () => {
         if (addBook.title.length == 0 || addBook.author.length == 0 || addBook.publisher.length == 0 ||
             addBook.isbn.length == 0) {
-                alert("도서 정보를 모두 입력해주세요")
+                Swal.fire({
+                    icon: "warning",
+                    title: "도서 정보 필요",
+                    text: "도서 정보를 모두 입력해주세요",
+                    confirmButtonText: "확인",
+                })
                 return;
             }
         axios.post('/api/apply', {
@@ -42,11 +47,22 @@ const BookApply = () => {
           .then(response => {
               console.log('도서 신청 성공')
               console.log(response)
-              alert("도서 신청 완료되었습니다")
-              window.location.reload()
+              Swal.fire({
+                icon: "success",
+                title: "도서 신청 성공",
+                text : '도서 신청이 완료되었습니다',
+                confirmButtonText: "확인",
+            }).then(() => {
+                window.location.reload();
+              });
           })
           .catch (error => {
           console.log(error);
+          Swal.fire({
+            icon: "error",
+            title: "도서 신청 실패",
+            confirmButtonText: "확인",
+        })
           console.log('도서 신청 실패')
           });
       }

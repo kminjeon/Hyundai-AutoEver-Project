@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Swal from "sweetalert2";
 import './LikeSet.css'
 
 const LikeSet = ({book}) => {
@@ -27,7 +28,12 @@ const LikeSet = ({book}) => {
                   bookId: book.bookId
                 },})
             .then((response) => {
-              alert(`'${book.title}' 좋아요가 취소됐습니다`)
+              Swal.fire({
+                icon: "success",
+                title: "좋아요 취소",
+                html: `[${book.title}] <br/> 좋아요가 취소됐습니다`,
+                confirmButtonText: "확인",
+            })
               setShowHeart(false);
               setHeart("/img/blank_heart.png");
               setLoveCount(loveCount-1)
@@ -45,12 +51,16 @@ const LikeSet = ({book}) => {
                   bookId: book.bookId
             },})
             .then((response) => {
-              alert(`'${book.title}' 좋아요가 성공했습니다`)
+              Swal.fire({
+                icon: "success",
+                title: "좋아요 성공",
+                html: `[${book.title}] <br/> 좋아요를 눌렀습니다`,
+                confirmButtonText: "확인",
+            })
               setShowHeart(true);
               setHeart("/img/full_heart.png");
               setLoveCount(loveCount+1)
-              console.log("좋아요 성공");
-            })
+              console.log("좋아요 성공"); })
             .catch((error) => {
               console.error("좋아요 에러", error);
             });

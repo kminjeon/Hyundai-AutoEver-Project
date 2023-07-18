@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import Swal from "sweetalert2";
 import AdminCategory from '../AdminCategory/AdminCategory';
 import AdminHeader from '../Header/AdminHeader';
 import './AdminUpdateBook.css'
@@ -40,7 +41,12 @@ const AdminBookAdd = () => {
     const handleBookAdd = () => {
         if (addBook.title.length == 0 || addBook.author.length == 0 || addBook.publisher.length == 0 ||
             addBook.isbn.length == 0 || addBook.description == 0) {
-                alert("도서 정보를 모두 입력해주세요")
+                Swal.fire({
+                    icon: "warning",
+                    title: "도서 정보 입력",
+                    text: `도서 정보를 모두 입력해주세요`,
+                    confirmButtonText: "확인",
+                })
                 return;
             }
         axios.post('/api/admin/book/add', {
@@ -52,14 +58,23 @@ const AdminBookAdd = () => {
             description : addBook.description
           })
           .then(response => {
-              console.log('도서 추가 성공')
-              console.log(response)
-              alert("도서 추가 완료되었습니다")
-              window.location.reload()
+              Swal.fire({
+                icon: "success",
+                title: "도서 추가 성공",
+                text: `도서 추가 완료되었습니다`,
+                confirmButtonText: "확인",
+            }).then(() => {
+                window.location.reload();
+              });
           })
           .catch (error => {
           console.log(error);
-          console.log('도서 추가 실패')
+          Swal.fire({
+            icon: "error",
+            title: "도서 추가 실패",
+            text: `도서 추가를 실패했습니다`,
+            confirmButtonText: "확인",
+        })
           });
       }
 

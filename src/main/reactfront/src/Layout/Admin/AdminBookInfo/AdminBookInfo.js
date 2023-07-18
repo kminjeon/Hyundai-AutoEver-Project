@@ -47,11 +47,9 @@ const AdminBookInfo = () => {
 
         }
       });
-          console.log(response.data.data); 
           setBookList(response.data.data.bookList);
           setPageInfo(response.data.data.pagination);
         } catch(error) {
-          console.log(error);
         }
     };
     getBookPage();
@@ -60,8 +58,6 @@ const AdminBookInfo = () => {
     if (!pageInfo) {
         return null; // pageInfo가 없을 때 null을 반환하여 Pagination 컴포넌트를 렌더링하지 않음
     }
-
-
 
     const handleSearch = () => {      
         switch (select) {
@@ -109,14 +105,12 @@ const AdminBookInfo = () => {
 
       const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            console.log("검색 !")
           handleSearch();
         }
       };
 
       const onOptionaHandler = (e) => {
         setSelect(e.target.value);
-        console.log(e.target.value)
     }
 
     const handleBookAdd = () => {

@@ -128,7 +128,6 @@ const AdminApplyInfo = () => {
 
       const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
-            console.log("검색 !")
           handleSearch();
         }
       };

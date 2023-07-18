@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 import './Admin_BookItem.css'
 
 const BookItem_RentInfo = ({book, index}) => {
@@ -28,32 +29,43 @@ const BookItem_RentInfo = ({book, index}) => {
     const handleReturn = () => {
       axios.put(`/api/rent/return?rentId=${book.rentId}`)
       .then(response => {
-          console.log('도서 반납 성공')
-          console.log(response)
-          alert("반납되었습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "도서 반납 성공",
+            text: `반납되었습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
       console.log(error);
-      console.log('도서 반납 실패')
       });
     }
     
     const handleExtend = () => {
       axios.put(`/api/rent/extend/${book.rentId}`)
       .then(response => {
-          console.log('도서 대여 연장 성공')
           console.log(response)
-          alert("도서 대여가 14일 연장되었습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "대여 연장 성공",
+            text: `도서 대여가 14일 연장되었습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
         if (error.response.data.code === 308) {
-          console.log(error.response.data.message);
-          alert(error.response.data.message);
+          Swal.fire({
+            icon: "warning",
+            title: "대여 연장 횟수 초과",
+            text: error.response.data.message,
+            confirmButtonText: "확인",
+        })
         }
       console.log(error);
-      console.log('도서 대여 연장 실패')
       });
     }
 

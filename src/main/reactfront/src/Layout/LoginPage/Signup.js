@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './Signup.css'
+import Swal from "sweetalert2";
 import axios from 'axios';
 
 const Signup = () => { 
@@ -30,7 +31,7 @@ const Signup = () => {
   ];
   
   const onOptionaHandler = (e) => {
-    setFormData(e.target.value);
+    setFormData({ ...formData, part: e.target.value });
     console.log(e.target.value)
 }
 
@@ -49,7 +50,12 @@ const Signup = () => {
       const handleCheckIdDuplicate = () => {
         if (formData.personalId == '') 
         {
-          alert("아이디를 입력해주세요")
+          Swal.fire({
+            icon: "warning",
+            title: "아이디 필요",
+            text: `아이디를 입력해주세요`,
+            confirmButtonText: "확인",
+        })
           return;
         }
         // 아이디 중복확인 로직
@@ -59,7 +65,12 @@ const Signup = () => {
           if (response.data.code == 409) {
             console.log("아이디 중복");
           } else {
-            alert("아이디 중복확인 완료")
+            Swal.fire({
+              icon: "success",
+              title: "아이디 중복확인",
+              text: `아이디 중복확인 완료`,
+              confirmButtonText: "확인",
+          })
             console.log("아이디 성공");
             setDupData({...dupData, 'personalId': true})
           }
@@ -72,7 +83,12 @@ const Signup = () => {
       const handleCheckEmailDuplicate = () => {
         if (formData.email == '') 
         {
-          alert("이메일을 입력해주세요")
+          Swal.fire({
+            icon: "warning",
+            title: "이메일 필요",
+            text: `이메일을 입력해주세요`,
+            confirmButtonText: "확인",
+        })
           return;
         }
         // 이메일 중복확인 로직
@@ -81,13 +97,28 @@ const Signup = () => {
         .then((response) => {
           if (response.data.code == 409) {
             console.log("이메일 중복");
+            Swal.fire({
+              icon: "warning",
+              title: "이메일 중복",
+              text: `이메일이 중복됩니다`,
+              confirmButtonText: "확인",
+          })
           } else {
-            alert("이메일 중복확인 완료")
+            Swal.fire({
+              icon: "success",
+              title: "이메일 중복확인 완료",
+              confirmButtonText: "확인",
+          })
             console.log("이메일 성공");
             setDupData({...dupData, 'email' : true})
           }
         })
         .catch((error) => {
+          Swal.fire({
+            icon: "error",
+            title: "이메일 중복확인 에러",
+            confirmButtonText: "확인",
+        })
           console.error("이메일 중복 확인 에러", error);
         });
       };
@@ -95,7 +126,12 @@ const Signup = () => {
       const handleCheckNicknameDuplicate = () => {
         if (formData.nickname == '') 
         {
-          alert("닉네임을 입력해주세요")
+          Swal.fire({
+            icon: "warning",
+            title: "닉네임 필요",
+            text: `닉네임을 입력해주세요`,
+            confirmButtonText: "확인",
+        })
           return;
         }
         // 닉네임 중복확인 로직
@@ -103,11 +139,19 @@ const Signup = () => {
         .get(`/api/check/nickname/${formData.nickname}`)
         .then((response) => {
           if (response.data.code == 409) {
-            console.log("닉네임 중복");
+            Swal.fire({
+              icon: "warning",
+              title: "닉네임 중복",
+              html : `[${formData.nickname}] 닉네임이 중복됩니다.`,
+              confirmButtonText: "확인",
+          })
           } else {
-            alert("닉네임 중복확인 완료")
+            Swal.fire({
+              icon: "success",
+              title: "닉네임 중복확인 성공",
+              confirmButtonText: "확인",
+          })
             console.log("닉네임 성공");
-            setDupData({nickname : true})
             setDupData({...dupData, 'nickname' : true});
           }
         })
@@ -118,7 +162,12 @@ const Signup = () => {
       const handleSubmit = (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-          alert("비밀번호가 동일하지 않습니다")  
+          Swal.fire({
+            icon: "warning",
+            title: "비밀번호 불일치",
+            text: `비밀번호가 동일하지 않습니다`,
+            confirmButtonText: "확인",
+        })
           console.log("비밀번호 틀림")
             setPasswordMismatch(true);
             return;
@@ -127,7 +176,12 @@ const Signup = () => {
           console.log(formData);
         }
         if (!dupData.personalId || !dupData.email || !dupData.nickname) {
-          alert("중복확인은 필수입니다")
+          Swal.fire({
+            icon: "warning",
+            title: "중복확인 필요",
+            text: `중복확인은 필수입니다`,
+            confirmButtonText: "확인",
+        })
           console.log("중복확인 안함")
           console.log(dupData)
           return;
@@ -143,7 +197,12 @@ const Signup = () => {
                 })
             .then((response) => {
               console.log("회원가입 성공");
-              alert("회원가입 되었습니다")
+              Swal.fire({
+                icon: "success",
+                title: "회원가입 성공",
+                text: `회원가입 되었습니다`,
+                confirmButtonText: "확인",
+            })
             sessionStorage.setItem("personalId", formData.personalId); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("name", formData.name); // sessionStorage에 이름을 name key 값으로 저장
             sessionStorage.setItem("email", formData.email);

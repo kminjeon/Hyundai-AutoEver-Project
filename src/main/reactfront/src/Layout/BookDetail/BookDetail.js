@@ -4,6 +4,7 @@ import { useParams } from 'react-router';
 import "./BookDetail.css"
 import Category from '../Category/Category';
 import Modal from '../Modal/Modal';
+import Swal from "sweetalert2";
 import ReserveButton from "../Button/ReserveButton";
 import RentButton from "../Button/RentButton";
 import Header from '../Header/Header';
@@ -68,13 +69,24 @@ const handleWrite = () => {
   .then(response => {
       console.log(response);
       console.log('리뷰 등록 성공')
-      alert("성공적으로 리뷰를 등록했습니다")
+      Swal.fire({
+        icon: "success",
+        title: "리뷰 등록 성공",
+        text : `성공적으로 리뷰를 등록했습니다`,
+        confirmButtonText: "확인",
+    }).then(() => {
       closeModal();
       window.location.reload();
+    });
   })
   .catch (error => {
   console.log(error);
   console.log('리뷰 등록 실패')
+  Swal.fire({
+    icon: "error",
+    title: "리뷰 등록 실패",
+    confirmButtonText: "확인",
+})
   });
 }
 
@@ -164,8 +176,8 @@ const handleInputChange = (e) => {
                 <p className='review-title'>{book.title}</p>
                 <div className='modal-flex'>
                 <div className='margin-rignt-40'>
-                    <p>저자</p>
-                    <p>출판사</p>
+                    <p className='review-width'>저자</p>
+                    <p className='review-width'>출판사</p>
                 </div>
                 <div className='gray'>
                     <p>{book.author}</p>

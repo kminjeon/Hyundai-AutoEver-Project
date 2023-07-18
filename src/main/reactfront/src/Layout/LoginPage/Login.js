@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import './login.css'
 import Signup from './Signup';
+import Swal from "sweetalert2";
 
 function Login() {
   const [personalId, setPersonalId] = useState(""); // personalId
@@ -70,13 +71,23 @@ function Login() {
           if (response.data.code === -2) {
             // 아이디 없음
             console.log(response.data.message);
-            alert("입력하신 id가 일치하지 않습니다.");
+            Swal.fire({
+              icon: "warning",
+              title: "아이디 오류",
+              text: `해당하는 ID가 없습니다`,
+              confirmButtonText: "확인",
+          })
           } else if (response.data.code === -1) {
             // id 있지만 pw 다른 경우
             console.log(
               "입력하신 비밀번호가 일치하지 않습니다."
             );
-            alert("입력하신 비밀번호가 일치하지 않습니다.");
+            Swal.fire({
+              icon: "warning",
+              title: "비밀번호 오류",
+              text: `입력하신 비밀번호가 일치하지 않습니다`,
+              confirmButtonText: "확인",
+          })
           } else if (response.data.code === 200) {
             // id, pw 모두 일치
             console.log("로그인 성공");
@@ -95,7 +106,11 @@ function Login() {
           }
         })
         .catch(error => {
-          alert("서버 연결이 필요합니다")
+          Swal.fire({
+            icon: "error",
+            title: "서버 연결 필요",
+            confirmButtonText: "확인",
+        })
           console.log(error);
         })
     }

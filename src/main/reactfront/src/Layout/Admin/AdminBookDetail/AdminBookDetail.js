@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router';
+import Swal from "sweetalert2";
 import AdminCategory from '../AdminCategory/AdminCategory';
 import AdminHeader from '../Header/AdminHeader';
 
@@ -42,14 +43,24 @@ const AdminBookDetail = () => {
 const handleReviewDelete = (reviewId) => {
   axios.delete(`/api/mypage/review/delete/${reviewId}`)
   .then(response => {
-      console.log('도서 리뷰 삭제 성공')
       console.log(response)
-      alert("해당 도서 리뷰을 삭제했습니다")
-      window.location.reload()
+      Swal.fire({
+        icon: "success",
+        title: "삭제 성공",
+        text: `해당 도서 리뷰을 삭제했습니다`,
+        confirmButtonText: "확인",
+    }).then(() => {
+      window.location.reload();
+    });
   })
   .catch (error => {
     console.log(error);
-    console.log('도서 리뷰 삭제 실패')
+    Swal.fire({
+      icon: "error",
+      title: "삭제 실패",
+      text: `해당 도서 리뷰 삭제를 실패했습니다`,
+      confirmButtonText: "확인",
+  })
   });
 }
 

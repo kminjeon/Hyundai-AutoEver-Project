@@ -1,6 +1,7 @@
 import React from 'react';
 import {useState, useEffect } from "react";
 import axios from 'axios';
+import Swal from "sweetalert2";
 import './Admin_BookItem.css'
 import CleanModal from "../../Modal/CleanModal";
 
@@ -21,7 +22,12 @@ const BookItem_ApplyInfo = ({book, index}) => {
   
     const handleBookAdd = () => {
       if (description.length == 0 ) {
-        alert("설명을 입력해주세요")
+        Swal.fire({
+          icon: "warning",
+          title: "설명 입력",
+          text: `설명을 입력해주세요`,
+          confirmButtonText: "확인",
+      })
         return;
       }
       axios.post('/api/admin/book/add', {
@@ -33,28 +39,42 @@ const BookItem_ApplyInfo = ({book, index}) => {
          description: description,
       })
       .then(response => {
-          console.log('도서 추가 성공')
-          console.log(response)
-          alert("해당 도서를 추가했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "도서 추가 성공",
+            text: `해당 도서를 추가했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
-      console.log(error);
-      console.log('도서 추가 실패')
+        Swal.fire({
+          icon: "error",
+          title: "도서 추가 실패",
+          confirmButtonText: "확인",
+      })
       });
     }
 
     const handleApplyDelete = () => {
       axios.delete(`/api/admin/apply/delete?applyId=${book.applyId}`)
       .then(response => {
-          console.log('도서 신청 삭제 성공')
-          console.log(response)
-          alert("해당 도서 신청을 삭제했습니다")
-          window.location.reload()
+          Swal.fire({
+            icon: "success",
+            title: "도서 삭제 성공",
+            text: `해당 도서 신청을 삭제했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.reload();
+        });
       })
       .catch (error => {
-        console.log(error);
-        console.log('도서 신청 삭제 실패')
+        Swal.fire({
+          icon: "error",
+          title: "도서 신청 삭제 실패",
+          confirmButtonText: "확인",
+      })
       });
     }
 

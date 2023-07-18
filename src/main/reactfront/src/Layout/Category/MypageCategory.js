@@ -2,6 +2,7 @@ import React from 'react';
 import './MypageCategory.css';
 import CleanModal from '../Modal/CleanModal';
 import { useState, useEffect } from "react";
+import Swal from "sweetalert2";
 import axios from 'axios';
 
 const MypageCategory = () => {
@@ -52,13 +53,26 @@ const MypageCategory = () => {
           copenModal();
           setBookList(response.data.data)
         } else {
-          console.log(response);
-          console.log('회원 탈퇴 성공')
+          sessionStorage.removeItem('personalId');
+          sessionStorage.removeItem('name');
+          sessionStorage.removeItem("email");
+          sessionStorage.removeItem("authType");
+          Swal.fire({
+            icon: "success",
+            title: "회원 탈퇴 성공",
+            confirmButtonText: "확인",
+        }).then(() => {
+          window.location.assign('/');
+        });
         }
       })
       .catch (error => {
       console.log(error);
-      console.log('회원 탈퇴 실패')
+      Swal.fire({
+        icon: "error",
+        title: "회원 탈퇴 실패",
+        confirmButtonText: "확인",
+    })
       });
   }
 
@@ -88,10 +102,12 @@ const MypageCategory = () => {
         <React.Fragment>
                 <CleanModal open={cmodalOpen} close={ccloseModal}>
                 <p className='withdraw-msg'>대여중인 도서가 있습니다. 반납 후 탈퇴 부탁드립니다.</p>
-                {bookList && bookList.map((book) => {
-                    return <p key={book.bookId}>{book.title}</p>
-                })}
-                <button className='withdraw-button' onClick={ccloseModal}>확인</button>
+                <div className='a-withdraw-align'>
+                  {bookList && bookList.map((book) => {
+                      return <p key={book.bookId}>[ {book.title} ]</p>
+                  })}
+                  <button className='withdraw-button' onClick={ccloseModal}>확인</button>
+                </div>
                 </CleanModal>
         </React.Fragment>
     </div>
