@@ -26,6 +26,7 @@ public class UserRequest {
     }
 
     @Getter
+    @Setter
     public static class UpdateProfileRequest {
         @NotEmpty(message = "회원 아이디은 필수입니다")
         @NotNull
@@ -40,6 +41,7 @@ public class UserRequest {
     }
 
     @Getter
+    @Setter
     public static class ResetPassword {
         @NotEmpty(message = "회원 아이디은 필수입니다")
         @NotNull

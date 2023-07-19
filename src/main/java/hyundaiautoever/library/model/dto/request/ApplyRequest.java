@@ -19,7 +19,8 @@ public class ApplyRequest {
     }
 
     @Getter
-    public static class updateApplyRequest {
+    @Setter
+    public static class UpdateApplyRequest {
         private String title;
         private String author;
         private String publisher;

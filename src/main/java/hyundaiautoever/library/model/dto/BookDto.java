@@ -95,7 +95,6 @@ public class BookDto {
     }
 
     @Getter
-    @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class BestBookDto {
         private final Long bookId;
         private final String title;
@@ -106,9 +105,9 @@ public class BookDto {
 
         private final Integer rentCount;
 
-        private final Boolean heart;
+        private final Long loveId;
 
-        public BestBookDto(Book book, Boolean heart) {
+        public BestBookDto(Book book, Long loveId) {
             this.bookId = book.getId();
             this.author = book.getAuthor();
             this.isbn = book.getIsbn();
@@ -116,7 +115,7 @@ public class BookDto {
             this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
             this.loveCount = book.getLoveCount();
             this.rentCount = book.getRentCount();
-            this.heart = heart;
+            this.loveId = loveId;
         }
     }
 

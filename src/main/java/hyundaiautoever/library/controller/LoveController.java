@@ -36,16 +36,15 @@ public class LoveController {
         return Response.ok().setData(loveService.getLoveList(personalId));
     }
 
+
     /**
      * 좋아요 삭제
-     * @param personalId
-     * @param bookId
+     * @param loveId
      * @return ok
      */
     @DeleteMapping("/love/delete")
-    public Response deleteLove(@RequestParam("personalId") String personalId,
-                               @RequestParam("bookId") Long bookId) {
-        loveService.deleteLove(personalId, bookId);
+    public Response deleteLove(@RequestParam("loveId") Long loveId) {
+        loveService.deleteLove(loveId);
         return Response.ok();
     }
 }

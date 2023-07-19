@@ -16,6 +16,7 @@ import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.LifecycleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,17 +50,17 @@ public class UserService {
      * 로그인 login
      */
     @Transactional
-    public Response loginUser(UserRequest.LoginRequest request) {
+    public UserDto.LoginDto loginUser(UserRequest.LoginRequest request) {
         Optional<User> optionalUser = userRepository.findByPersonalId(request.getPersonalId());
         if (optionalUser.isEmpty()) {
-            return Response.personalIdError(ExceptionCode.PERSONALID_ERROR);
+            throw new LibraryException.LoginPersonalIdException(ExceptionCode.PERSONALID_ERROR);
         }
         User user = optionalUser.get();
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
+            throw new LibraryException.LoginPasswordException(ExceptionCode.PASSWORD_ERROR);
         }
         user.updateLastLoginDate(LocalDateTime.now());
-        return Response.ok().setData(UserDto.buildLoginDto(user));
+        return UserDto.buildLoginDto(user);
     }
 
 
@@ -67,7 +68,7 @@ public class UserService {
      * 회원 가입 JOIN
      */
     @Transactional
-    public void createUser(UserRequest.CreateUserRequest request) {
+    public Long createUser(UserRequest.CreateUserRequest request) {
         User user = User.builder()
                 .name(request.getName())
                 .personalId(request.getPersonalId())
@@ -88,6 +89,8 @@ public class UserService {
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
         user.updateLastLoginDate(LocalDateTime.now());
+
+        return user.getId();
     }
 
     /**
@@ -112,7 +115,6 @@ public class UserService {
      * 아이디 체크
      */
     public boolean checkPersonalId(String personalId) {
-        log.info("UserService :: Call checkPersonalId Method!");
         return userRepository.existsByPersonalId(personalId);
     }
 
@@ -120,14 +122,12 @@ public class UserService {
      * 이메일 체크
      */
     public boolean checkEmail(String email) {
-        log.info("UserService :: Call checkEmail Method!");
         return userRepository.existsByEmail(email);
     }
     /**
      * 닉네임 체크
      */
     public boolean checkNickname(String nickname) {
-        log.info("UserService :: Call checkNickname Method!");
         return userRepository.existsByNickname(nickname);
     }
 
@@ -138,7 +138,7 @@ public class UserService {
      * @return ok
      */
     @Transactional
-    public Response updateProfile(UserRequest.UpdateProfileRequest request) {
+    public void updateProfile(UserRequest.UpdateProfileRequest request) {
         User user = userRepository.findByPersonalId(request.getPersonalId()).orElseThrow(() -> {
             log.error("updateUserPassword Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -147,7 +147,7 @@ public class UserService {
         // 비밀번호 확인
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             log.error("updateUserPassword Exception : [현재 비밀번호 오류]", ExceptionCode.PASSWORD_ERROR);
-            return Response.passwordError(ExceptionCode.PASSWORD_ERROR);
+            throw new LibraryException.LoginPasswordException(ExceptionCode.PASSWORD_ERROR);
         }
         // 비밀번호 변경
         user.updateUserPassword(request.getNewPassword() != null ? passwordEncoder.encode(request.getNewPassword()) : user.getPassword());
@@ -160,8 +160,6 @@ public class UserService {
 
         // 닉네임 변경
         user.updateUserNickname(request.getNickname() != null ? request.getNickname() : user.getNickname());
-
-        return Response.ok();
     }
 
 
@@ -173,13 +171,15 @@ public class UserService {
      */
     @Transactional
     public UserDto.LoginDto updateAuth(String personalId, String auth) {
+        // 권한 수정 대상 유저
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
             log.error("updateAuth Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
         try {
-            user.updateUserAuthType(auth.equals("ADMIN") ? AuthType.ADMIN : AuthType.USER);
+            // auth는 바뀌어야 될 권한
+            user.updateUserAuthType(AuthType.valueOf(auth));
         } catch (Exception e) {
             log.error("updateAuth Exception : {}", e.getMessage());
             throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);
@@ -269,15 +269,15 @@ public class UserService {
      * @param email
      * @return personalId
      */
-    public Response getFindId(String email) {
+    public String getFindId(String email) {
         log.info("UserService : [searchUserAuthPage]");
         User user = userRepository.findByEmail(email);
 
         // 이메일에 해당하는 User 없음
         if (user == null) {
-            return Response.dataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
+            throw new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         }
-        return Response.ok().setData(user.getPersonalId());
+        return user.getPersonalId();
     }
 
     /**

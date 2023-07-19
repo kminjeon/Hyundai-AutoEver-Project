@@ -29,7 +29,7 @@ public class UserController {
     @PostMapping("/login")
     public Response loginUser(@RequestBody @Valid UserRequest.LoginRequest request) {
         log.info("UserController : [loginUser]");
-        return userService.loginUser(request);
+        return Response.ok().setData(userService.loginUser(request));
     }
 
 
@@ -97,7 +97,8 @@ public class UserController {
     @PutMapping("/mypage/profile/update")
     public Response updateProfile(@RequestBody @Valid UpdateProfileRequest request) {
         log.info("UserController : [updateProfile]");
-        return userService.updateProfile(request);
+        userService.updateProfile(request);
+        return Response.ok();
     }
 
     /**
@@ -149,7 +150,7 @@ public class UserController {
     @GetMapping("/findId")
     public Response getFindId(@RequestParam String email) {
         log.info("UserController : [getFindId]");
-        return userService.getFindId(email);
+        return Response.ok().setData(userService.getFindId(email));
     }
 
     /**

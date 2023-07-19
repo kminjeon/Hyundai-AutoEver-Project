@@ -49,9 +49,6 @@ public class User extends BaseEntity {
     @Column(name = "rent_count")
     private Integer rentCount;
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Love> loves; // 좋아요 목록
-
     @Builder
     public User(String name, String personalId, String password, String email, PartType partType, String nickname) {
         this.name = name;

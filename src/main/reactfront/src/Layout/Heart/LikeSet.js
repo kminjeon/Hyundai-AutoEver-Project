@@ -12,9 +12,9 @@ const LikeSet = ({book}) => {
 
     useEffect(() => {
         if (book) {
-          setShowHeart(book.heart);
+          setShowHeart(book.loveId != null ? true : false);
           setLoveCount(book.loveCount);
-          setHeart(book.heart ? '/img/full_heart.png' : '/img/blank_heart.png');
+          setHeart(book.loveId != null ? '/img/full_heart.png' : '/img/blank_heart.png');
         }
       }, [book]);
 
@@ -22,11 +22,7 @@ const LikeSet = ({book}) => {
         if (showHeart) {
           // 좋아요 취소
           axios
-            .delete('/api/love/delete', {
-                params: {
-                    personalId : personalId,
-                  bookId: book.bookId
-                },})
+            .delete(`/api/love/delete?loveId=${book.loveId}`)
             .then((response) => {
               Swal.fire({
                 icon: "success",

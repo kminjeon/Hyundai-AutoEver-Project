@@ -98,7 +98,7 @@ public class ApplyService {
      * @return UpdateApplyDto
      */
     @Transactional
-    public UpdateApplyDto updateApply(Long applyId, ApplyRequest.updateApplyRequest request) {
+    public UpdateApplyDto updateApply(Long applyId, ApplyRequest.UpdateApplyRequest request) {
         Apply apply = applyRepository.findById(applyId).orElseThrow(() -> {
             log.error("updateApply Exception : [존재하지 않는 applyID]");
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);

@@ -15,6 +15,24 @@ public class LibraryException {
         private final ExceptionCode exceptionCode;
     }
 
+
+    @Getter
+    @AllArgsConstructor
+    public static class WithdrawException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+    @Getter
+    @AllArgsConstructor
+    public static class LoginPersonalIdException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class LoginPasswordException extends RuntimeException {
+        private final ExceptionCode exceptionCode;
+    }
+
     @Getter
     @AllArgsConstructor
     public static class AlreadyRentException extends RuntimeException {
@@ -98,12 +116,6 @@ public class LibraryException {
     @Getter
     @AllArgsConstructor
     public static class EnumNullPointerException extends RuntimeException {
-        private ExceptionCode exceptionCode;
-    }
-
-    @Getter
-    @AllArgsConstructor
-    public static class passwordErrorException extends RuntimeException {
         private ExceptionCode exceptionCode;
     }
 }

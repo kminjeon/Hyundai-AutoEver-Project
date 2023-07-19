@@ -20,6 +20,16 @@ public class ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Response.dataNotFoundException(dataNotFoundException.getExceptionCode()), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(LibraryException.LoginPersonalIdException.class)
+    public ResponseEntity<Response<Object>> handleLoginPersonalIdException(LibraryException.LoginPersonalIdException loginPersonalIdException) {
+        return new ResponseEntity<>(Response.personalIdError(loginPersonalIdException.getExceptionCode()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(LibraryException.LoginPasswordException.class)
+    public ResponseEntity<Response<Object>> handleLoginPasswordException(LibraryException.LoginPasswordException loginPasswordException) {
+        return new ResponseEntity<>(Response.passwordError(loginPasswordException.getExceptionCode()), HttpStatus.NOT_FOUND);
+    }
+
     @ExceptionHandler(LibraryException.MaxRentException.class)
     public ResponseEntity<Response<Object>> handleMaxRentException(LibraryException.MaxRentException maxRentException) {
         return new ResponseEntity<>(Response.maxRentException(maxRentException.getExceptionCode()), HttpStatus.BAD_REQUEST);

@@ -28,12 +28,6 @@ class LoveServiceTest {
     LoveService loveService;
 
     @Autowired
-    UserService userService;
-
-    @Autowired
-    BookService bookService;
-
-    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -67,6 +61,24 @@ class LoveServiceTest {
         assertEquals(count + 1, bookRepository.findById(book.getId()).get().getLoveCount(), "도서 좋아요 수 증가");
     }
 
+    @Test
+    public void 좋아요_삭제() {
+        User user = createUser();
+        Book book = createBook();
+        userRepository.save(user);
+        bookRepository.save(book);
+        Love love = createLove(user, book);
+        loveRepository.save(love);
+        book.updateLoveCount(book.getLoveCount() + 1);
+
+        //when
+        loveService.deleteLove(love.getId());
+
+        //then
+        assertEquals(Optional.empty(), loveRepository.findById(love.getId()));
+        assertEquals(0, book.getLoveCount());
+    }
+
 
     private User createUser() {
         User user = new User("회원가입테스트","jointest", passwordEncoder.encode("test"),"test@join.com", PartType.MOBIS, "joinnickname");
@@ -76,5 +88,10 @@ class LoveServiceTest {
     private Book createBook() {
         Book book = new Book("테스트제목", "테스트작가", "123", "테스트출판", CategoryType.NOVEL, "테스트설명");
         return book;
+    }
+
+    private Love createLove(User user, Book book) {
+        Love love = new Love(user, book);
+        return love;
     }
 }

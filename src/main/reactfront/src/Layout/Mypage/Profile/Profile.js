@@ -200,15 +200,6 @@ const Profile = () => {
         })
          .then(response => {
             console.log(response.data)
-            if (response.data.code === -1) {
-              Swal.fire({
-                icon: "warning",
-                title: "비밀번호 오류",
-                text: '현재 비밀번호가 틀렸습니다',
-                confirmButtonText: "확인",
-            })
-                console.log('비밀번호가 틀렸습니다')
-            } else {
               Swal.fire({
                 icon: "success",
                 title: "수정 성공",
@@ -217,15 +208,25 @@ const Profile = () => {
             }).then(() => {
               window.location.reload();
             });
-            }
+            
          })
          .catch (error => {
+          if (error.response.data.code === -1) {
           Swal.fire({
-            icon: "error",
-            title: "수정 실패",
-            text: '프로필 수정에 실패했습니다',
-            confirmButtonText: "확인",
-        })
+                icon: "warning",
+                title: "비밀번호 오류",
+                text: '현재 비밀번호가 틀렸습니다',
+                confirmButtonText: "확인",
+            })
+                console.log('비밀번호가 틀렸습니다')
+          } else {
+            Swal.fire({
+                icon: "error",
+                title: "수정 실패",
+                text: '프로필 수정에 실패했습니다',
+                confirmButtonText: "확인",
+          })
+          }
             console.log(error);
           });
     }

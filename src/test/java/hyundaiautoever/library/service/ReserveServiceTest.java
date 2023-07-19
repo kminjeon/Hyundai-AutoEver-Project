@@ -3,6 +3,7 @@ package hyundaiautoever.library.service;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.common.type.PartType;
+import hyundaiautoever.library.model.dto.request.BookRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Reserve;
@@ -14,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Repeat;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -30,11 +32,6 @@ class ReserveServiceTest {
 
     @Autowired
     ReserveRepository reserveRepository;
-
-    @Autowired
-    UserService userService;
-    @Autowired
-    BookService bookService;
 
     @Autowired
     BookRepository bookRepository;
@@ -74,13 +71,12 @@ class ReserveServiceTest {
         Book book = createBook();
         bookRepository.save(book);
 
-
         Long bookId = book.getId();
-        String nonExistingPersonalId = "nonexisting";
+        String nonPersonalId = "non";
 
         // When & Then
         assertThrows(LibraryException.DataNotFoundException.class, () -> {
-            reserveService.createReserve(nonExistingPersonalId, bookId);
+            reserveService.createReserve(nonPersonalId, bookId);
         });
     }
 
@@ -115,6 +111,22 @@ class ReserveServiceTest {
         });
     }
 
+    @Test
+    public void 예약_삭제() throws  Exception {
+        // Given
+        User user = createUser();
+        Book book = createBook();
+        userRepository.save(user);
+        bookRepository.save(book);
+
+        Reserve reserve = createReserve(user, book);
+        reserveRepository.save(reserve);
+
+        //when
+        reserveRepository.deleteById(reserve.getId());
+        assertEquals(Optional.empty(), reserveRepository.findById(reserve.getId()));
+    }
+
     private User createUser() {
         User user = new User("회원가입테스트","jointest", passwordEncoder.encode("test"),"test@join.com", PartType.MOBIS, "joinnickname");
         return user;
@@ -123,6 +135,11 @@ class ReserveServiceTest {
     private Book createBook() {
         Book book = new Book("테스트제목", "테스트작가", "123", "테스트출판", CategoryType.NOVEL, "테스트설명");
         return book;
+    }
+
+    private Reserve createReserve(User user, Book book) {
+        Reserve reserve = new Reserve(user, book, 0);
+        return reserve;
     }
 
 }

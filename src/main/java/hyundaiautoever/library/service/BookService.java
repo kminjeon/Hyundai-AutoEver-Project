@@ -103,13 +103,13 @@ public class BookService {
         // Book 좋아요 정보 조회
         List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
         // key : BookId, value : 좋아요 Map 생성
-        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+        Map<Long, Long> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> love.getId()));
 
         // bookDtoList 생성
         List<BestBookDto> bookDtoList = new ArrayList<>();
         for (Book book : bookList) {
-            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
-            bookDtoList.add(new BestBookDto(book, isLiked));
+            Long loveId = loveMap.get(book.getId());
+            bookDtoList.add(new BestBookDto(book, loveId));
         }
         return buildHeartAddBookPage(bookPage, bookDtoList);
     }
@@ -129,13 +129,13 @@ public class BookService {
         // Book 좋아요 정보 조회
         List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
         // key : BookId, value : 좋아요 Map 생성
-        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+        Map<Long, Long> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> love.getId()));
 
         // bookDtoList 생성
         List<BestBookDto> bookDtoList = new ArrayList<>();
         for (Book book : bookList) {
-            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
-            bookDtoList.add(new BestBookDto(book, isLiked));
+            Long loveId = loveMap.get(book.getId());
+            bookDtoList.add(new BestBookDto(book, loveId));
         }
 
         return bookDtoList;
@@ -208,13 +208,13 @@ public class BookService {
         // Book 좋아요 정보 조회
         List<Love> loveList = loveRepository.findByUserAndBookIn(user, bookList);
         // key : BookId, value : 좋아요 Map 생성
-        Map<Long, Boolean> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> true));
+        Map<Long, Long> loveMap = loveList.stream().collect(Collectors.toMap(love -> love.getBook().getId(), love -> love.getId()));
 
         // bookDtoList 생성
         List<BestBookDto> bookDtoList = new ArrayList<>();
         for (Book book : bookList) {
-            boolean isLiked = loveMap.getOrDefault(book.getId(), false);
-            bookDtoList.add(new BestBookDto(book, isLiked));
+            Long loveId = loveMap.get(book.getId());
+            bookDtoList.add(new BestBookDto(book, loveId));
         }
         return buildHeartAddBookPage(bookPage, bookDtoList);
     }

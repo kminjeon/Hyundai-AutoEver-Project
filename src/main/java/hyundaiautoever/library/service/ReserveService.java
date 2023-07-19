@@ -148,7 +148,7 @@ public class ReserveService {
 
     public void deleteReserveForRent(Reserve reserve) {
         // 대기 순번 뒷 번호 사용자 대기 순번 올리기
-        List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumber(reserve.getWaitNumber());
+        List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumberAndBook(reserve.getWaitNumber(), reserve.getBook());
 
         if (!reserveList.isEmpty()) {
             reserveList.forEach(next -> {
@@ -177,7 +177,7 @@ public class ReserveService {
         });
 
         // 대기 순번 뒷 번호 사용자 대기 순번 올리기
-        List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumber(reserve.getWaitNumber());
+        List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumberAndBook(reserve.getWaitNumber(), reserve.getBook());
 
         if (!reserveList.isEmpty()) {
             reserveList.forEach(next -> {

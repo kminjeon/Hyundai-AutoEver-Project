@@ -74,7 +74,7 @@ public class ApplyController {
      * @return UpdateApplyDto
      */
     @PutMapping("/apply/{applyId}")
-    public Response updateApply(@PathVariable("applyId") Long applyId, @RequestBody @Valid ApplyRequest.updateApplyRequest request) {
+    public Response updateApply(@PathVariable("applyId") Long applyId, @RequestBody @Valid ApplyRequest.UpdateApplyRequest request) {
         log.info("ApplyController : [updateApply]");
         return Response.ok().setData(applyService.updateApply(applyId, request));
     }
