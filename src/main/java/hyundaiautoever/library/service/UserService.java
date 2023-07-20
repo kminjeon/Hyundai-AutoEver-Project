@@ -198,11 +198,10 @@ public class UserService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        if (user.getAuthType().equals(AuthType.USER)) {
-            List<Rent> rentList = rentRepository.findByUser(user);
-            if (!rentList.isEmpty()) { // 대여 중인 도서 존재
-                return Response.withdrawException(ExceptionCode.DELETE_RENT_ERROR).setData(rentList.stream().map(RentDto.GetRentDto::new).collect(Collectors.toList())); //304
-            }
+
+        List<Rent> rentList = rentRepository.findByUser(user);
+        if (!rentList.isEmpty()) { // 대여 중인 도서 존재
+            return Response.withdrawException(ExceptionCode.DELETE_RENT_ERROR).setData(rentList.stream().map(RentDto.GetRentDto::new).collect(Collectors.toList())); //304
         }
 
         // 도서 신청

@@ -68,27 +68,7 @@ function Login() {
       })
         .then((response) => {
           console.log(response);
-          if (response.data.code === -2) {
-            // 아이디 없음
-            console.log(response.data.message);
-            Swal.fire({
-              icon: "warning",
-              title: "아이디 오류",
-              text: `해당하는 ID가 없습니다`,
-              confirmButtonText: "확인",
-          })
-          } else if (response.data.code === -1) {
-            // id 있지만 pw 다른 경우
-            console.log(
-              "입력하신 비밀번호가 일치하지 않습니다."
-            );
-            Swal.fire({
-              icon: "warning",
-              title: "비밀번호 오류",
-              text: `입력하신 비밀번호가 일치하지 않습니다`,
-              confirmButtonText: "확인",
-          })
-          } else if (response.data.code === 200) {
+         if (response.data.code === 200) {
             // id, pw 모두 일치
             console.log("로그인 성공");
             console.log(response.data);
@@ -106,11 +86,32 @@ function Login() {
           }
         })
         .catch(error => {
-          Swal.fire({
-            icon: "error",
-            title: "서버 연결 필요",
-            confirmButtonText: "확인",
-        })
+            if (error.response.data.code === -2) {
+                // 아이디 없음
+                Swal.fire({
+                  icon: "warning",
+                  title: "아이디 오류",
+                  text: `해당하는 ID가 없습니다`,
+                  confirmButtonText: "확인",
+                })
+            } else if (error.response.data.code === -1) {
+              // id 있지만 pw 다른 경우
+              console.log(
+                "입력하신 비밀번호가 일치하지 않습니다."
+              );
+              Swal.fire({
+                icon: "warning",
+                title: "비밀번호 오류",
+                text: `입력하신 비밀번호가 일치하지 않습니다`,
+                confirmButtonText: "확인",
+            })
+          } else {
+                Swal.fire({
+                  icon: "error",
+                  title: "서버 연결 필요",
+                  confirmButtonText: "확인",
+              })
+          }
           console.log(error);
         })
     }

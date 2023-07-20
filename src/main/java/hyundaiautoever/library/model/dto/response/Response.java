@@ -65,6 +65,12 @@ public class Response<T> {
         return new Response<T>(exceptionCode);
     }
 
+
+    public static <T> Response<T> failSendEmailException(ExceptionCode exceptionCode) {
+        log.info("[failSendEmailException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
+        return new Response<T>(exceptionCode);
+    }
+
     public static <T> Response<T> rentStateException(ExceptionCode exceptionCode) {
         log.info("[rentStateException] code : {}, message : {}", exceptionCode.getCode(), exceptionCode.getMessage());
         return new Response<T>(exceptionCode);

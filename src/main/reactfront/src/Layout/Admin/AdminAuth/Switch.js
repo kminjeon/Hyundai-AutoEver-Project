@@ -23,7 +23,9 @@ const Switch = ({user}) => {
           title: "권한 수정 성공",
           text: `성공적으로 권한을 수정했습니다`,
           confirmButtonText: "확인",
-      })
+      }).then(() => {
+        window.location.reload();
+      });
         })
         .catch (error => {
         console.log(error);

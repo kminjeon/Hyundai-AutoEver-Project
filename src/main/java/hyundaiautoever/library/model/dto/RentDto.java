@@ -28,7 +28,9 @@ public class RentDto {
         private final Long lateDays;
         private final String isbn;
         private final Long bookId;
+        private final Integer extensionNumber;
         public GetRentDto(Rent rent) {
+            this.extensionNumber = rent.getExtensionNumber();
             this.bookId = rent.getBook().getId();
             this.isbn = rent.getBook().getIsbn();
             this.rentId = rent.getId();
@@ -102,9 +104,11 @@ public class RentDto {
         private final String rentDate;
         private final String expectedReturnDate;
         private final Long lateDays;
+        private final Integer extensionNumber;
 
         @QueryProjection
         public GetAdminRentDto(Rent rent) {
+            this.extensionNumber = rent.getExtensionNumber();
             this.rentId = rent.getId();
             this.personalId = rent.getUser().getPersonalId();
             this.isbn = rent.getBook().getIsbn();

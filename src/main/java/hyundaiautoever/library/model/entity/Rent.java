@@ -35,11 +35,11 @@ public class Rent extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user; // 예약자
+    private User user; // 대여자
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    private Book book; // 예약책
+    private Book book; // 대여책
 
     @Builder
     public Rent(User user, Book book) {

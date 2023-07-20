@@ -46,6 +46,10 @@ public class LoveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
+        if (loveRepository.findByUserAndBook(user, book).isPresent()) {
+            throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
+        }
+
         Love love = Love.builder()
                     .book(book)
                     .user(user)
@@ -75,7 +79,7 @@ public class LoveService {
             log.error("getLoveList Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-        return loveRepository.findByUser(user).stream().map(love -> new GetLoveDto(love.getBook())).collect(Collectors.toList());
+        return loveRepository.findByUser(user).stream().map(love -> new GetLoveDto(love.getBook(), love.getId())).collect(Collectors.toList());
     }
 
     /**

@@ -41,14 +41,14 @@ public class ReviewDto {
         private final String author;
         private final String publisher;
 
-        public GetReviewDetailDto(Review review, User user, Book book) {
+        public GetReviewDetailDto(Review review) {
             this.content = review.getContent();
             this.reviewId = review.getId();
-            this.nickname = user.getNickname();
+            this.nickname = review.getUser().getNickname();
             this.createDate = review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
-            this.publisher = book.getPublisher();
-            this.title = book.getTitle();
-            this.author = book.getAuthor();
+            this.publisher = review.getBook().getPublisher();
+            this.title = review.getBook().getTitle();
+            this.author = review.getBook().getAuthor();
         }
     }
 
@@ -76,6 +76,9 @@ public class ReviewDto {
         private final Long bookId;
         private final String content;
 
+        private final String publisher;
+
+
         public GetReviewDto(Review review) {
             this.content = review.getContent();
             this.bookId = review.getBook().getId();
@@ -83,6 +86,7 @@ public class ReviewDto {
             this.reviewId = review.getId();
             this.title = review.getBook().getTitle();
             this.author = review.getBook().getAuthor();
+            this.publisher = review.getBook().getPublisher();
             this.reviewDate = review.getCreatedDate().format(DateTimeFormatter.ofPattern("yyyy.MM.dd"));
         }
     }
@@ -101,8 +105,8 @@ public class ReviewDto {
         return new CreateReviewDto(review);
     }
 
-    public static  GetReviewDetailDto buildGetReviewDetailDto(Review review, User user, Book book) {
-        return new GetReviewDetailDto(review, user, book);
+    public static  GetReviewDetailDto buildGetReviewDetailDto(Review review) {
+        return new GetReviewDetailDto(review);
     }
 
     public static UpdateReviewDto buildUpdateReviewDto(Review review) {

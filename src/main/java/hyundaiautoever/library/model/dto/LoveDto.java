@@ -8,16 +8,19 @@ public class LoveDto {
     @Getter
     @JsonInclude(value = JsonInclude.Include.NON_NULL)
     public static class GetLoveDto {
+        private final Long loveId;
         private final Long bookId;
+
         private final String title;
         private final String author;
         private final String isbn;
 
-        public GetLoveDto(Book book) {
+        public GetLoveDto(Book book, Long loveId) {
             this.bookId = book.getId();
             this.title = book.getTitle();
             this.author = book.getAuthor();
             this.isbn = book.getIsbn();
+            this.loveId = loveId;
         }
 
     }

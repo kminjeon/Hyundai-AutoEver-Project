@@ -38,6 +38,9 @@ const PasswordReset = () => {
 
 
     const onSubmitHandler = () => {
+      if (password.length == 0) {
+          
+      }
         axios.put('/api/findId', null, {
             params : {
                 personalId : personalId,
@@ -47,7 +50,17 @@ const PasswordReset = () => {
         .then(response => {
            console.log(response);
            console.log('비밀번호 재설정 성공')
-           window.location.assign("/");
+           Swal.fire({
+            icon: "success",
+            title: "재설정 성공",
+            text : `비밀번호를 재설정했습니다`,
+            confirmButtonText: "확인",
+        }).then(() => {
+          closeModal();
+          window.location.assign("/");
+
+        });
+           
         })
         .catch (error => {
            console.log(error);

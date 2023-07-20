@@ -56,7 +56,7 @@ const BookItem_RentInfo = ({book, index}) => {
           Swal.fire({
             icon: "success",
             title: "대여 연장 성공",
-            text: `도서 대여가 14일 연장되었습니다`,
+            text: `도서 대여가 7일 연장되었습니다`,
             confirmButtonText: "확인",
         }).then(() => {
           window.location.reload();
@@ -95,6 +95,7 @@ const BookItem_RentInfo = ({book, index}) => {
         <div className="align-right">
         <div className='col-his'>
           <p>{book.personalId} /  {book.name}</p>
+          <p>연장 ( {book.extensionNumber} / 1 )</p>
           <div>
           <button className='return-button' onClick={handleReturn} >반납</button>
           <button className='book-delete-button' onClick={handleExtend} >연장</button>

@@ -71,18 +71,7 @@ public class ReviewService {
             log.error("getReviewDetail Exception : [존재하지 않는 Review ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-
-        User user = userRepository.findById(review.getUser().getId()).orElseThrow(() -> {
-            log.error("getReviewDetail Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-        });
-
-        Book book = bookRepository.findById(review.getBook().getId()).orElseThrow(() -> {
-            log.error("getReviewDetail Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-            return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
-        });
-
-        return buildGetReviewDetailDto(review, user, book);
+        return buildGetReviewDetailDto(review);
     }
 
     /**

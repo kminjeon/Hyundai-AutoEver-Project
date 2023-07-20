@@ -6,7 +6,7 @@ import './Button.css'
 const RentButton = ({ personalId, bookId }) => {
     const handleRent = () => {
         // 대여 처리 로직
-        axios.post('api/rent/create', null, {
+        axios.post('/api/rent/create', null, {
             params: {
                 personalId : personalId,
               bookId: bookId

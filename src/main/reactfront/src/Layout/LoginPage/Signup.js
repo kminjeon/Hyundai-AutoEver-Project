@@ -202,12 +202,13 @@ const Signup = () => {
                 title: "회원가입 성공",
                 text: `회원가입 되었습니다`,
                 confirmButtonText: "확인",
-            })
-            sessionStorage.setItem("personalId", formData.personalId); // sessionStorage에 이름을 name key 값으로 저장
-            sessionStorage.setItem("name", formData.name); // sessionStorage에 이름을 name key 값으로 저장
-            sessionStorage.setItem("email", formData.email);
-            sessionStorage.setItem("authType", 'USER');  
-            window.location.assign('/signup/finish');
+            }).then(() => {
+              sessionStorage.setItem("personalId", formData.personalId); // sessionStorage에 이름을 name key 값으로 저장
+              sessionStorage.setItem("name", formData.name); // sessionStorage에 이름을 name key 값으로 저장
+              sessionStorage.setItem("email", formData.email);
+              sessionStorage.setItem("authType", 'USER');  
+              window.location.assign('/signup/finish');
+            });
             })
             .catch((error) => {
               console.error("회원가입 에러", error);

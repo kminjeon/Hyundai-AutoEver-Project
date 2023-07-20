@@ -61,8 +61,8 @@ public class ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(LibraryException.FailSendEmailException.class)
-    public ResponseEntity<Response<Object>> handleDataUpdateException(LibraryException.FailSendEmailException failSendEmailException) {
-        return new ResponseEntity<>(Response.alreadyRentException(failSendEmailException.getExceptionCode()), HttpStatus.BAD_REQUEST);
+    public ResponseEntity<Response<Object>> handleFailSendEmail(LibraryException.FailSendEmailException failSendEmailException) {
+        return new ResponseEntity<>(Response.failSendEmailException(failSendEmailException.getExceptionCode()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(LibraryException.RentStateException.class)

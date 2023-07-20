@@ -24,16 +24,16 @@ const LikeSet = ({book}) => {
           axios
             .delete(`/api/love/delete?loveId=${book.loveId}`)
             .then((response) => {
+              setShowHeart(false);
+              setHeart("/img/blank_heart.png");
+              setLoveCount(loveCount-1)
+              console.log("좋아요 취소 성공");
               Swal.fire({
                 icon: "success",
                 title: "좋아요 취소",
                 html: `[${book.title}] <br/> 좋아요가 취소됐습니다`,
                 confirmButtonText: "확인",
             })
-              setShowHeart(false);
-              setHeart("/img/blank_heart.png");
-              setLoveCount(loveCount-1)
-              console.log("좋아요 취소 성공");
             })
             .catch((error) => {
               console.error("좋아요 취소 에러", error);
@@ -47,16 +47,19 @@ const LikeSet = ({book}) => {
                   bookId: book.bookId
             },})
             .then((response) => {
+              setShowHeart(true);
+              setHeart("/img/full_heart.png");
+              setLoveCount(loveCount+1)
+              console.log("좋아요 성공");
               Swal.fire({
                 icon: "success",
                 title: "좋아요 성공",
                 html: `[${book.title}] <br/> 좋아요를 눌렀습니다`,
                 confirmButtonText: "확인",
-            })
-              setShowHeart(true);
-              setHeart("/img/full_heart.png");
-              setLoveCount(loveCount+1)
-              console.log("좋아요 성공"); })
+            }).then(() => {
+              window.location.reload();
+            });
+          })
             .catch((error) => {
               console.error("좋아요 에러", error);
             });

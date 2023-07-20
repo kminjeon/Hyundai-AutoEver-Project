@@ -165,7 +165,7 @@ public class BookService {
 
         // 해당 도서 리뷰 리스트
         List<CreateReviewDto> reviewList = reviewRepository.findByBook(book).stream().map(CreateReviewDto::new).collect(Collectors.toList());
-        return BookDto.buildGetBookDetailDto(book, reviewList, love.isPresent() ? true : false);
+        return BookDto.buildGetBookDetailDto(book, reviewList, love.isPresent() ? love.get().getId() : null);
     }
 
 

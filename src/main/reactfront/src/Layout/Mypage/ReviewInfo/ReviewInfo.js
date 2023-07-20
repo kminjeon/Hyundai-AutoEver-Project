@@ -19,7 +19,7 @@ const ReviewInfo = () => {
                 const response = await axios.get(`/api/mypage/review?page=${page}&personalId=${personalId}`);
                 setReviewList(response.data.data.getReviewDtoList);
                 setPagination(response.data.data.pagination);
-                console.log(response.data.data.pagination);
+                console.log(response.data.data);
             } catch (error) {
                 console.log(error);
             }

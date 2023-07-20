@@ -7,6 +7,8 @@
     display: flex;
     align-items: center;
     margin-bottom: 30px;
+    width:1000px;
+    margin-left: 15px;
 }
 
 .x {

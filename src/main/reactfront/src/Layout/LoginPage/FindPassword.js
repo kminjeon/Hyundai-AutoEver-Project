@@ -39,6 +39,15 @@ const FindPassword = () => {
       };
 
     const openModal = () => {
+        if (personalId.length == 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "아이디 입력",
+                text : "아이디를 입력해주세요",
+                confirmButtonText: "확인",
+            })
+            return;
+        }
         axios.get(`/api/check/personalId/${personalId}`)
           .then((response) => {
             console.log(response)
@@ -51,6 +60,7 @@ const FindPassword = () => {
                 })
                 return;
             } else {
+                setModalOpen(true);
                 axios.post('api/email', null, {
                     params: {
                         personalId : personalId,
@@ -59,10 +69,15 @@ const FindPassword = () => {
                     console.log('이메일 전송 성공');
                     setCode(response.data.data);
                     console.log(response.data.data);
-                    setModalOpen(true);
                     })
                     .catch(error => {
                     console.error('이메일 전송 실패', error);
+                    Swal.fire({
+                        icon: "error",
+                        title: "전송 실패",
+                        text: `이메일 전송에 실패했습니다`,
+                        confirmButtonText: "확인",
+                    })
                     });
             }
             console.log('아이디 확인');
@@ -91,6 +106,14 @@ const FindPassword = () => {
 
 
     const onSubmitHandler = () => {
+        if (password.length == 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "비밀번호를 입력해주세요",
+                confirmButtonText: "확인",
+            })
+            return;
+        }
         if (password !== confirmPassword) {
             console.log("비밀번호 틀림")
             Swal.fire({
@@ -111,9 +134,10 @@ const FindPassword = () => {
             icon: "success",
             title: "비밀번호 재설정 성공",
             confirmButtonText: "확인",
-        })
-           console.log('비밀번호 재설정 성공')
-           window.location.assign("/");
+        }).then(() => {
+            closeModal();
+            window.location.assign("/");
+          });
         })
         .catch (error => {
            console.log(error);
@@ -149,14 +173,18 @@ const FindPassword = () => {
 
             <React.Fragment>
                 <Modal open={resetModalOpen} close={closeResetModal} header="비밀번호 재설정">
+                <div>
+                <form>
                 <label htmlFor="password"> *새 비밀번호</label>
-                    <input className='input-login' type='password' id ='password' value={password} onChange={onPasswordHandler}/>
+                    <input className='input-login' type='password' id ='password' value={password} onChange={onPasswordHandler}  autoComplete="new-password"/>
                 <div className="little-move"></div>
                 <label htmlFor="confirmPassword" > *새 비밀번호 확인</label>
-                    <input className='input-login' type='password' id = 'confirmPassword' value={confirmPassword} onChange={onConfirmPasswordHandler}/>
+                    <input className='input-login' type='password' id = 'confirmPassword' value={confirmPassword} onChange={onConfirmPasswordHandler}  autoComplete="new-password"/>
                     <button type="submit" className='reset-pass' onClick={onSubmitHandler}>
                         비밀번호 재설정
                     </button>
+                </form>
+                </div>
                 </Modal>
             </React.Fragment>
         </div>

@@ -57,7 +57,7 @@ class BookServiceTest {
         BookRequest.AddBookRequest request = createBookRequest();
         Book book = createBookEntity(request);
 
-        //when
+        //mock
         given(bookRepository.save(any())).willReturn(book);
         given(bookRepository.findById(any()))
                 .willReturn(Optional.ofNullable(book));
@@ -68,8 +68,7 @@ class BookServiceTest {
         //then
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         assertTrue(optionalBook.isPresent());
-        Book savedBook = optionalBook.get();
-        assertEquals(request.getTitle(), savedBook.getTitle());
+        assertEquals(request.getTitle(), optionalBook.get().getTitle());
     }
 
     @Test

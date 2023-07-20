@@ -151,9 +151,9 @@ public class BookDto {
         private final Boolean rentType;
         private final String description;
         private final Integer loveCount;
-        private final Boolean heart;
+        private final Long loveId;
         private final List<CreateReviewDto> reviewList;
-        public GetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Boolean heart) {
+        public GetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Long loveId) {
             this.bookId = book.getId();
             this.title = book.getTitle();
             this.author = book.getAuthor();
@@ -163,7 +163,7 @@ public class BookDto {
             this.rentType = book.getRentType().equals(RentType.OPEN) ? true : false;
             this.description = book.getDescription();
             this.loveCount = book.getLoveCount();
-            this.heart = heart;
+            this.loveId = loveId;
             this.reviewList = reviewList;
         }
     }
@@ -208,8 +208,8 @@ public class BookDto {
         return new SimpleBookPage(page);
     }
 
-    public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Boolean heart) {
-        return new GetBookDetailDto(book, reviewList, heart);
+    public static GetBookDetailDto buildGetBookDetailDto(Book book, List<CreateReviewDto> reviewList, Long loveId) {
+        return new GetBookDetailDto(book, reviewList, loveId);
     }
 
     public static HeartAddBookPage buildHeartAddBookPage(Page<Book> page, List<BestBookDto> bookList) {

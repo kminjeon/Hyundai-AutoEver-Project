@@ -12,7 +12,7 @@ const LikeBookItem = ({personalId, book}) => {
       };
 
     const handelX = () => {
-        axios.delete(`/api/love/delete?personalId=${personalId}&bookId=${book.bookId}`)
+        axios.delete(`/api/love/delete?loveId=${book.loveId}`)
          .then(response => {
             console.log('좋아요 삭제 성공')
             Swal.fire({
@@ -40,7 +40,7 @@ const LikeBookItem = ({personalId, book}) => {
             <div className='like-front'>
       <img className='book-img' src={`/img/book/${book.isbn}.jpg`} alt={book.title} onClick={handleBookClick}/>
       <div>
-      <p className="title" onClick={handleBookClick}>{book.title}</p>
+      <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
         </div>
         </div>

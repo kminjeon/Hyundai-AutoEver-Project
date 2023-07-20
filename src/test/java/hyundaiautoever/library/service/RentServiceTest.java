@@ -63,7 +63,7 @@ class RentServiceTest {
 
 
     @Test
-    public void 도서대여_대여중() throws Exception {
+    public void 도서대여_대여중도서_실패() throws Exception {
         // given
         User user = User.builder()
                 .name("도서대여테스트")

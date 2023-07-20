@@ -97,12 +97,12 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
         <div>
         <p className="rent-title" onClick={handleBookClick}>{book.title}</p>
         <p className="author">{book.author}</p>
+        <p>리뷰 {book.reviewDate}</p>
         </div>
         </div>
         </div>
         <div>
         <div className="align-right">
-          <p>리뷰 작성일 : {book.reviewDate}</p>
           <button className='return-button' onClick={openModal}>수정</button>
           <button className='book-delete-button' onClick={handleReviewDelete}>삭제</button>
         </div>
@@ -115,9 +115,9 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
                 <div className='modal-line'>
                 <p className='review-title'>{book.title}</p>
                 <div className='modal-flex'>
-                <div className='margin-rignt-40'>
-                    <p>저자</p>
-                    <p>출판사</p>
+                <div className='margin-rignt-20'>
+                    <p className='review-width'>저자</p>
+                    <p className='review-width'>출판사</p>
                 </div>
                 <div className='gray'>
                     <p>{book.author}</p>
@@ -126,7 +126,7 @@ const BookItem_User_ReviewInfo = ({book, index}) => {
                 </div>
                 </div>
                 </div>
-                <p>*리뷰 작성</p>
+                <p>*리뷰 수정</p>
                 <input className= 'review-input' onChange={handleInputChange} placeholder={book.content}></input>
                 <div className='withdraw-align'>
                     <button className='withdraw-button' onClick={handleReviewUpdate}>수정</button>
