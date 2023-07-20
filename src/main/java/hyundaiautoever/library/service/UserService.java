@@ -201,7 +201,7 @@ public class UserService {
 
         List<Rent> rentList = rentRepository.findByUser(user);
         if (!rentList.isEmpty()) { // 대여 중인 도서 존재
-            return Response.withdrawException(ExceptionCode.DELETE_RENT_ERROR).setData(rentList.stream().map(RentDto.GetRentDto::new).collect(Collectors.toList())); //304
+            return Response.withdrawException(ExceptionCode.WITHDRAW_ERROR).setData(rentList.stream().map(RentDto.GetRentDto::new).collect(Collectors.toList())); //311
         }
 
         // 도서 신청

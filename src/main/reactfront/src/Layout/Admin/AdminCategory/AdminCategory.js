@@ -36,8 +36,13 @@ const closeModal = () => {
 const handleSubmit = () => {
   axios.delete(`/api/mypage/withdraw?${personalId}`)
     .then(response => {
-      if (response.data.code == 304) {
+      if (response.data.code == 311) {
         console.log("대여 중인 도서 존재")
+        Swal.fire({
+          icon: "warning",
+          title: "대여 도서 존재",
+          confirmButtonText: "확인",
+      })
       } else {
         sessionStorage.removeItem('personalId');
         sessionStorage.removeItem('name');

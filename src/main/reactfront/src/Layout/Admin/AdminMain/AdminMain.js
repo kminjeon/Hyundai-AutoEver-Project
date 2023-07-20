@@ -22,7 +22,7 @@ const AdminMain = () => {
     const handleSubmit = () => {
       axios.delete(`/api/mypage/withdraw?${personalId}`)
         .then(response => {
-          if (response.data.code == 304) {
+          if (response.data.code == 311) {
             console.log("대여 중인 도서 존재")
           } else {
             sessionStorage.removeItem('personalId');
@@ -53,7 +53,7 @@ const AdminMain = () => {
             <div>
                 <div className='mypage-firstline'>
                     <p className='welcome'>{name}님, 환영합니다!</p>
-                    <h2 className='mypage-h2'>ADMIN PAGE</h2>
+                    <h2 className='mypage-h2'>관리자 페이지</h2>
                 </div>
                     <hr className='mypageline'/>
                     <div className='box'>

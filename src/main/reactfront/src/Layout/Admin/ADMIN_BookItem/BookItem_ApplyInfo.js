@@ -62,7 +62,7 @@ const BookItem_ApplyInfo = ({book, index}) => {
       .then(response => {
           Swal.fire({
             icon: "success",
-            title: "도서 삭제 성공",
+            title: "삭제 성공",
             text: `해당 도서 신청을 삭제했습니다`,
             confirmButtonText: "확인",
         }).then(() => {

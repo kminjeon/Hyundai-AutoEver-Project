@@ -1,5 +1,7 @@
 package hyundaiautoever.library.service;
 
+import hyundaiautoever.library.common.exception.ExceptionCode;
+import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.common.type.PartType;
 import hyundaiautoever.library.common.type.RentType;
@@ -25,7 +27,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class BookServiceTest {
@@ -103,9 +105,9 @@ class BookServiceTest {
         );    }
 
     @Test
-    public void 도서_삭제() throws Exception {
+    public void 도서_삭제_성공() throws Exception {
         //given
-        BookRequest.updateBookRequest request = updateBookRequest();
+        BookRequest.AddBookRequest request = createBookRequest();
         Book existingBook = Book.builder()
                 .title(request.getTitle())
                 .author(request.getAuthor())
@@ -116,13 +118,44 @@ class BookServiceTest {
                 .build();
         ReflectionTestUtils.setField(existingBook, "id", 1L);
 
+        //mocking
         given(bookRepository.findById(existingBook.getId())).willReturn(Optional.of(existingBook));
 
         //when
-        Response response = bookService.deleteBook(existingBook.getId());
+        bookService.deleteBook(existingBook.getId());
+
+        // then
+        verify(loveRepository, times(1)).deleteAllByBook(existingBook);
+        verify(rentRepository, times(1)).deleteAllByBook(existingBook);
+        verify(reserveRepository, times(1)).deleteAllByBook(existingBook);
+        verify(reviewRepository, times(1)).deleteAllByBook(existingBook);
+        verify(bookRepository, times(1)).deleteById(existingBook.getId());
+    }
+
+    @Test
+    public void 도서_삭제_예외() throws Exception {
+        //given
+        BookRequest.AddBookRequest request = createBookRequest();
+        Book existingBook = createBookEntity(request);
+        existingBook.updateRentType(RentType.CLOSE);
+
+        //mocking
+        given(bookRepository.findById(existingBook.getId())).willReturn(Optional.of(existingBook));
+
+        //when
+        LibraryException.DeleteBookException exception = assertThrows(
+                LibraryException.DeleteBookException.class,
+                () -> bookService.deleteBook(existingBook.getId())
+        );
 
         //then
-        assertEquals(Response.ok().getCode(), response.getCode());
+        assertEquals(ExceptionCode.DELETE_BOOK_ERROR.getCode(), exception.getExceptionCode().getCode());
+        assertEquals(ExceptionCode.DELETE_BOOK_ERROR.getMessage(), exception.getExceptionCode().getMessage());
+        verify(loveRepository, never()).deleteAllByBook(any());
+        verify(rentRepository, never()).deleteAllByBook(any());
+        verify(reserveRepository, never()).deleteAllByBook(any());
+        verify(reviewRepository, never()).deleteAllByBook(any());
+        verify(bookRepository, never()).deleteById(any());
     }
 
     private BookRequest.AddBookRequest createBookRequest() {

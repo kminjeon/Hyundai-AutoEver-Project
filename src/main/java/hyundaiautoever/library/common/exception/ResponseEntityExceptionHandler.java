@@ -70,6 +70,12 @@ public class ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Response.rentStateException(rentStateException.getExceptionCode()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(LibraryException.DeleteBookException.class)
+    public ResponseEntity<Response<Object>> handleDeleteBookException(LibraryException.DeleteBookException deleteBookException) {
+        return new ResponseEntity<>(Response.deleteBookException(deleteBookException.getExceptionCode()), HttpStatus.BAD_REQUEST);
+    }
+
+
     @ExceptionHandler(LibraryException.AuthException.class)
     public ResponseEntity<Response<Object>> handleAuthException(LibraryException.AuthException authException) {
         return new ResponseEntity<>(Response.authException(authException.getExceptionCode()), HttpStatus.BAD_REQUEST);

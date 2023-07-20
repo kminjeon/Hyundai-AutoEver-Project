@@ -259,7 +259,7 @@ public class BookService {
      * @param bookId
      */
     @Transactional
-    public Response deleteBook(Long bookId) {
+    public void deleteBook(Long bookId) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> {
             log.error("deleteBook Exception : [존재하지 않는 Book ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -267,7 +267,7 @@ public class BookService {
 
         if (book.getRentType().equals(RentType.CLOSE)) {
             // 삭제할 도서가 대여 중인 경우
-            return Response.withdrawException(ExceptionCode.DELETE_RENT_ERROR);
+            throw new LibraryException.DeleteBookException(ExceptionCode.DELETE_BOOK_ERROR);
         }
 
         // 좋아요
@@ -286,7 +286,6 @@ public class BookService {
             log.error("deleteBook Exception : {}", e.getMessage());
             throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
         }
-        return Response.ok();
     }
 
 }

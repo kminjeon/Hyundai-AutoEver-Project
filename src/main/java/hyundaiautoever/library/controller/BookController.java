@@ -83,7 +83,8 @@ public class BookController {
     @DeleteMapping("/admin/book/delete")
     public Response deleteBook(@RequestParam("bookId") Long bookId) {
         log.info("BookController : [deleteBook]");
-        return bookService.deleteBook(bookId);
+        bookService.deleteBook(bookId);
+        return Response.ok();
     }
 
     /**

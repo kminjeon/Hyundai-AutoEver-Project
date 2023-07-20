@@ -44,11 +44,20 @@ const BookItem_BookInfo = ({book, index}) => {
           });
         })
         .catch (error => {
-        Swal.fire({
-          icon: "error",
-          title: "도서 삭제 실패",
-          confirmButtonText: "확인",
-      })
+          if (error.response.data.code == 304) {
+            Swal.fire({
+              icon: "warning",
+              title: "대여중 도서",
+              text: error.response.data.message,
+              confirmButtonText: "확인",
+          })
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "도서 삭제 실패",
+              confirmButtonText: "확인",
+          })
+          }
         });
       }
 

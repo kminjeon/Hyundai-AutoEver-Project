@@ -47,7 +47,7 @@ const MypageCategory = () => {
   const handleSubmit = () => {
     axios.delete(`/api/mypage/withdraw?personalId=${personalId}`)
       .then(response => {
-        if (response.data.code == 304) {
+        if (response.data.code == 311) {
           console.log("대여 중인 도서 존재")
           closeModal();
           copenModal();

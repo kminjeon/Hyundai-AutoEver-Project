@@ -91,6 +91,14 @@ public class LibraryException {
 
     @Getter
     @AllArgsConstructor
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public static class DeleteBookException extends RuntimeException {
+        private ExceptionCode exceptionCode;
+    }
+
+
+    @Getter
+    @AllArgsConstructor
     public static class DataUpdateException extends RuntimeException {
         private ExceptionCode exceptionCode;
     }
