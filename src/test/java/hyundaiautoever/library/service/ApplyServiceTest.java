@@ -65,6 +65,7 @@ class ApplyServiceTest {
 
     @Test
     public void 도서_신청_수정() throws Exception {
+        //given
         User user = createUser();
         Apply apply = createApply(user);
 
@@ -85,9 +86,11 @@ class ApplyServiceTest {
 
     @Test
     public void 도서_신청_수정_실패() throws Exception {
+        //given
         Long applyId = 1L;
         ApplyRequest.UpdateApplyRequest request = updateApplyRequest();
 
+        //mock
         when(applyRepository.findById(applyId)).thenReturn(Optional.empty());
 
         //when
@@ -102,11 +105,15 @@ class ApplyServiceTest {
     }
     @Test
     public void 도서_신청_삭제_성공() throws Exception {
+        //given
         User user = createUser();
         Apply apply = createApply(user);
         Long applyId = 1L;
-        //when
+
+        //mock
         when(applyRepository.findById(applyId)).thenReturn(Optional.of(apply));
+
+        //when
         assertDoesNotThrow(() -> applyService.deleteApply(applyId));
 
         //then
@@ -133,7 +140,7 @@ class ApplyServiceTest {
 
     @Test
     public void 도서_신청_삭제_오류_실패() {
-        //then
+        //given
         Long applyId = 1L;
         User user = createUser();
         Apply apply = createApply(user);

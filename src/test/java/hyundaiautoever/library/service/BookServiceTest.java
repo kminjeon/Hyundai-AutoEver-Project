@@ -74,6 +74,24 @@ class BookServiceTest {
     }
 
     @Test
+    public void 도서_추가_에러() throws Exception {
+        //given
+        BookRequest.AddBookRequest request = createBookRequest();
+
+        //mock
+        doThrow(new RuntimeException("error")).when(bookRepository).save(any());
+
+        //when
+        LibraryException.DataSaveException exception = assertThrows(
+                LibraryException.DataSaveException.class,
+                () -> bookService.addBook(request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_SAVE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
+
+    @Test
     public void 도서_수정() throws Exception {
         //given
         BookRequest.updateBookRequest request = updateBookRequest();
@@ -88,6 +106,7 @@ class BookServiceTest {
                 .build();
         ReflectionTestUtils.setField(existingBook, "id", 1L);
 
+        //mock
         given(bookRepository.findById(existingBook.getId())).willReturn(Optional.of(existingBook));
 
         //when
@@ -102,7 +121,35 @@ class BookServiceTest {
                 () -> assertEquals(request.getPublisher(), book.getPublisher(), "도서 수정 출판사 동일"),
                 () -> assertEquals(request.getCategoryType(), book.getCategoryType(), "도서 수정 카테고리 동일"),
                 () -> assertEquals(request.getDescription(), book.getDescription(), "도서 수정 설명 동일")
-        );    }
+        );
+    }
+
+    @Test
+    public void 도서_수정_에러() throws Exception {
+        //given
+        BookRequest.updateBookRequest request = updateBookRequest();
+        Book existingBook = Book.builder()
+                .title(request.getTitle())
+                .author(request.getAuthor())
+                .publisher(request.getPublisher())
+                .isbn(request.getIsbn())
+                .categoryType(request.getCategoryType())
+                .description(request.getDescription())
+                .build();
+        ReflectionTestUtils.setField(existingBook, "id", 1L);
+
+        //mock
+        given(bookRepository.findById(existingBook.getId())).willReturn(Optional.empty());
+
+        //when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> bookService.updateBook(existingBook.getId(), request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
 
     @Test
     public void 도서_삭제_성공() throws Exception {
@@ -133,13 +180,40 @@ class BookServiceTest {
     }
 
     @Test
+    public void 도서_삭제_NOT_FOUND() throws Exception {
+        //given
+        BookRequest.AddBookRequest request = createBookRequest();
+        Book existingBook = Book.builder()
+                .title(request.getTitle())
+                .author(request.getAuthor())
+                .publisher(request.getPublisher())
+                .isbn(request.getIsbn())
+                .categoryType(request.getCategoryType())
+                .description(request.getDescription())
+                .build();
+        ReflectionTestUtils.setField(existingBook, "id", 1L);
+
+        //mock
+        given(bookRepository.findById(existingBook.getId())).willReturn(Optional.empty());
+
+        //when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> bookService.deleteBook(existingBook.getId())
+        );
+
+        // then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
+
+    @Test
     public void 도서_삭제_예외() throws Exception {
         //given
         BookRequest.AddBookRequest request = createBookRequest();
         Book existingBook = createBookEntity(request);
         existingBook.updateRentType(RentType.CLOSE);
 
-        //mocking
+        //mock
         given(bookRepository.findById(existingBook.getId())).willReturn(Optional.of(existingBook));
 
         //when
