@@ -112,6 +112,7 @@ class ApplyServiceTest {
 
         //mock
         when(applyRepository.findById(applyId)).thenReturn(Optional.of(apply));
+        doNothing().when(applyRepository).deleteById(applyId);
 
         //when
         assertDoesNotThrow(() -> applyService.deleteApply(applyId));
