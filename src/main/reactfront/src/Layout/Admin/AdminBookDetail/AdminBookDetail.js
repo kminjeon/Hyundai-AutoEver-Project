@@ -11,6 +11,14 @@ const AdminBookDetail = () => {
   const [reviewList, setReviewList] = useState([]);
   const [rentType, setRentType] = useState();
   const [book, setBook] = useState(null);
+  const OPTIONS = [
+    { value: "DEV", name: "개발" },
+    { value: "NOVEL", name: "소설" },
+    { value: "SCIENCE", name: "과학" },
+    { value: "ECONOMY", name: "경제" },
+    { value: "HUMANITY", name: "인문" },
+  ];
+  const [cate, setCate] = useState('');
 
   // 현재 로그인한 사용자
   const personalId = sessionStorage.getItem('personalId');
@@ -22,6 +30,7 @@ const AdminBookDetail = () => {
         setBook(response.data.data);
         setReviewList(response.data.data.reviewList);
         console.log(response.data.data)
+        setCate(OPTIONS.find(option => option.value === response.data.data.categoryType))
       } catch (error) {
         console.log(error);
       }
@@ -87,7 +96,7 @@ const handleReviewDelete = (reviewId) => {
                 <div className='gray'>
                     <p>{book.author}</p>
                     <p>{book.publisher}</p>
-                    <p>{book.categoryType}</p>
+                    <p>{cate.name}</p>
                     <p>{book.isbn}</p>
                 </div>
             </div>
