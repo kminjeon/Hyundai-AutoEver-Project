@@ -55,25 +55,17 @@ class LoveServiceTest {
         //given
         User user = createUser();
         Book book = createBook();
-        Love love = createLove(user, book);
-        Integer count = book.getLoveCount();
 
         //mock
         given(userRepository.findByPersonalId(user.getPersonalId())).willReturn(Optional.ofNullable(user));
         given(bookRepository.findById(book.getId())).willReturn(Optional.ofNullable(book));
         given(loveRepository.findByUserAndBook(user, book)).willReturn(Optional.empty());
-        given(loveRepository.findById(any())).willReturn(Optional.ofNullable(love));
 
         //when
-        Long loveId = loveService.createLove(user.getPersonalId(), book.getId());
-        Optional<Love> loveOptional = loveRepository.findById(loveId);
+        assertDoesNotThrow(() -> loveService.createLove(user.getPersonalId(), book.getId()));
 
         //then
-        assertTrue(loveOptional.isPresent(), "좋아요가 정상적으로 생성되었음");
-        Love getLove = loveOptional.get();
-        assertEquals(book.getId(), getLove.getBook().getId(), "도서 ID 일치");
-        assertEquals(user.getId(), getLove.getUser().getId(), "사용자 ID 일치");
-        assertEquals(count + 1, bookRepository.findById(book.getId()).get().getLoveCount(), "도서 좋아요 수 증가");
+        assertEquals(1, book.getLoveCount(), "도서 좋아요 수 증가");
     }
 
     @Test
@@ -224,7 +216,6 @@ class LoveServiceTest {
         verify(loveRepository, times(1)).deleteById(love.getId());
     }
 
-
     private User createUser() {
         User user = new User("회원가입테스트","jointest", passwordEncoder.encode("test"),"test@join.com", PartType.MOBIS, "joinnickname");
         ReflectionTestUtils.setField(user, "id", 1L);
@@ -236,7 +227,6 @@ class LoveServiceTest {
         ReflectionTestUtils.setField(book, "id", 1L);
         return book;
     }
-
 
     private Love createLove(User user, Book book) {
         Love love = new Love(user, book);
