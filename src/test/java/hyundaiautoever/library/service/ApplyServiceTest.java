@@ -64,6 +64,28 @@ class ApplyServiceTest {
     }
 
     @Test
+    public void 도서_신청_생성_SAVE_실패() throws Exception {
+        //given
+        User user = createUser();
+        ApplyRequest.CreateApplyRequest request = createApplyRequest(user.getPersonalId());
+        Apply apply = createApply(user);
+
+        //mock
+        given(userRepository.findByPersonalId(any())).willReturn(Optional.ofNullable(user));
+        doThrow(new RuntimeException("error")).when(applyRepository).save(any());
+
+
+        //when
+        LibraryException.DataSaveException exception = assertThrows(
+                LibraryException.DataSaveException.class,
+                () -> applyService.createApply(request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_SAVE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
+
+    @Test
     public void 도서_신청_수정() throws Exception {
         //given
         User user = createUser();

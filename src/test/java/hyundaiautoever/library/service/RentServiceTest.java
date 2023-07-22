@@ -1,5 +1,6 @@
 package hyundaiautoever.library.service;
 
+import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.common.type.PartType;
@@ -14,207 +15,293 @@ import hyundaiautoever.library.repository.ReserveRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
-@Transactional
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class RentServiceTest {
 
-    @Autowired
-    BookRepository bookRepository;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
-    RentRepository rentRepository;
-
-    @Autowired
-    ReserveRepository reserveRepository;
-
-    @Autowired
+    @InjectMocks
     RentService rentService;
-    @Autowired
+    @Mock
+    BookRepository bookRepository;
+    @Mock
+    UserRepository userRepository;
+    @Mock
+    RentRepository rentRepository;
+    @Mock
+    ReserveRepository reserveRepository;
+    @Mock
     PasswordEncoder passwordEncoder;
+
+    @Mock
+    EmailService emailService;
 
 
     @Test
     public void 도서대여() throws Exception {
-        //Given
+        //given
         User user = createUser();
         Book book = createBook();
-        userRepository.save(user);
-        bookRepository.save(book);
+
+        //mock
+        given(userRepository.findByPersonalId(any())).willReturn(Optional.ofNullable(user));
+        given(bookRepository.findById(any())).willReturn(Optional.ofNullable(book));
 
         //when
-        rentService.createRent(user.getPersonalId(), book.getId());
+        assertDoesNotThrow(() -> rentService.createRent(user.getPersonalId(), book.getId()));
 
         //then
         assertEquals(RentType.CLOSE, book.getRentType(), "도서 대여시 도서 상태는 CLOSE");
-        assertEquals(1, book.getRentCount(), "도서 대여시 rentCount + 1");
+        assertEquals(1, book.getRentCount(), "도서 대여시 book rentCount + 1");
+        assertEquals(1, user.getRentCount(), "도서 대여시 user rentCount + 1");
     }
 
+    @Test
+    public void 도서대여_최대_대여_3회_초과_실패() throws Exception {
+        //given
+        User user = createUser();
+        Long bookId = 1L;
+
+        user.updateUserRentCount(3);
+
+        //mock
+        given(userRepository.findByPersonalId(any())).willReturn(Optional.ofNullable(user));
+
+        // when
+        LibraryException.MaxRentException exception = assertThrows(
+                LibraryException.MaxRentException.class,
+                () -> rentService.createRent(user.getPersonalId(), bookId)
+        );
+
+        //then
+        assertEquals(ExceptionCode.MAX_RENT_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+        verify(userRepository, times(1)).findByPersonalId(user.getPersonalId());
+    }
 
     @Test
     public void 도서대여_대여중도서_실패() throws Exception {
-        // given
-        User user = User.builder()
-                .name("도서대여테스트")
-                .personalId("renttest")
-                .password(passwordEncoder.encode("test"))
-                .email("test@rent.com")
-                .partType(PartType.MOBIS)
-                .nickname("renttestnickname")
-                .build();
+        //given
+        User user = createUser();
+        Book book = createBook();
+        book.updateRentType(RentType.CLOSE);
 
-        User user2 = User.builder()
-                .name("도서대여테스트2")
-                .personalId("renttest2")
-                .password(passwordEncoder.encode("test"))
-                .email("test2@rent.com")
-                .partType(PartType.MOBIS)
-                .nickname("renttestnickname2")
-                .build();
+        //mock
+        given(userRepository.findByPersonalId(any())).willReturn(Optional.ofNullable(user));
+        given(bookRepository.findById(any())).willReturn(Optional.ofNullable(book));
 
-        Book book = Book.builder()
-                .title("테스트 제목")
-                .author("테스트 작가")
-                .publisher("테스트 출판")
-                .isbn("123")
-                .categoryType(CategoryType.NOVEL)
-                .description("테스트 설명")
-                .build();
-
-        userRepository.save(user);
-        userRepository.save(user2);
-        bookRepository.save(book);
 
         // when
-        rentService.createRent(user.getPersonalId(), book.getId());
+        LibraryException.RentStateException exception = assertThrows(
+                LibraryException.RentStateException.class,
+                () -> rentService.createRent(user.getPersonalId(), book.getId())
+        );
 
         //then
-        assertThrows(LibraryException.RentStateException.class, () -> {
-            rentService.createRent(user2.getPersonalId(), book.getId());
-        });
-
+        assertEquals(ExceptionCode.RENT_STATE_ERROR.getCode(), exception.getExceptionCode().getCode());
+        verify(userRepository, times(1)).findByPersonalId(user.getPersonalId());
+        verify(bookRepository, times(1)).findById(book.getId());
     }
 
+
     @Test
-    public void 대여도서_반납() throws Exception {
+    public void 도서대여_SAVE_실패() throws Exception {
         //given
         User user = createUser();
         Book book = createBook();
-        userRepository.save(user);
-        bookRepository.save(book);
 
-        //when
-        Long rentId = rentService.createRent(user.getPersonalId(), book.getId());
-        rentService.returnBook(rentId);
+        //mock
+        given(userRepository.findByPersonalId(any())).willReturn(Optional.ofNullable(user));
+        given(bookRepository.findById(any())).willReturn(Optional.ofNullable(book));
+        doThrow(new RuntimeException("error")).when(rentRepository).save(any());
 
-        Optional<Rent> rent = rentRepository.findById(rentId);
-        if (rent.isPresent()) {
-            //then
-            assertEquals(RentType.OPEN, book.getRentType(), "도서 반납시 대여 가능 상태");
-            assertNotNull(rent.get().getReturnDate(), "도서 반납시 returnDate가 null이 아님");
-        }
+        // when
+        LibraryException.DataSaveException exception = assertThrows(
+                LibraryException.DataSaveException.class,
+                () -> rentService.createRent(user.getPersonalId(), book.getId())
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_SAVE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+        verify(userRepository, times(1)).findByPersonalId(user.getPersonalId());
+        verify(bookRepository, times(1)).findById(book.getId());
     }
 
     @Test
-    public void 대출_연장() throws Exception {
+    public void 대출_연장_성공() throws Exception {
         //given
         User user = createUser();
         Book book = createBook();
-        userRepository.save(user);
-        bookRepository.save(book);
         Rent rent = createRent(user, book);
-        rentRepository.save(rent);
+
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.ofNullable(rent));
 
         //when
-        rentService.extentRent(rent.getId());
+        assertDoesNotThrow(() -> rentService.extentRent(rent.getId()));
 
         //then
         assertEquals(1, rent.getExtensionNumber());
+        verify(rentRepository, times(1)).findById(rent.getId());
     }
 
     @Test
-    public void 도서_반납_예약x() throws Exception {
+    public void 대출_연장_NOT_FOUND_실패() throws Exception {
+        //given
         User user = createUser();
         Book book = createBook();
-        userRepository.save(user);
-        bookRepository.save(book);
         Rent rent = createRent(user, book);
-        rentRepository.save(rent);
 
-        //when
-        rentService.returnBook(rent.getId());
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.empty());
+
+        // when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> rentService.extentRent(rent.getId())
+        );
 
         //then
-        assertEquals(RentType.OPEN, book.getRentType());
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+        verify(rentRepository, times(1)).findById(rent.getId());
     }
 
     @Test
-    public void 도서_반납_예약O() throws Exception {
+    public void 대출_연장_실패() throws Exception {
+        //given
         User user = createUser();
         Book book = createBook();
-        userRepository.save(user);
-        bookRepository.save(book);
         Rent rent = createRent(user, book);
-        rentRepository.save(rent);
-        User user2 = createUser2();
-        userRepository.save(user2);
-        Reserve reserve = createReserve(user2, book);
-        reserveRepository.save(reserve);
+        rent.updateExtensionNumber(1);
 
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.ofNullable(rent));
+
+        // when
+        LibraryException.RentExtensionException exception = assertThrows(
+                LibraryException.RentExtensionException.class,
+                () -> rentService.extentRent(rent.getId())
+        );
+
+        //then
+        assertEquals(ExceptionCode.RENT_EXTENSION_ERROR.getCode(), exception.getExceptionCode().getCode());
+        verify(rentRepository, times(1)).findById(rent.getId());
+    }
+
+    @Test
+    public void 대여도서_반납_성공_예약x() throws Exception {
+        //given
+        User user = createUser();
+        Book book = createBook();
+        Rent rent = createRent(user, book);
+        user.updateUserRentCount(1);
         book.updateRentType(RentType.CLOSE);
-        book.updateRentCount(book.getRentCount() + 1);
-        user.updateUserRentCount(user.getRentCount() + 1);
 
-        assertEquals(RentType.CLOSE, book.getRentType());
-
-        Optional<Reserve> optionalReserve = reserveRepository.findByUserAndBook(user2, book);
-        assertTrue(optionalReserve.isPresent());
-        assertEquals(1, optionalReserve.get().getWaitNumber());
-
-        Reserve firstReserve = reserveRepository.findByWaitNumberAndBook(1, rent.getBook());
-        assertEquals(1, firstReserve.getWaitNumber());
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.ofNullable(rent));
+        given(reserveRepository.findByWaitNumberAndBook(1, book)).willReturn(null);
 
         //when
-        rentService.returnBook(rent.getId());
+        assertDoesNotThrow(() -> rentService.returnBook(rent.getId()));
+
+        //then
+        assertEquals(RentType.OPEN, book.getRentType(), "도서 반납시 대여 가능 상태");
+        assertNotNull(rent.getReturnDate(), "도서 반납시 returnDate가 null이 아님");
+        assertEquals(0, user.getRentCount());
+    }
+
+
+    @Test
+    public void 대여도서_반납_성공_예약o() throws Exception {
+        //given
+        User user = createUser();
+        User user2= createUser2();
+        Book book = createBook();
+        Rent rent = createRent(user, book);
+        user.updateUserRentCount(1);
+        book.updateRentType(RentType.CLOSE);
+        Reserve reserve = createReserve(user2, book);
+
+        List<Reserve> reserveList = new ArrayList<>();
+        reserveList.add(reserve);
+
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.ofNullable(rent));
+        given(reserveRepository.findByWaitNumberAndBook(1, book)).willReturn(reserve);
+        given(reserveRepository.findAllByBook(book)).willReturn(reserveList);
+        doNothing().when(emailService).sendRentEmail(any(), any());
+        //when
+        assertDoesNotThrow(() -> rentService.returnBook(rent.getId()));
 
         //then
         assertEquals(RentType.CLOSE, book.getRentType());
+        assertNotNull(rent.getReturnDate(), "도서 반납시 returnDate가 null이 아님");
+        assertEquals(0, user.getRentCount());
         assertEquals(0, reserve.getWaitNumber());
+    }
+
+    @Test
+    public void 대여도서_반납_NOT_FOUNT_실패() throws Exception {
+        //given
+        Long rentId = 1L;
+
+        //mock
+        given(rentRepository.findById(any())).willReturn(Optional.empty());
+
+        // when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> rentService.extentRent(rentId)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+        verify(rentRepository, times(1)).findById(rentId);
     }
 
     private User createUser() {
         User user = new User("회원가입테스트","jointest", passwordEncoder.encode("test"),"test@join.com", PartType.MOBIS, "joinnickname");
+        ReflectionTestUtils.setField(user, "id", 1L);
         return user;
     }
 
     private User createUser2() {
         User user = new User("회원가입테스트","jointest2", passwordEncoder.encode("test"),"test@join.com2", PartType.MOBIS, "joinnickname2");
+        ReflectionTestUtils.setField(user, "id", 2L);
         return user;
     }
 
     private Book createBook() {
         Book book = new Book("테스트제목", "테스트작가", "123", "테스트출판", CategoryType.NOVEL, "테스트설명");
+        ReflectionTestUtils.setField(book, "id", 1L);
         return book;
     }
 
     private Rent createRent(User user, Book book) {
         Rent rent = new Rent(user, book);
+        ReflectionTestUtils.setField(rent, "id", 1L);
         return rent;
     }
 
     private Reserve createReserve(User user, Book book) {
         Reserve reserve = new Reserve(user, book, 1);
+        ReflectionTestUtils.setField(reserve, "id", 1L);
         return reserve;
     }
 }
