@@ -8,7 +8,7 @@ import hyundaiautoever.library.model.dto.UserDto;
 import hyundaiautoever.library.model.dto.request.UserRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.model.entity.Book;
-import hyundaiautoever.library.model.entity.Love;
+import hyundaiautoever.library.model.entity.Rent;
 import hyundaiautoever.library.model.entity.User;
 import hyundaiautoever.library.repository.*;
 import org.junit.jupiter.api.Test;
@@ -17,19 +17,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
@@ -70,43 +67,31 @@ public class UserServiceTest {
         UserRequest.CreateUserRequest request = createUserRequest();
         User user = createUserEntity(request);
 
-        // mocking
+        //mock
+        given(userRepository.existsByEmail(request.getEmail())).willReturn(false);
+        given(userRepository.existsByNickname(request.getNickname())).willReturn(false);
+        given(userRepository.existsByPersonalId(request.getPersonalId())).willReturn(false);
         given(userRepository.save(any())).willReturn(user);
-        given(userRepository.findById(any()))
-                .willReturn(Optional.ofNullable(user));
 
-        //when
-        Long userId = userService.createUser(request);
-
-        //then
-        Optional<User> optionalUser = userRepository.findById(userId);
-        assertTrue(optionalUser.isPresent(), "사용자가 저장되었음");
-        User savedUser = optionalUser.get();
-        assertEquals(request.getName(), savedUser.getName());
-        assertEquals(request.getPersonalId(), savedUser.getPersonalId());
-        assertEquals(request.getEmail(), savedUser.getEmail());
-        assertEquals(request.getPartType(), savedUser.getPartType());
-        assertEquals(request.getNickname(), savedUser.getNickname());
-        assertNotNull(savedUser.getId());
+        //when & then
+        assertDoesNotThrow(() -> userService.createUser(request));
     }
 
 
     @Test
-    public void 중복_회원_예외() throws Exception {
+    public void 회원가입_중복_회원_예외() throws Exception {
         //given
         UserRequest.CreateUserRequest request = createUserRequest();
-        userService.createUser(request);
 
-        //mocking
+
+        //mock
         given(userRepository.existsByEmail(request.getEmail())).willReturn(true);
 
 
-        UserRequest.CreateUserRequest request2 = createUserRequest();
-
-        // When
+        //when
         LibraryException.DataDuplicateException exception = assertThrows(
                 LibraryException.DataDuplicateException.class,
-                () -> userService.createUser(request2)
+                () -> userService.createUser(request)
         );
 
         //then
@@ -114,29 +99,51 @@ public class UserServiceTest {
     }
 
     @Test
+    public void 회원가입_SAVE_예외() throws Exception {
+        //given
+        UserRequest.CreateUserRequest request = createUserRequest();
+
+        //mock
+        given(userRepository.existsByEmail(request.getEmail())).willReturn(false);
+        given(userRepository.existsByNickname(request.getNickname())).willReturn(false);
+        given(userRepository.existsByPersonalId(request.getPersonalId())).willReturn(false);
+        doThrow(new RuntimeException("error")).when(userRepository).save(any());
+
+        //when
+        LibraryException.DataSaveException exception = assertThrows(
+                LibraryException.DataSaveException.class,
+                () -> userService.createUser(request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_SAVE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
+
+
+    @Test
     public void 로그인_성공() {
-        // Given
+        //given
         UserRequest.LoginRequest request = createLoginRequest();
         User user = createUserWithPassword(request.getPersonalId(), request.getPassword());
 
-        // mocking
+        //mock
         given(userRepository.findByPersonalId(request.getPersonalId())).willReturn(Optional.ofNullable(user));
         given(passwordEncoder.matches(request.getPassword(), user.getPassword())).willReturn(true);
 
-        // When
+        //when
         UserDto.LoginDto loginDto = userService.loginUser(request);
 
-        // Then
+        //then
         assertNotNull(loginDto, "loginDto가 null이 아니어야 함");
         assertEquals(user.getId(), loginDto.getId(), "ID 일치");
     }
 
     @Test
     public void 존재하지_않는_회원_로그인_실패() throws Exception {
-        // 로그인 request
+        //given
         UserRequest.LoginRequest request = createLoginRequest();
 
-        // mocking
+        //mock
         given(userRepository.findByPersonalId(request.getPersonalId())).willReturn(Optional.empty());
 
         //when
@@ -153,9 +160,9 @@ public class UserServiceTest {
     public void 비밀번호_불일치_로그인_실패() throws Exception {
         //given
         UserRequest.LoginRequest request = createLoginRequest();
-        User user = createUserWithPassword(request.getPersonalId(), "passwordok");
+        User user = createUserWithPassword(request.getPersonalId(), "password");
 
-        // mocking
+        //mock
         given(userRepository.findByPersonalId(request.getPersonalId())).willReturn(Optional.ofNullable(user));
         given(passwordEncoder.matches(request.getPassword(), user.getPassword())).willReturn(false);
 
@@ -176,7 +183,7 @@ public class UserServiceTest {
         //given
         List<User> userList = createSampleUserList(5);
 
-        // mocking
+        // mock
         given(userRepository.findAll()).willReturn(userList);
 
         //when
@@ -189,85 +196,95 @@ public class UserServiceTest {
 
     @Test
     public void 아이디_중복_체크_중복O() {
-        // given
+        //given
         String personalId = "id";
+
+        //mock
         given(userRepository.existsByPersonalId(personalId)).willReturn(true);
 
-        // when
+        //when
         boolean result = userService.checkPersonalId(personalId);
 
-        // then
+        //then
         assertTrue(result);
     }
 
     @Test
     public void 아이디_중복_체크_중복_X() {
-        // given
+        //given
         String personalId = "non";
+
+        //mock
         given(userRepository.existsByPersonalId(personalId)).willReturn(false);
 
-        // when
+        //when
         boolean result = userService.checkPersonalId(personalId);
 
-        // then
+        //then
         assertFalse(result);
     }
 
     @Test
     public void 이메일_중복_체크_중복O() {
-        // given
+        //given
         String email = "id@test.com";
         given(userRepository.existsByEmail(email)).willReturn(true);
 
-        // when
+        //when
         boolean result = userService.checkEmail(email);
 
-        // then
+        //then
         assertTrue(result);
     }
 
     @Test
     public void 이메일_중복_체크_중복X() {
-        // given
+        //given
         String email = "non@test.com";
+
+        //mock
         given(userRepository.existsByEmail(email)).willReturn(false);
 
-        // when
+        //when
         boolean result = userService.checkEmail(email);
 
-        // then
+        //then
         assertFalse(result);
     }
 
     @Test
     public void 닉네임_중복_체크_중복_O() {
-        // given
+        //given
         String nickname = "nick";
+
+        //mock
         given(userRepository.existsByNickname(nickname)).willReturn(true);
 
-        // when
+        //when
         boolean result = userService.checkNickname(nickname);
 
-        // then
+        //then
         assertTrue(result);
     }
 
     @Test
     public void 닉네임_중복_체크_중복_X() {
-        // given
+        //given
         String nickname = "non";
+
+        //mock
         given(userRepository.existsByNickname(nickname)).willReturn(false);
 
-        // when
+        //when
         boolean result = userService.checkNickname(nickname);
 
-        // then
+        //then
         assertFalse(result);
     }
 
     @Test
     public void 프로필수정_성공() {
-        // given
+        //given
         String personalId = "id";
         String password = "pass";
         String newPassword = "newPassword";
@@ -291,13 +308,14 @@ public class UserServiceTest {
                 .nickname("nick")
                 .build();
 
+        //mock
         given(userRepository.findByPersonalId(personalId)).willReturn(Optional.of(existingUser));
         given(passwordEncoder.matches(password, existingUser.getPassword())).willReturn(true);
 
-        // when
-        userService.updateProfile(request);
+        //when
+        assertDoesNotThrow(() -> userService.updateProfile(request));
 
-        // then
+        //then
         assertEquals(passwordEncoder.encode(newPassword), existingUser.getPassword());
         assertEquals(email, existingUser.getEmail());
         assertEquals(partType, existingUser.getPartType());
@@ -306,28 +324,29 @@ public class UserServiceTest {
 
     @Test
     public void 프로필수정_personalId_X() {
-        // given
+        //given
         String nonExistingPersonalId = "non";
 
         UserRequest.UpdateProfileRequest request = new UserRequest.UpdateProfileRequest();
         request.setPersonalId(nonExistingPersonalId);
         request.setPassword("password");
 
+        //mock
         given(userRepository.findByPersonalId(nonExistingPersonalId)).willReturn(Optional.empty());
 
-        // when
+        //when
         LibraryException.DataNotFoundException exception = assertThrows(
                 LibraryException.DataNotFoundException.class,
                 () -> userService.updateProfile(request)
         );
 
-        // then
+        //then
         assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION, exception.getExceptionCode());
     }
 
     @Test
     public void 프로필수정_비밀번호오류() {
-        // given
+        //given
         String personalId = "id";
         String incorrectPassword = "incorrect";
 
@@ -340,22 +359,23 @@ public class UserServiceTest {
                 .password(passwordEncoder.encode("password"))
                 .build();
 
+        //mock
         given(userRepository.findByPersonalId(personalId)).willReturn(Optional.of(existingUser));
         given(passwordEncoder.matches(incorrectPassword, existingUser.getPassword())).willReturn(false);
 
-        // when
+        //when
         LibraryException.LoginPasswordException exception = assertThrows(
                 LibraryException.LoginPasswordException.class,
                 () -> userService.updateProfile(request)
         );
 
-        // then
+        //then
         assertEquals(ExceptionCode.PASSWORD_ERROR, exception.getExceptionCode());
     }
 
     @Test
     public void ADMIN_권한관리_성공() {
-        // given
+        //given
         String personalId = "id";
         String auth = "ADMIN";
 
@@ -363,20 +383,62 @@ public class UserServiceTest {
                 .personalId(personalId)
                 .build();
 
+        //mock
         given(userRepository.findByPersonalId(personalId)).willReturn(Optional.of(existingUser));
 
-        // when
+        //when
         UserDto.LoginDto result = userService.updateAuth(personalId, auth);
 
-        // then
+        //then
         assertEquals(AuthType.ADMIN, existingUser.getAuthType());
         assertEquals(existingUser.getPersonalId(), result.getPersonalId());
+    }
+
+    @Test
+    public void ADMIN_권한관리_NOTFOUND_예외() {
+        //given
+        String personalId = "id";
+        String auth = "ADMIN";
+
+        //mock
+        given(userRepository.findByPersonalId(personalId)).willReturn(Optional.empty());
+
+        //when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> userService.updateAuth(personalId, auth)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION, exception.getExceptionCode());
+    }
+
+    @Test
+    public void ADMIN_권한관리_update_예외() {
+        //given
+        String personalId = "id";
+        String auth = "ADMIN";
+
+        User user = mock(User.class);
+
+        //mock
+        given(userRepository.findByPersonalId(personalId)).willReturn(Optional.ofNullable(user));
+        doThrow(new RuntimeException("error")).when(user).updateUserAuthType(any());
+
+        //when
+        LibraryException.DataUpdateException exception = assertThrows(
+                LibraryException.DataUpdateException.class,
+                () -> userService.updateAuth(personalId, auth)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_UPDATE_EXCEPTION, exception.getExceptionCode());
     }
 
 
     @Test
     public void 회원탈퇴_성공() {
-        // Given
+        //given
         String personalId = "user123";
 
         User user = User.builder()
@@ -389,67 +451,138 @@ public class UserServiceTest {
         given(reserveRepository.findByUser(user)).willReturn(Collections.emptyList());
         doNothing().when(userRepository).deleteById(user.getId());
 
-        // When
+        //when
         Response response = userService.deleteUser(personalId);
 
-        // Then
+        //then
         assertEquals(Response.ok().getCode(), response.getCode());
         assertNull(response.getData());
     }
 
     @Test
+    public void 회원탈퇴_NOTFOUND_예외() {
+        //given
+        String personalId = "user123";
+
+        given(userRepository.findByPersonalId(personalId)).willReturn(Optional.empty());
+
+        //when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> userService.deleteUser(personalId)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION, exception.getExceptionCode());
+    }
+
+    @Test
+    public void 회원탈퇴_대여중도서존재_예외() {
+        //given
+        String personalId = "user123";
+
+        User user = User.builder()
+                    .personalId(personalId)
+                    .build();
+
+        Rent rent = Rent.builder()
+                    .user(user)
+                    .book(Book.builder().build()).build();
+
+        List<Rent> rentList = new ArrayList<>();
+        rentList.add(rent);
+
+        given(userRepository.findByPersonalId(personalId)).willReturn(Optional.of(user));
+        given(rentRepository.findByUser(user)).willReturn(rentList);
+
+        //when
+        Response response = userService.deleteUser(personalId);
+
+        //then
+        assertEquals(ExceptionCode.WITHDRAW_ERROR.getCode(), response.getCode());
+        assertNotNull(response.getData());
+    }
+
+    @Test
+    public void 회원탈퇴_DELETE_예외() {
+        //given
+        String personalId = "user123";
+
+        User user = User.builder()
+                .personalId(personalId)
+                .build();
+
+        given(userRepository.findByPersonalId(personalId)).willReturn(Optional.of(user));
+        given(rentRepository.findByUser(user)).willReturn(Collections.emptyList());
+        given(loveRepository.findByUser(user)).willReturn(Collections.emptyList());
+        given(reserveRepository.findByUser(user)).willReturn(Collections.emptyList());
+        doThrow(new RuntimeException("error")).when(userRepository).deleteById(user.getId());
+
+        //when
+        LibraryException.DataDeleteException exception = assertThrows(
+                LibraryException.DataDeleteException.class,
+                () -> userService.deleteUser(user.getPersonalId())
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_DELETE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+    }
+
+    @Test
     public void 아이디_찾기() {
-        // given
+        //given
         User user = createUser();
 
         when(userRepository.findByEmail(user.getEmail())).thenReturn(user);
 
-        // when
+        //when
         String result = userService.getFindId(user.getEmail());
 
-        // then
+        //then
         assertEquals(user.getPersonalId(), result);
     }
 
     @Test
     public void 아이디_찾기_없음() {
-        // given
+        //given
         String email = "no@example.com";
 
         when(userRepository.findByEmail(email)).thenReturn(null);
 
-        // when/then
-        assertThrows(LibraryException.DataNotFoundException.class, () -> {
-            userService.getFindId(email);
-        });
+        //when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> userService.getFindId(email)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
     }
 
     @Test
     public void 비밀번호재설정_성공() {
-        // given
-        User user = Mockito.mock(User.class);
+        //given
+        User user = mock(User.class);
         UserRequest.ResetPassword request = new UserRequest.ResetPassword();
         request.setPersonalId(user.getPersonalId());
         request.setNewPassword("newPassword");
-
-        when(userRepository.findByPersonalId(request.getPersonalId())).thenReturn(Optional.of(user));
-
-
-        // Mocking passwordEncoder.encode() method
         String encodePassword = "encodePassword";
+
+        //mock
+        when(userRepository.findByPersonalId(request.getPersonalId())).thenReturn(Optional.of(user));
         when(passwordEncoder.encode(request.getNewPassword())).thenReturn(encodePassword);
 
-        // when
+        //when
         assertDoesNotThrow(() -> userService.resetPassword(request));
 
         // then
-        // 함수 호출 확인
         verify(userRepository).findByPersonalId(request.getPersonalId());
+        verify(passwordEncoder).encode(request.getNewPassword());
         verify(user).updateUserPassword(encodePassword);
     }
 
     @Test
-    public void 비밀번호_재설정_아이디_못찾음() {
+    public void 비밀번호_재설정_아이디_없음() {
         // given
         String personalId = "no";
 
@@ -457,13 +590,46 @@ public class UserServiceTest {
         request.setPersonalId(personalId);
         request.setNewPassword("newPassword");
 
+        //mock
         when(userRepository.findByPersonalId(personalId)).thenReturn(Optional.empty());
 
-        // when/then
-        assertThrows(LibraryException.DataNotFoundException.class, () -> {
-            userService.resetPassword(request);
-        });
+        // when
+        LibraryException.DataNotFoundException exception = assertThrows(
+                LibraryException.DataNotFoundException.class,
+                () -> userService.resetPassword(request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_NOT_FOUND_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
     }
+
+    @Test
+    public void 비밀번호재설정_update_예외() {
+        //given
+        User user = mock(User.class);
+        UserRequest.ResetPassword request = new UserRequest.ResetPassword();
+        request.setPersonalId(user.getPersonalId());
+        request.setNewPassword("newPassword");
+        String encodePassword = "encodePassword";
+
+        //mock
+        when(userRepository.findByPersonalId(request.getPersonalId())).thenReturn(Optional.of(user));
+        when(passwordEncoder.encode(request.getNewPassword())).thenReturn(encodePassword);
+        doThrow(new RuntimeException("error")).when(user).updateUserPassword(encodePassword);
+
+        // when
+        LibraryException.DataUpdateException exception = assertThrows(
+                LibraryException.DataUpdateException.class,
+                () -> userService.resetPassword(request)
+        );
+
+        //then
+        assertEquals(ExceptionCode.DATA_UPDATE_EXCEPTION.getCode(), exception.getExceptionCode().getCode());
+        verify(userRepository).findByPersonalId(request.getPersonalId());
+        verify(passwordEncoder).encode(request.getNewPassword());
+        verify(user).updateUserPassword(encodePassword);
+    }
+
 
 
     private UserRequest.CreateUserRequest createUserRequest() {
@@ -487,6 +653,7 @@ public class UserServiceTest {
 
     private User createUser() {
         User user = new User("회원가입테스트","jointest", passwordEncoder.encode("test"),"test@join.com", PartType.MOBIS, "joinnickname");
+        ReflectionTestUtils.setField(user, "id", 1L);
         return user;
     }
 

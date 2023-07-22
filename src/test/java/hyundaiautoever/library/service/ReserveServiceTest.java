@@ -27,6 +27,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -201,11 +202,10 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
 
         //mock
         given(reserveRepository.findById(any())).willReturn(Optional.ofNullable(reserve));
-        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(reserveList);
+        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(Collections.emptyList());
 
         //when & then
         assertDoesNotThrow(() -> reserveService.deleteReserve(reserve.getId()));
@@ -263,11 +263,10 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
 
         //mock
         given(reserveRepository.findById(any())).willReturn(Optional.ofNullable(reserve));
-        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(reserveList);
+        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(Collections.emptyList());
         doThrow(new RuntimeException("error")).when(reserveRepository).deleteById(any());
 
         //when
@@ -288,11 +287,10 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
 
         //mock
         given(reserveRepository.findById(any())).willReturn(Optional.ofNullable(reserve));
-        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(reserveList);
+        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(Collections.emptyList());
 
 
         //when
@@ -353,7 +351,6 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
         user.updateUserRentCount(3);
 
         //mock
@@ -375,7 +372,6 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
 
         //mock
         given(reserveRepository.findById(any())).willReturn(Optional.ofNullable(reserve));
@@ -397,11 +393,10 @@ class ReserveServiceTest {
         User user = createUser();
         Book book = createBook();
         Reserve reserve = createReserve(user, book);
-        List<Reserve> reserveList = new ArrayList<>();
 
         //mock
         given(reserveRepository.findById(any())).willReturn(Optional.ofNullable(reserve));
-        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(reserveList);
+        given(reserveRepository.findReserveListByWaitNumberAndBook(any(), any())).willReturn(Collections.emptyList());
         doThrow(new RuntimeException("error")).when(reserveRepository).deleteById(any());
 
         //when

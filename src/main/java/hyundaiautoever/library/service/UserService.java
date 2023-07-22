@@ -178,7 +178,7 @@ public class UserService {
         });
 
         try {
-            // auth는 바뀌어야 될 권한
+            // auth : 바뀌어야 될 권한
             user.updateUserAuthType(AuthType.valueOf(auth));
         } catch (Exception e) {
             log.error("updateAuth Exception : {}", e.getMessage());
@@ -294,7 +294,6 @@ public class UserService {
         try {
             user.updateUserPassword(passwordEncoder.encode(request.getNewPassword()));
         } catch (Exception e) {
-
             log.error("resetPassword Exception : {}", e.getMessage());
             throw new LibraryException.DataUpdateException(ExceptionCode.DATA_UPDATE_EXCEPTION);
         }
