@@ -74,6 +74,7 @@ const BookItem_ReserveInfo = ({book, index}) => {
         setReserveFirst(`대기 ${book.waitNumber}번째 `);
       }
   }, [])
+  
   return (
     <>    
     <li key={book.rentId} className="align separator">

@@ -57,7 +57,7 @@ public class ReserveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        if (rentRepository.findByUserAndBook(user, book) != null) { // 대여 중인 도서
+        if (rentRepository.findByUserAndBook(user, book) != null) { // 사용자가 대여 중인 도서
             throw new LibraryException.AlreadyRentException(ExceptionCode.ALREADY_RENT_ERROR);
         }
 
@@ -106,6 +106,10 @@ public class ReserveService {
         return buildAdminReservePage(reserveRepository.getAdminReservePage(pageable, personalId, name, bookId, title));
     }
 
+    /**
+     * 예약 중인 사용자 rent
+     * @param reserveId
+     */
     @Transactional
     public void reserveRent(Long reserveId) {
         Reserve reserve = reserveRepository.findById(reserveId).orElseThrow(() -> {
@@ -146,6 +150,10 @@ public class ReserveService {
     }
 
 
+    /**
+     * 도서 예약 중인 사용자 대여 후 예약 삭제
+     * @param reserve
+     */
     public void deleteReserveForRent(Reserve reserve) {
         // 대기 순번 뒷 번호 사용자 대기 순번 올리기
         List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumberAndBook(reserve.getWaitNumber(), reserve.getBook());
