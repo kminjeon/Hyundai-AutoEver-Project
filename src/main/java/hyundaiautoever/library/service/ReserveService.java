@@ -190,17 +190,29 @@ public class ReserveService {
         List<Reserve> reserveList = reserveRepository.findReserveListByWaitNumberAndBook(reserve.getWaitNumber(), reserve.getBook());
 
         if (!reserveList.isEmpty()) {
-            reserveList.forEach(next -> {
-                next.updateWaitNumber(next.getWaitNumber() - 1);
-            });
+            if (reserve.getWaitNumber() == 0) { // 삭제 예약이 대여 가능 상태일 때 다음 예약은 2부터 시작
+                reserveList.forEach(next -> {
+                    next.updateWaitNumber(next.getWaitNumber() - 2);
+                });
+            } else {
+                reserveList.forEach(next -> {
+                    next.updateWaitNumber(next.getWaitNumber() - 1);
+                });
+            }
         }
 
+        Book book = reserve.getBook();
         // 예약 삭제
         try {
             reserveRepository.deleteById(reserveId);
         } catch (Exception e) {
             log.error("deleteReserve Exception : {}", e.getMessage());
             throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
+        }
+
+        List<Reserve> reserveAll = reserveRepository.findAllByBook(book);
+        if (reserveAll.isEmpty()) { // 해당 도서 예약이 없음
+            book.updateRentType(RentType.OPEN);
         }
     }
 }

@@ -134,10 +134,9 @@ const FindPassword = () => {
             icon: "success",
             title: "비밀번호 재설정 성공",
             confirmButtonText: "확인",
-        }).then(() => {
-            closeModal();
-            window.location.assign("/");
-          });
+            }).then(() => {
+                window.location.assign('/');
+            })
         })
         .catch (error => {
            console.log(error);
@@ -174,16 +173,14 @@ const FindPassword = () => {
             <React.Fragment>
                 <Modal open={resetModalOpen} close={closeResetModal} header="비밀번호 재설정">
                 <div>
-                <form>
                 <label htmlFor="password"> *새 비밀번호</label>
                     <input className='input-login' type='password' id ='password' value={password} onChange={onPasswordHandler}  autoComplete="new-password"/>
                 <div className="little-move"></div>
                 <label htmlFor="confirmPassword" > *새 비밀번호 확인</label>
                     <input className='input-login' type='password' id = 'confirmPassword' value={confirmPassword} onChange={onConfirmPasswordHandler}  autoComplete="new-password"/>
-                    <button type="submit" className='reset-pass' onClick={onSubmitHandler}>
+                    <button type='button' className='reset-pass' onClick={onSubmitHandler}>
                         비밀번호 재설정
                     </button>
-                </form>
                 </div>
                 </Modal>
             </React.Fragment>

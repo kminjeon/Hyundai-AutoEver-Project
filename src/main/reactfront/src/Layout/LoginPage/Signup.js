@@ -64,6 +64,11 @@ const Signup = () => {
         .then((response) => {
           if (response.data.code == 409) {
             console.log("아이디 중복");
+            Swal.fire({
+              icon: "warning",
+              title: "아이디 중복",
+              confirmButtonText: "확인",
+          })
           } else {
             Swal.fire({
               icon: "success",

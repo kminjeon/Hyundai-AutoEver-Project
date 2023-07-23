@@ -110,9 +110,7 @@ const closeModal = () => {
             title: "추가 성공",
             text: `[ ${response.data.data} ] 도서를 추가했습니다`,
             confirmButtonText: "확인",
-        }).then(() => {
-          window.location.reload();
-        });
+        })
       })
       .catch (error => {
         console.log(error);
@@ -124,7 +122,6 @@ const closeModal = () => {
             confirmButtonText: "확인",
         })
         }
-        
         console.log('도서 추가 실패')
       });
     }
@@ -194,7 +191,7 @@ const closeModal = () => {
         }
       };
 
-          const onOptionaHandler = (e) => {
+      const onOptionaHandler = (e) => {
       setCategoryType(e.target.value);
   }
 
@@ -248,6 +245,7 @@ const closeModal = () => {
 
         <React.Fragment>
                 <CleanModal open={modalOpen} close={closeModal}>
+                <div>
                   <div className='apply-center-align'>
                 <p>도서 자동 추가</p>
                 <div className='input-container'>
@@ -273,8 +271,11 @@ const closeModal = () => {
                     value={isbn}
                     onChange={handleIsbn}
                 />
-            </div>
-                <button className='apply-button' onClick={handleIsbnAdd}>확인</button>
+                </div>
+                <div>
+                <button type ="button" className='apply-button' onClick={handleIsbnAdd}>확인</button>
+                </div>
+                </div>
                 </div>
                 </CleanModal>
         </React.Fragment>
