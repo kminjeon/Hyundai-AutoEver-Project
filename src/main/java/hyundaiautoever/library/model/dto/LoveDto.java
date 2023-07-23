@@ -10,7 +10,6 @@ public class LoveDto {
     public static class GetLoveDto {
         private final Long loveId;
         private final Long bookId;
-
         private final String title;
         private final String author;
         private final String isbn;

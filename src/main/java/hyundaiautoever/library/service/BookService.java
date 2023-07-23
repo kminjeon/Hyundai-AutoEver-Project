@@ -43,7 +43,6 @@ public class BookService {
     private final LoveRepository loveRepository;
     private final ReserveRepository reserveRepository;
 
-
     /**
      * 도서 추가
      * @param request
@@ -69,7 +68,6 @@ public class BookService {
         }
         return book.getId();
     }
-
 
     /**
      * 관리자 도서 관리 페이지
@@ -116,6 +114,7 @@ public class BookService {
 
     /**
      * 베스트 10 도서
+     * @param personalId
      * @return List<BestBookDto>
      */
     public List<BestBookDto> getBestBookList(String personalId) {
@@ -167,8 +166,6 @@ public class BookService {
         List<CreateReviewDto> reviewList = reviewRepository.findByBook(book).stream().map(CreateReviewDto::new).collect(Collectors.toList());
         return BookDto.buildGetBookDetailDto(book, reviewList, love.isPresent() ? love.get().getId() : null);
     }
-
-
 
     /**
      * 관리자 도서 상세 조회
@@ -253,7 +250,6 @@ public class BookService {
         return buildUpdateBookDto(book);
     }
 
-
     /**
      * 도서 삭제
      * @param bookId
@@ -287,5 +283,4 @@ public class BookService {
             throw new LibraryException.DataDeleteException(ExceptionCode.DATA_DELETE_EXCEPTION);
         }
     }
-
 }

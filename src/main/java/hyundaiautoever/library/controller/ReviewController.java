@@ -3,7 +3,6 @@ package hyundaiautoever.library.controller;
 import hyundaiautoever.library.model.dto.request.ReviewRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.ReviewService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -73,5 +72,4 @@ public class ReviewController {
         reviewService.deleteReview(reviewId);
         return Response.ok();
     }
-
 }

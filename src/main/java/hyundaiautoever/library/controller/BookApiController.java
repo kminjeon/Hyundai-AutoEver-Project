@@ -25,5 +25,4 @@ public class BookApiController {
         log.info("BookAPIController : [getJson]");
         return Response.ok().setData(bookApiService.getJson(query, display, categoryType));
     }
-
 }

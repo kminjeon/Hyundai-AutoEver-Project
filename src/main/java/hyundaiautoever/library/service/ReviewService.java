@@ -45,6 +45,7 @@ public class ReviewService {
             log.error("createReview Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
+
         Review review = Review.builder()
                         .content(request.getContent())
                         .user(user)
@@ -91,7 +92,7 @@ public class ReviewService {
     /**
      * 리뷰 수정
      * @param request
-     * @return
+     * @return UpdateReviewDto
      */
     @Transactional
     public UpdateReviewDto updateReview(Long reviewId, ReviewRequest.UpdateReviewRequest request) {

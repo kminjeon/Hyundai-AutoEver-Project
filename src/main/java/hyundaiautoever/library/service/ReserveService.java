@@ -57,11 +57,13 @@ public class ReserveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
-        if (rentRepository.findByUserAndBook(user, book) != null) { // 사용자가 대여 중인 도서
+        // 사용자가 대여 중인 도서
+        if (rentRepository.findByUserAndBook(user, book) != null) {
             throw new LibraryException.AlreadyRentException(ExceptionCode.ALREADY_RENT_ERROR);
         }
 
-        if (reserveRepository.findByUserAndBook(user, book).isPresent()) { // 이미 예약 내역 존재
+        // 동일한 예약 내역 존재
+        if (reserveRepository.findByUserAndBook(user, book).isPresent()) {
             throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
         }
 

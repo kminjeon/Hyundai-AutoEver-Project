@@ -4,7 +4,6 @@ import hyundaiautoever.library.common.type.CategoryType;
 import hyundaiautoever.library.model.dto.request.BookRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.BookService;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
@@ -36,7 +35,7 @@ public class BookController {
      * 도서 수정
      * @param bookId
      * @param request
-     * @return
+     * @return UpdateBookDto
      */
     @PutMapping("/admin/book/update/{bookId}")
     public Response updateBook(@PathVariable("bookId") Long bookId,
@@ -48,7 +47,7 @@ public class BookController {
     /**
      * 도서 수정 페이지 조회
      * @param bookId
-     * @return
+     * @return UpdateBookDto
      */
     @GetMapping("/admin/book/get/{bookId}")
     public Response getUpdateBook(@PathVariable("bookId") Long bookId) {
@@ -73,7 +72,6 @@ public class BookController {
         log.info("BookController : [searchAdminBookPage]");
         return Response.ok().setData(bookService.searchAdminBookPage(pageable, bookId, categoryType, title, author));
     }
-
 
     /**
      * 도서 삭제
@@ -148,5 +146,4 @@ public class BookController {
         log.info("BookController : [getSearchBookPage]");
         return Response.ok().setData(bookService.getSearchBookPage(pageable, searchWord, personalId));
     }
-
 }

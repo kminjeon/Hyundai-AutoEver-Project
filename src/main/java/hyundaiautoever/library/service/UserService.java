@@ -56,13 +56,15 @@ public class UserService {
             throw new LibraryException.LoginPersonalIdException(ExceptionCode.PERSONALID_ERROR);
         }
         User user = optionalUser.get();
+
+        // password 확인
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())){
             throw new LibraryException.LoginPasswordException(ExceptionCode.PASSWORD_ERROR);
         }
+        // 마지막 로그인 날짜 업데이트
         user.updateLastLoginDate(LocalDateTime.now());
         return UserDto.buildLoginDto(user);
     }
-
 
     /**
      * 회원 가입 JOIN
@@ -78,16 +80,19 @@ public class UserService {
                 .nickname(request.getNickname())
                 .build();
 
+        // 동일한 email, nickname, personalId 확인
         if (checkEmail(request.getEmail()) || checkNickname(request.getNickname()) || checkPersonalId(request.getPersonalId())) {
             throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
         }
 
+        // 사용자 저장
         try {
             userRepository.save(user);
         } catch (Exception e) {
             log.error("createUser Exception : {}", e.getMessage());
             throw new LibraryException.DataSaveException(ExceptionCode.DATA_SAVE_EXCEPTION);
         }
+        // 마지막 로그인 날짜 업데이트
         user.updateLastLoginDate(LocalDateTime.now());
 
         return user.getId();
@@ -100,7 +105,6 @@ public class UserService {
         return userRepository.findAll();
     }
 
-
     /**
      * 사용자 프로필 조회
      */
@@ -110,7 +114,6 @@ public class UserService {
     }
 
     // 중복 데이터 검증 -> 아이디 중복, 이메일, 닉네임 중복 확인
-
     /**
      * 아이디 체크
      */
@@ -131,11 +134,9 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
-
     /**
      * 유저 프로필 변경
      * @param request
-     * @return ok
      */
     @Transactional
     public void updateProfile(UserRequest.UpdateProfileRequest request) {
@@ -161,7 +162,6 @@ public class UserService {
         // 닉네임 변경
         user.updateUserNickname(request.getNickname() != null ? request.getNickname() : user.getNickname());
     }
-
 
     /**
      * ADMIN 권한 관리
@@ -197,7 +197,6 @@ public class UserService {
             log.error("deleteUser Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
-
 
         List<Rent> rentList = rentRepository.findByUser(user);
         if (!rentList.isEmpty()) { // 대여 중인 도서 존재
@@ -261,7 +260,6 @@ public class UserService {
         log.info("UserService : [searchUserAuthPage]");
         return UserDto.buildUserAuthPage(userRepository.searchUserAuthPage(pageable, personalId, name));
     }
-
 
     /**
      * 아이디 찾기

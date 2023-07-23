@@ -1,6 +1,5 @@
 package hyundaiautoever.library.controller;
 
-import hyundaiautoever.library.model.dto.request.ReserveRequest;
 import hyundaiautoever.library.model.dto.response.Response;
 import hyundaiautoever.library.service.ReserveService;
 import lombok.extern.slf4j.Slf4j;
@@ -56,12 +55,16 @@ public class ReserveController {
         return Response.ok().setData(reserveService.getAdminReservePage(pageable, personalId, name, bookId, title));
     }
 
+    /**
+     * 대여 가능 예약자 대여
+     * @param reserveId
+     * @return ok
+     */
     @PostMapping("/reserveRent/create")
     public Response reserveRent(@RequestParam("reserveId") Long reserveId) {
         reserveService.reserveRent(reserveId);
         return Response.ok();
     }
-
 
     /**
      * 도서 예약 삭제
@@ -73,5 +76,4 @@ public class ReserveController {
         reserveService.deleteReserve(reserveId);
         return Response.ok();
     }
-
 }

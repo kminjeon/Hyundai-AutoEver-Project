@@ -30,7 +30,6 @@ public class ApplyController {
         return Response.ok().setData(applyService.createApply(request));
     }
 
-
     /**
      * 사용자 도서 신청 리스트 페이지
      * @param pageable

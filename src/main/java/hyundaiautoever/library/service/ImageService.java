@@ -16,6 +16,11 @@ import java.net.URL;
 @Transactional(readOnly = true) // 조회 성능 최적화
 public class ImageService {
 
+    /**
+     * 이미지 저장
+     * @param imageUrl
+     * @param isbn
+     */
     public void callImage(String imageUrl, String isbn) {
         String destinationPath = "src/main/reactfront/public/img/book/" + isbn + ".jpg";
         try {
@@ -27,6 +32,12 @@ public class ImageService {
         }
     }
 
+    /**
+     * URL 이미지 read
+     * @param imageUrl
+     * @param destinationPath
+     * @throws IOException
+     */
     public static void saveImage(String imageUrl, String destinationPath) throws IOException {
         URL url = new URL(imageUrl);
         BufferedInputStream inputStream = new BufferedInputStream(url.openStream());

@@ -4,8 +4,10 @@ import hyundaiautoever.library.common.exception.ExceptionCode;
 import hyundaiautoever.library.common.exception.LibraryException;
 import hyundaiautoever.library.common.type.RentType;
 import hyundaiautoever.library.model.dto.RentDto;
-import hyundaiautoever.library.model.dto.RentDto.*;
-import hyundaiautoever.library.model.dto.response.Response;
+import hyundaiautoever.library.model.dto.RentDto.GetAdminRentHistoryPage;
+import hyundaiautoever.library.model.dto.RentDto.GetAdminRentPage;
+import hyundaiautoever.library.model.dto.RentDto.GetRentHistoryPage;
+import hyundaiautoever.library.model.dto.RentDto.GetRentPage;
 import hyundaiautoever.library.model.entity.Book;
 import hyundaiautoever.library.model.entity.Rent;
 import hyundaiautoever.library.model.entity.Reserve;
@@ -16,10 +18,7 @@ import hyundaiautoever.library.repository.ReserveRepository;
 import hyundaiautoever.library.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -98,7 +97,6 @@ public class RentService {
      * @return GetRentPage
      */
     public GetRentPage getRentPage(Pageable pageable, String personalId) {
-        // 대여일 순으로 정렬하기 !
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
             log.error("getRentPage Exception : [존재하지 않는 User ID]", ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
@@ -132,7 +130,6 @@ public class RentService {
     public GetAdminRentPage getAdminRentPage(Pageable pageable, String personalId, String name, Long bookId, String title) {
         return RentDto.buildGetAdminRentPage(rentRepository.getAdminRentPage(pageable, personalId, name, bookId, title));
     }
-
 
     /**
      * 관리자 대여 기록 페이지 (검색 가능)
@@ -170,7 +167,6 @@ public class RentService {
         rent.updateExtensionNumber(1);
     }
 
-
     /**
      * 도서 반납
      * @param rentId
@@ -188,6 +184,7 @@ public class RentService {
         // 사용자 현재 대여 횟수 -1
         rent.getUser().updateUserRentCount(rent.getUser().getRentCount() - 1);
 
+        // 반납 도서 첫번째 예약자 검색
         Reserve firstReserve = reserveRepository.findByWaitNumberAndBook(1, rent.getBook());
 
         // 반납될 도서를 예약한 사람이 있는 경우
@@ -203,10 +200,8 @@ public class RentService {
             reserveList.forEach(reserve -> reserve.updateWaitNumber(reserve.getWaitNumber() - 1));
         }
         else { // 예약한 사람 없는 경우
-
             // 도서 이용 가능 상태(RentType.OPEN)로 업데이트
             rent.getBook().updateRentType(RentType.OPEN);
         }
     }
-
 }

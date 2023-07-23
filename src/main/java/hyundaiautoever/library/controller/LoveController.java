@@ -36,7 +36,6 @@ public class LoveController {
         return Response.ok().setData(loveService.getLoveList(personalId));
     }
 
-
     /**
      * 좋아요 삭제
      * @param loveId

@@ -30,7 +30,7 @@ public class RentController {
      * 사용자 대여 페이지
      * @param pageable
      * @param personalId
-     * @return
+     * @return GetRentPage
      */
     @GetMapping("/mypage/rent/getPage")
     public Response getRentPage(@PageableDefault(size = 10) Pageable pageable,
@@ -68,7 +68,6 @@ public class RentController {
         return Response.ok().setData(rentService.getAdminRentPage(pageable, personalId, name, bookId, title));
     }
 
-
     /**
      * 관리자 대여 기록 페이지
      * @param pageable
@@ -96,7 +95,6 @@ public class RentController {
         rentService.extentRent(rentId);
         return Response.ok();
     }
-
 
     /**
      * 도서 반납

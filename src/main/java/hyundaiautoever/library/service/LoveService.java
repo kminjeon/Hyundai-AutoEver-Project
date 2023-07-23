@@ -46,6 +46,7 @@ public class LoveService {
             return new LibraryException.DataNotFoundException(ExceptionCode.DATA_NOT_FOUND_EXCEPTION);
         });
 
+        // 동일한 좋아요가 있는 경우
         if (loveRepository.findByUserAndBook(user, book).isPresent()) {
             throw new LibraryException.DataDuplicateException(ExceptionCode.DATA_DUPLICATE_EXCEPTION);
         }
@@ -58,7 +59,7 @@ public class LoveService {
         // 좋아요가 생성될 때 해당 도서 loveCount +1
         book.updateLoveCount(book.getLoveCount() + 1);
 
-        // Love 저장
+        // 좋아요 저장
         try {
             loveRepository.save(love);
         } catch (Exception e) {
@@ -67,7 +68,6 @@ public class LoveService {
         }
         return love.getId();
     }
-
 
     /**
      * 좋아요 리스트 조회

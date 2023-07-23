@@ -28,7 +28,6 @@ import static hyundaiautoever.library.model.dto.ApplyDto.buildUpdateApplyDto;
 @Transactional(readOnly = true) // 조회 성능 최적화
 public class ApplyService {
 
-
     private final UserRepository userRepository;
     private final ApplyRepository applyRepository;
 
@@ -111,7 +110,6 @@ public class ApplyService {
 
         return buildUpdateApplyDto(apply);
     }
-
 
     /**
      * 도서 신청 삭제

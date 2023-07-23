@@ -25,6 +25,8 @@ public class UserController {
 
     /**
      * 로그인
+     * @param request
+     * @return LoginDto
      */
     @PostMapping("/login")
     public Response loginUser(@RequestBody @Valid UserRequest.LoginRequest request) {
@@ -35,7 +37,8 @@ public class UserController {
 
     /**
      * 회원가입
-     * @return join
+     * @param request
+     * @return user_id
      */
     @PostMapping("/join") // localhost:8080/api/join
     public Response joinUser(@RequestBody @Valid UserRequest.CreateUserRequest request) {
@@ -46,6 +49,8 @@ public class UserController {
 
     /**
      * 사용자 프로필 조회
+     * @param personalId
+     * @return UserProfile
      */
     @GetMapping("/mypage/profile/{personalId}")
     public Response searchUserProfile(@PathVariable("personalId") String personalId) {
@@ -54,6 +59,8 @@ public class UserController {
 
     /**
      * 닉네임 unique 체크
+     * @param nickname
+     * @return Response
      */
     @GetMapping("/check/nickname/{nickname}")
     public Response checkNickname(@PathVariable("nickname") String nickname) {
@@ -66,6 +73,8 @@ public class UserController {
 
     /**
      * 이메일 unique 체크
+     * @param email
+     * @return Response
      */
     @GetMapping("/check/email/{email}")
     public Response checkEmail(@PathVariable("email") String email) {
@@ -78,6 +87,8 @@ public class UserController {
 
     /**
      * 아이디 unique 체크
+     * @param personalId
+     * @return Response
      */
     @GetMapping("/check/personalId/{personalId}")
     public Response checkPersonalId(@PathVariable("personalId") String personalId) {
@@ -87,7 +98,6 @@ public class UserController {
         }
         return Response.ok();
     }
-
 
     /**
      * 유저 프로필 변경
@@ -114,7 +124,6 @@ public class UserController {
         return Response.ok().setData(userService.updateAuth(personalId, auth));
     }
 
-
     /**
      * 회원 탈퇴
      * @param personalId
@@ -125,7 +134,6 @@ public class UserController {
         log.info("UserController : [deleteUser]");
         return userService.deleteUser(personalId);
     }
-
 
     /**
      * 권한 관리 유저 페이지 조회

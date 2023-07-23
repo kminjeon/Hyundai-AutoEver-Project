@@ -27,6 +27,11 @@ public class EmailService {
 
     private final UserRepository userRepository;
 
+    /**
+     * 비밀번호 재설정 이메일 전송
+     * @param personalId
+     * @return String code
+     */
     public String sendMail(String personalId) {
 
         User user = userRepository.findByPersonalId(personalId).orElseThrow(() -> {
@@ -52,6 +57,11 @@ public class EmailService {
         }
     }
 
+    /**
+     * 대여 가능 안내 이메일 전송
+     * @param email
+     * @param title
+     */
     public void sendRentEmail(String email, String title) {
 
         log.info("EmailService : [sendRentEmail]");
@@ -71,7 +81,10 @@ public class EmailService {
         }
     }
 
-    // 인증번호 생성 메서드
+    /**
+     * 랜덤 코드 생성 메서드
+     * @return String code
+     */
     public String createCode() {
         Random random = new Random();
         StringBuffer key = new StringBuffer();

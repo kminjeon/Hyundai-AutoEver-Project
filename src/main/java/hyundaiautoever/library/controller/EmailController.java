@@ -26,5 +26,4 @@ public class EmailController {
     public Response sendJoinMail(@RequestParam String personalId) {
         return Response.ok().setData(emailService.sendMail(personalId));
     }
-
 }

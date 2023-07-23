@@ -47,6 +47,13 @@ public class BookApiService {
     @Value("${naver.clientSecret}")
     private String naverSecret;
 
+    /**
+     * naver 도서 API 호출
+     * @param query
+     * @param display
+     * @param categoryType
+     * @return title
+     */
     public String getJson(String query, int display, CategoryType categoryType) {
         if (bookRepository.existsByIsbn(query)) {
             throw new LibraryException.AlreadyExistBook(ExceptionCode.ALREADY_EXIST_ERROR);

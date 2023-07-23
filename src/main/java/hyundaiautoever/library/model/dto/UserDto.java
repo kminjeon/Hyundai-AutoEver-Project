@@ -93,10 +93,4 @@ public class UserDto {
     public static UserAuthPage buildUserAuthPage(Page<UserDto.LoginDto> page) {
         return new UserAuthPage(page);
     }
-
-    /*
-    public static List<UserDto> buildUserList(List<User> userList) {
-        return userList.stream().map(UserDto::new).collect(Collectors.toList());
-    }
-    */
 }
